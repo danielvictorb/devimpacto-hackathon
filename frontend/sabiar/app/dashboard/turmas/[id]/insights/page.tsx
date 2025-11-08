@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   IconSchool,
-  IconTrendingUp,
-  IconTrendingDown,
   IconAlertTriangle,
   IconSparkles,
   IconAward,
   IconTarget,
-  IconClipboardList,
 } from "@tabler/icons-react";
 import {
   Card,
@@ -26,18 +24,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
   Legend,
   Line,
   LineChart,
   ResponsiveContainer,
+  Scatter,
+  ScatterChart,
   Tooltip,
   XAxis,
   YAxis,
+  Cell,
 } from "recharts";
 
 // Mock data - Insights da turma
@@ -126,6 +124,89 @@ const insightsMock = {
     { faixa: "7-8", quantidade: 12 },
     { faixa: "9-10", quantidade: 8 },
   ],
+  // Dados para Cluster (scatter plot)
+  alunosCluster: [
+    {
+      id: 1,
+      nome: "Ana Silva",
+      matematica: 8.5,
+      portugues: 9.0,
+      media: 8.75,
+      status: "destaque",
+    },
+    {
+      id: 2,
+      nome: "Bruno Santos",
+      matematica: 6.8,
+      portugues: 7.2,
+      media: 7.0,
+      status: "intermediario",
+    },
+    {
+      id: 3,
+      nome: "Carlos Eduardo",
+      matematica: 4.2,
+      portugues: 4.5,
+      media: 4.35,
+      status: "risco",
+    },
+    {
+      id: 4,
+      nome: "Diana Oliveira",
+      matematica: 9.2,
+      portugues: 8.8,
+      media: 9.0,
+      status: "destaque",
+    },
+    {
+      id: 5,
+      nome: "Eduardo Costa",
+      matematica: 7.2,
+      portugues: 7.0,
+      media: 7.1,
+      status: "intermediario",
+    },
+    {
+      id: 6,
+      nome: "Fernanda Lima",
+      matematica: 3.8,
+      portugues: 4.0,
+      media: 3.9,
+      status: "risco",
+    },
+    {
+      id: 7,
+      nome: "Gabriel Mendes",
+      matematica: 7.8,
+      portugues: 7.5,
+      media: 7.65,
+      status: "intermediario",
+    },
+    {
+      id: 8,
+      nome: "Helena Rodrigues",
+      matematica: 8.9,
+      portugues: 9.1,
+      media: 9.0,
+      status: "destaque",
+    },
+    {
+      id: 9,
+      nome: "Igor Santos",
+      matematica: 5.5,
+      portugues: 6.0,
+      media: 5.75,
+      status: "intermediario",
+    },
+    {
+      id: 10,
+      nome: "Julia Lima",
+      matematica: 7.0,
+      portugues: 7.8,
+      media: 7.4,
+      status: "intermediario",
+    },
+  ],
   disciplinas: [
     {
       nome: "Matemática",
@@ -164,13 +245,24 @@ const insightsMock = {
 };
 
 export default function TurmaInsightsPage() {
+  const router = useRouter();
   const [tipoVisualizacao, setTipoVisualizacao] = useState<
-    "provas" | "periodos"
+    "provas" | "periodos" | "cluster"
   >("provas");
   const dadosGrafico =
     tipoVisualizacao === "provas"
       ? insightsMock.evolucaoProvas
       : insightsMock.evolucaoPeriodos;
+
+  const getCorPorStatus = (status: string) => {
+    if (status === "risco") return "#f97316"; // orange
+    if (status === "destaque") return "#22c55e"; // green
+    return "hsl(var(--primary))"; // azul para intermediário
+  };
+
+  const handleClickAluno = (aluno: { id: number; nome: string }) => {
+    router.push(`/dashboard/alunos/${aluno.id}`);
+  };
 
   return (
     <div className="px-4 py-8 md:px-8">
@@ -191,96 +283,10 @@ export default function TurmaInsightsPage() {
         </div>
       </div>
 
-      {/* Cards de Métricas */}
-      <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Média Geral</CardTitle>
-            <IconTarget className="size-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {insightsMock.metricas.mediaGeral.toFixed(1)}
-            </div>
-            <div
-              className={cn(
-                "flex items-center gap-1 text-xs",
-                insightsMock.metricas.tendencia === "up"
-                  ? "text-green-600 dark:text-green-400"
-                  : "text-orange-600 dark:text-orange-400"
-              )}
-            >
-              {insightsMock.metricas.tendencia === "up" ? (
-                <IconTrendingUp className="size-3" />
-              ) : (
-                <IconTrendingDown className="size-3" />
-              )}
-              {insightsMock.metricas.variacao}% vs período anterior
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Taxa de Acerto
-            </CardTitle>
-            <IconTarget className="size-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {insightsMock.metricas.taxaAcerto}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Média de acertos nas {insightsMock.metricas.totalProvas} provas
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Provas Realizadas
-            </CardTitle>
-            <IconClipboardList className="size-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {insightsMock.metricas.totalProvas}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {insightsMock.metricas.horasEconomizadas}h economizadas com IA
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Alunos em Risco
-            </CardTitle>
-            <IconAlertTriangle className="size-4 text-orange-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {insightsMock.gruposAlunos.risco.length}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {(
-                (insightsMock.gruposAlunos.risco.length /
-                  insightsMock.turma.alunos) *
-                100
-              ).toFixed(1)}
-              % da turma
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Gráficos */}
-      <div className="mb-8 grid gap-6 lg:grid-cols-2">
-        {/* Evolução da Turma */}
-        <Card>
+      {/* Layout Principal: Gráfico + Resumo LLM */}
+      <div className="mb-6 grid gap-6 lg:grid-cols-3">
+        {/* Lado Esquerdo - Gráfico (2 colunas) */}
+        <Card className="lg:col-span-2">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -291,107 +297,248 @@ export default function TurmaInsightsPage() {
               </div>
               <Select
                 value={tipoVisualizacao}
-                onValueChange={(value: "provas" | "periodos") =>
+                onValueChange={(value: "provas" | "periodos" | "cluster") =>
                   setTipoVisualizacao(value)
                 }
               >
-                <SelectTrigger className="w-36">
+                <SelectTrigger className="w-44">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="provas">Por Prova</SelectItem>
-                  <SelectItem value="periodos">Por Período</SelectItem>
+                  <SelectItem value="provas">Linhas - Por Prova</SelectItem>
+                  <SelectItem value="periodos">Linhas - Por Período</SelectItem>
+                  <SelectItem value="cluster">Cluster - Por Aluno</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={dadosGrafico}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                <XAxis
-                  dataKey={tipoVisualizacao === "provas" ? "data" : "periodo"}
-                  className="text-xs"
-                  tick={{ fill: "hsl(var(--muted-foreground))" }}
-                />
-                <YAxis
-                  domain={[0, 10]}
-                  className="text-xs"
-                  tick={{ fill: "hsl(var(--muted-foreground))" }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "8px",
-                  }}
-                />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="matematica"
-                  stroke="hsl(var(--primary))"
-                  strokeWidth={2}
-                  name="Matemática"
-                  dot={{ fill: "hsl(var(--primary))" }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="portugues"
-                  stroke="hsl(var(--secondary))"
-                  strokeWidth={2}
-                  name="Português"
-                  dot={{ fill: "hsl(var(--secondary))" }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="media"
-                  stroke="hsl(var(--foreground))"
-                  strokeWidth={3}
-                  name="Média Geral"
-                  dot={{ fill: "hsl(var(--foreground))", r: 4 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            {tipoVisualizacao === "cluster" ? (
+              <ResponsiveContainer width="100%" height={350}>
+                <ScatterChart>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    className="stroke-muted"
+                  />
+                  <XAxis
+                    type="number"
+                    dataKey="matematica"
+                    name="Matemática"
+                    domain={[0, 10]}
+                    label={{ value: "Matemática", position: "bottom" }}
+                    tick={{ fill: "hsl(var(--muted-foreground))" }}
+                  />
+                  <YAxis
+                    type="number"
+                    dataKey="portugues"
+                    name="Português"
+                    domain={[0, 10]}
+                    label={{ value: "Português", angle: -90, position: "left" }}
+                    tick={{ fill: "hsl(var(--muted-foreground))" }}
+                  />
+                  <Tooltip
+                    cursor={{ strokeDasharray: "3 3" }}
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        const aluno = payload[0].payload;
+                        return (
+                          <div className="rounded-lg border bg-card p-3 shadow-lg">
+                            <p className="font-semibold">{aluno.nome}</p>
+                            <p className="text-xs text-muted-foreground">
+                              Matemática: {aluno.matematica}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              Português: {aluno.portugues}
+                            </p>
+                            <p className="text-xs font-semibold">
+                              Média: {aluno.media}
+                            </p>
+                            <p className="mt-1 text-xs text-secondary">
+                              Clique para ver detalhes
+                            </p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                  <Scatter
+                    data={insightsMock.alunosCluster}
+                    onClick={(data) => data && handleClickAluno(data)}
+                    cursor="pointer"
+                  >
+                    {insightsMock.alunosCluster.map((aluno, index) => (
+                      <Cell
+                        key={index}
+                        fill={getCorPorStatus(aluno.status)}
+                        r={8}
+                      />
+                    ))}
+                  </Scatter>
+                </ScatterChart>
+              </ResponsiveContainer>
+            ) : (
+              <ResponsiveContainer width="100%" height={350}>
+                <LineChart data={dadosGrafico}>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    className="stroke-muted"
+                  />
+                  <XAxis
+                    dataKey={tipoVisualizacao === "provas" ? "data" : "periodo"}
+                    className="text-xs"
+                    tick={{ fill: "hsl(var(--muted-foreground))" }}
+                  />
+                  <YAxis
+                    domain={[0, 10]}
+                    className="text-xs"
+                    tick={{ fill: "hsl(var(--muted-foreground))" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                    }}
+                  />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="matematica"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth={2}
+                    name="Matemática"
+                    dot={{ fill: "hsl(var(--primary))" }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="portugues"
+                    stroke="hsl(var(--secondary))"
+                    strokeWidth={2}
+                    name="Português"
+                    dot={{ fill: "hsl(var(--secondary))" }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="media"
+                    stroke="hsl(var(--foreground))"
+                    strokeWidth={3}
+                    name="Média Geral"
+                    dot={{ fill: "hsl(var(--foreground))", r: 4 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            )}
           </CardContent>
         </Card>
 
-        {/* Distribuição de Notas */}
+        {/* Lado Direito - Resumo da IA */}
         <Card>
           <CardHeader>
-            <CardTitle>Distribuição de Notas</CardTitle>
-            <CardDescription>
-              Quantidade de alunos por faixa de nota
+            <CardTitle>Plano de Ação</CardTitle>
+            <CardDescription>Recomendações da IA para a turma</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {/* Resumo Principal */}
+            <div className="rounded-lg border border-secondary/20 bg-secondary/5 p-3">
+              <h4 className="mb-1 text-sm font-semibold text-secondary">
+                Visão Geral
+              </h4>
+              <p className="text-xs">
+                A turma apresentou <strong>melhora de 8.5%</strong> na média
+                geral nos últimos 2 meses. Matemática precisa de atenção
+                especial.
+              </p>
+            </div>
+
+            {/* Ações Recomendadas */}
+            <div>
+              <h4 className="mb-2 text-sm font-semibold">
+                Ações Recomendadas:
+              </h4>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="mt-1 size-1.5 rounded-full bg-secondary" />
+                  <p className="text-xs">
+                    <strong>Reforço de Matemática:</strong> 4 alunos precisam de
+                    aula extra sobre equações
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="mt-1 size-1.5 rounded-full bg-secondary" />
+                  <p className="text-xs">
+                    <strong>Feedback Individual:</strong> Enviar mensagens
+                    personalizadas para grupo de risco
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="mt-1 size-1.5 rounded-full bg-secondary" />
+                  <p className="text-xs">
+                    <strong>Celebrar:</strong> 3 alunos mantêm médias acima de
+                    8.5 - reconhecer desempenho
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Prioridade */}
+            <div className="rounded-lg border-2 border-orange-200 bg-orange-50/50 p-3 dark:border-orange-900/30 dark:bg-orange-950/20">
+              <div className="mb-1 flex items-center gap-2">
+                <IconAlertTriangle className="size-4 text-orange-600" />
+                <h4 className="text-sm font-semibold text-orange-600">
+                  Prioridade Alta
+                </h4>
+              </div>
+              <p className="text-xs text-orange-900 dark:text-orange-100">
+                4 alunos (12.5%) estão em risco de reprovação. Agendar
+                atendimento individual esta semana.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Cards de Ações */}
+      <div className="mb-8 grid gap-4 md:grid-cols-3">
+        <Card className="cursor-pointer transition-all hover:border-secondary hover:shadow-md">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Enviar Feedbacks</CardTitle>
+            <CardDescription className="text-xs">
+              Feedback personalizado para cada aluno
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={insightsMock.distribuicaoNotas}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                <XAxis
-                  dataKey="faixa"
-                  className="text-xs"
-                  tick={{ fill: "hsl(var(--muted-foreground))" }}
-                />
-                <YAxis
-                  className="text-xs"
-                  tick={{ fill: "hsl(var(--muted-foreground))" }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "8px",
-                  }}
-                  formatter={(value) => [`${value} alunos`, "Quantidade"]}
-                />
-                <Bar
-                  dataKey="quantidade"
-                  fill="hsl(var(--secondary))"
-                  radius={[8, 8, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            <p className="text-xs text-muted-foreground">
+              IA gerou 32 rascunhos de feedback prontos para revisar e enviar
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer transition-all hover:border-secondary hover:shadow-md">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Agendar Reforço</CardTitle>
+            <CardDescription className="text-xs">
+              Criar aula de reforço
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xs text-muted-foreground">
+              Sugestão: Aula de Matemática para 4 alunos do grupo de risco
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer transition-all hover:border-secondary hover:shadow-md">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Exportar Relatório</CardTitle>
+            <CardDescription className="text-xs">
+              Gerar PDF completo
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xs text-muted-foreground">
+              Baixar análise completa para compartilhar com coordenação
+            </p>
           </CardContent>
         </Card>
       </div>
