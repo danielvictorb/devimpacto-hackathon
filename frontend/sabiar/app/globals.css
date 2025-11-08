@@ -44,6 +44,10 @@
 }
 
 :root {
+  /* Sabiar Brand Colors */
+  --sabiar-orange: #d1663d; /* Laranja do passarinho */
+  --sabiar-teal: #294f5c; /* Azul petróleo do passarinho */
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -51,31 +55,42 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+
+  /* Primary usando o azul petróleo do Sabiar */
+  --primary: oklch(0.35 0.04 220); /* #294f5c */
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+
+  /* Secondary usando o laranja do Sabiar */
+  --secondary: oklch(0.64 0.14 35); /* #d1663d */
+  --secondary-foreground: oklch(0.985 0 0);
+
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+
+  /* Accent também usando o laranja */
+  --accent: oklch(0.64 0.14 35); /* #d1663d */
+  --accent-foreground: oklch(0.985 0 0);
+
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --ring: oklch(0.35 0.04 220); /* #294f5c */
+
+  /* Charts usando paleta Sabiar */
+  --chart-1: oklch(0.64 0.14 35); /* Laranja */
+  --chart-2: oklch(0.35 0.04 220); /* Azul petróleo */
+  --chart-3: oklch(0.55 0.1 200); /* Azul médio */
+  --chart-4: oklch(0.75 0.12 25); /* Laranja claro */
+  --chart-5: oklch(0.45 0.06 210); /* Azul escuro */
+
   --sidebar: hsl(0 0% 98%);
-  --sidebar-foreground: hsl(240 5.3% 26.1%);
-  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-foreground: oklch(0.35 0.04 220);
+  --sidebar-primary: oklch(0.35 0.04 220); /* #294f5c */
   --sidebar-primary-foreground: hsl(0 0% 98%);
   --sidebar-accent: hsl(240 4.8% 95.9%);
-  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-accent-foreground: oklch(0.35 0.04 220);
   --sidebar-border: hsl(220 13% 91%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar-ring: oklch(0.64 0.14 35); /* #d1663d */
 }
 
 .dark {
@@ -85,31 +100,42 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
+
+  /* Primary versão mais clara para dark mode */
+  --primary: oklch(0.55 0.08 215); /* Azul petróleo mais claro */
+  --primary-foreground: oklch(0.985 0 0);
+
+  /* Secondary usando o laranja mais vibrante */
+  --secondary: oklch(0.7 0.16 35); /* Laranja mais brilhante */
+  --secondary-foreground: oklch(0.145 0 0);
+
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+
+  /* Accent usando laranja */
+  --accent: oklch(0.7 0.16 35);
+  --accent-foreground: oklch(0.145 0 0);
+
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: hsl(240 5.9% 10%);
+  --ring: oklch(0.7 0.16 35); /* Laranja */
+
+  /* Charts dark mode */
+  --chart-1: oklch(0.7 0.16 35); /* Laranja */
+  --chart-2: oklch(0.55 0.08 215); /* Azul petróleo */
+  --chart-3: oklch(0.65 0.12 200); /* Azul médio */
+  --chart-4: oklch(0.8 0.14 25); /* Laranja claro */
+  --chart-5: oklch(0.45 0.06 210); /* Azul escuro */
+
+  --sidebar: oklch(0.18 0.02 220);
   --sidebar-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary: oklch(0.7 0.16 35); /* Laranja */
   --sidebar-primary-foreground: hsl(0 0% 100%);
   --sidebar-accent: hsl(240 3.7% 15.9%);
   --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
   --sidebar-border: hsl(240 3.7% 15.9%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar-ring: oklch(0.7 0.16 35); /* Laranja */
 }
 
 @layer base {
