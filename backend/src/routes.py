@@ -2,11 +2,14 @@
 FastAPI Routes - Sistema de Correção de Provas
 Rotas principais da API (Async)
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import List
 import uuid
+import shutil
+from pathlib import Path
+import os
 
 from .database import get_db
 from .models import (
@@ -24,6 +27,10 @@ from .models import (
 )
 
 router = APIRouter()
+
+# Criar pasta temp se não existir
+TEMP_DIR = Path(__file__).parent / "temp"
+TEMP_DIR.mkdir(exist_ok=True)
 
 
 # ============================================
@@ -378,3 +385,44 @@ async def get_exam_insights(exam_id: str, db: AsyncSession = Depends(get_db)):
     if not insight:
         raise HTTPException(status_code=404, detail="Análise não encontrada")
     return insight
+
+
+# ============================================
+# UPLOAD (Para OCR)
+# ============================================
+
+@router.post("/upload-prova/", tags=["Upload"])
+async def upload_prova(file: UploadFile = File(...)):
+    """
+    Upload de prova do aluno para OCR
+    Salva na pasta temp/ para processamento com Google Vision
+    """
+    # Validar tipo de arquivo
+    if not file.content_type or not (
+        file.content_type.startswith("image/") or
+        file.content_type == "application/pdf"
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="Tipo de arquivo inválido. Envie PDF, JPG ou PNG."
+        )
+    
+    # Gerar nome único
+    file_extension = os.path.splitext(file.filename or "prova.pdf")[1]
+    unique_filename = f"{uuid.uuid4()}{file_extension}"
+    file_path = TEMP_DIR / unique_filename
+    
+    # Salvar arquivo
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao salvar arquivo: {str(e)}")
+    
+    return {
+        "filename": unique_filename,
+        "original_filename": file.filename,
+        "path": str(file_path),
+        "size": os.path.getsize(file_path),
+        "message": "Arquivo salvo com sucesso! Pronto para OCR."
+    }

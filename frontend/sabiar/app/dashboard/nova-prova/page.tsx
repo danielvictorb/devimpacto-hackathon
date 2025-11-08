@@ -402,7 +402,7 @@ export default function NovaProvaPage() {
                 </Label>
                 <Input
                   id="titulo"
-                  placeholder="Ex: Prova de Biologia - Fotossíntese"
+                  placeholder="Ex: Prova de Português - Sintaxe"
                   value={tituloProva}
                   onChange={(e) => setTituloProva(e.target.value)}
                 />
@@ -799,24 +799,11 @@ export default function NovaProvaPage() {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Gabarito da Prova</CardTitle>
-                  <CardDescription>
-                    Adicione as questões e respostas corretas
-                  </CardDescription>
-                </div>
-                {!showAddQuestao && (
-                  <Button
-                    onClick={() => setShowAddQuestao(true)}
-                    variant="secondary"
-                    size="sm"
-                  >
-                    <IconPlus className="size-4" />
-                    Adicionar Questão
-                  </Button>
-                )}
-              </div>
+              <CardTitle>Gabarito da Prova</CardTitle>
+              <CardDescription>
+                Configure o gabarito com as questões e respostas corretas.
+                Depois você receberá as provas dos alunos para correção.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               {questoes.length === 0 && !showAddQuestao ? (
@@ -824,17 +811,19 @@ export default function NovaProvaPage() {
                   <div className="py-12 text-center">
                     <IconClipboardList className="mx-auto mb-4 size-12 text-muted-foreground" />
                     <h3 className="mb-2 text-lg font-semibold">
-                      Nenhuma questão adicionada
+                      Configure o Gabarito
                     </h3>
                     <p className="mb-4 text-sm text-muted-foreground">
-                      Comece adicionando a primeira questão da prova
+                      Adicione as questões e as respostas corretas do gabarito.
+                      <br />
+                      Depois você receberá as provas dos alunos para correção.
                     </p>
                     <Button
                       onClick={() => setShowAddQuestao(true)}
                       variant="secondary"
                     >
                       <IconPlus className="size-4" />
-                      Adicionar Questão
+                      Adicionar Questão ao Gabarito
                     </Button>
                   </div>
                   <div className="mt-6 flex justify-start">

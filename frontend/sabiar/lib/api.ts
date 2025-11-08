@@ -33,11 +33,22 @@ export async function criarTurma(data: {
 }
 
 export async function listarTurmas() {
-  const response = await fetch(
-    `${API_URL}/teachers/${TEACHER_ID_MOCK}/classes`
-  );
-  if (!response.ok) throw new Error("Erro ao buscar turmas");
-  return response.json();
+  const url = `${API_URL}/teachers/${TEACHER_ID_MOCK}/classes`;
+  console.log('🔍 Buscando turmas:', url);
+  
+  const response = await fetch(url);
+  
+  console.log('📡 Response status:', response.status);
+  
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: "Erro desconhecido" }));
+    console.error('❌ Erro na resposta:', error);
+    throw new Error(error.detail || "Erro ao buscar turmas");
+  }
+  
+  const data = await response.json();
+  console.log('✅ Turmas recebidas:', data);
+  return data;
 }
 
 export async function buscarTurma(classId: string) {
@@ -137,6 +148,25 @@ export async function buscarAluno(studentId: string) {
 export async function buscarInsightsProva(examId: string) {
   const response = await fetch(`${API_URL}/exams/${examId}/insights`);
   if (!response.ok) throw new Error("Erro ao buscar insights");
+  return response.json();
+}
+
+// ========== UPLOAD DE PROVAS ==========
+
+export async function uploadProvaAluno(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${API_URL}/upload-prova/`, {
+    method: "POST",
+    body: formData, // Não adicionar Content-Type, o browser adiciona automaticamente com boundary
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: "Erro no upload" }));
+    throw new Error(error.detail || "Erro ao fazer upload");
+  }
+
   return response.json();
 }
 

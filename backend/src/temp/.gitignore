@@ -1,0 +1,8 @@
+# Ignorar todos os arquivos (provas dos alunos)
+*
+
+# Exceto os README e .gitkeep
+!.gitignore
+!.gitkeep
+!README.md
+
