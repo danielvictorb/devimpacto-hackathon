@@ -1,110 +1,162 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   IconSchool,
-  IconPlus,
-  IconLayoutDashboard,
-  IconClipboardList,
-  IconUsers,
+  IconChartBar,
+  IconTrendingUp,
+  IconTrendingDown,
+  IconAlertTriangle,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: IconLayoutDashboard },
-  { name: "Turmas", href: "/dashboard/turmas", icon: IconSchool },
-  { name: "Provas", href: "/dashboard/provas", icon: IconClipboardList },
-  { name: "Alunos", href: "/dashboard/alunos", icon: IconUsers },
+// Mock data - turmas com estatísticas
+const turmasMock = [
+  {
+    id: 1,
+    nome: "9º Ano A",
+    alunos: 32,
+    mediaGeral: 7.2,
+    taxaAcerto: 72,
+    alunosRisco: 4,
+    provasRealizadas: 8,
+    tendencia: "up",
+  },
+  {
+    id: 2,
+    nome: "9º Ano B",
+    alunos: 28,
+    mediaGeral: 6.8,
+    taxaAcerto: 68,
+    alunosRisco: 6,
+    provasRealizadas: 7,
+    tendencia: "down",
+  },
+  {
+    id: 3,
+    nome: "1º Ano EM A",
+    alunos: 35,
+    mediaGeral: 7.8,
+    taxaAcerto: 78,
+    alunosRisco: 2,
+    provasRealizadas: 9,
+    tendencia: "up",
+  },
+  {
+    id: 4,
+    nome: "1º Ano EM B",
+    alunos: 30,
+    mediaGeral: 6.5,
+    taxaAcerto: 65,
+    alunosRisco: 8,
+    provasRealizadas: 6,
+    tendencia: "down",
+  },
 ];
 
 export default function TurmasPage() {
-  const pathname = usePathname();
-
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-zinc-950/95">
-        <div className="container flex h-16 items-center justify-between px-4 md:px-8">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/sabiar_icon.png"
-              alt="SabiaR Logo"
-              width={36}
-              height={36}
-              className="rounded-lg"
-            />
-            <div className="flex items-center gap-0.5">
-              <span className="text-lg font-bold">Sabia</span>
-              <span className="flex size-6 items-center justify-center rounded border-2 border-border text-lg font-bold">
-                R
-              </span>
-            </div>
-          </Link>
+    <div className="px-4 py-8 md:px-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold tracking-tight">Turmas</h1>
+        <p className="text-muted-foreground">
+          Gerencie suas turmas e acompanhe o desempenho
+        </p>
+      </div>
 
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <Button variant="ghost" size="sm">
-                Voltar ao Início
-              </Button>
-            </Link>
-            <Link href="/dashboard/nova-prova">
-              <Button variant="secondary" size="sm">
-                <IconPlus className="size-4" />
-                Nova Prova
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <div className="flex">
-        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 border-r bg-white dark:bg-zinc-950 lg:block">
-          <nav className="flex flex-col gap-1 p-4">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href;
-              const Icon = item.icon;
-
-              return (
-                <Link key={item.href} href={item.href}>
-                  <div
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                      isActive
-                        ? "bg-secondary text-secondary-foreground"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                    )}
-                  >
-                    <Icon className="size-5" />
-                    {item.name}
+      {/* Grid de Turmas */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {turmasMock.map((turma) => (
+          <Card key={turma.id} className="overflow-hidden">
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-12 items-center justify-center rounded-lg bg-secondary/10">
+                    <IconSchool className="size-6 text-secondary" />
                   </div>
+                  <div>
+                    <CardTitle className="text-xl">{turma.nome}</CardTitle>
+                    <CardDescription>{turma.alunos} alunos</CardDescription>
+                  </div>
+                </div>
+                <Badge
+                  variant={turma.tendencia === "down" ? "secondary" : "outline"}
+                >
+                  {turma.tendencia === "up" ? (
+                    <IconTrendingUp className="size-3" />
+                  ) : (
+                    <IconTrendingDown className="size-3" />
+                  )}
+                  {turma.tendencia === "up" ? "Melhorando" : "Precisa atenção"}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Métricas */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-muted-foreground">Média Geral</p>
+                  <p className="text-2xl font-bold">
+                    {turma.mediaGeral.toFixed(1)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    Taxa de Acerto
+                  </p>
+                  <p className="text-2xl font-bold">{turma.taxaAcerto}%</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    Provas Realizadas
+                  </p>
+                  <p className="text-lg font-semibold">
+                    {turma.provasRealizadas}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    Alunos em Risco
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <p className="text-lg font-semibold">{turma.alunosRisco}</p>
+                    {turma.alunosRisco > 5 && (
+                      <IconAlertTriangle className="size-4 text-orange-500" />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Ações */}
+              <div className="flex gap-2 pt-2">
+                <Link
+                  href={`/dashboard/turmas/${turma.id}/insights`}
+                  className="flex-1"
+                >
+                  <Button variant="secondary" className="w-full">
+                    <IconChartBar className="size-4" />
+                    Ver Insights
+                  </Button>
                 </Link>
-              );
-            })}
-          </nav>
-        </aside>
-
-        <main className="flex-1 px-4 py-8 md:px-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight">Turmas</h1>
-            <p className="text-muted-foreground">
-              Gerencie suas turmas e acompanhe o desempenho
-            </p>
-          </div>
-
-          <div className="flex min-h-[400px] items-center justify-center rounded-lg border-2 border-dashed">
-            <div className="text-center">
-              <IconSchool className="mx-auto mb-4 size-12 text-muted-foreground" />
-              <h3 className="mb-2 text-lg font-semibold">Em breve</h3>
-              <p className="text-sm text-muted-foreground">
-                Página de gerenciamento de turmas
-              </p>
-            </div>
-          </div>
-        </main>
+                <Link href={`/dashboard/turmas/${turma.id}`} className="flex-1">
+                  <Button variant="outline" className="w-full">
+                    Gerenciar
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );
 }
-

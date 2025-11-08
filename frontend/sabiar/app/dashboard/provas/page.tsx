@@ -1,108 +1,325 @@
 "use client";
 
-import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   IconClipboardList,
-  IconPlus,
-  IconLayoutDashboard,
-  IconSchool,
-  IconUsers,
+  IconSearch,
+  IconFileText,
+  IconEye,
+  IconChartBar,
+  IconCalendar,
 } from "@tabler/icons-react";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: IconLayoutDashboard },
-  { name: "Turmas", href: "/dashboard/turmas", icon: IconSchool },
-  { name: "Provas", href: "/dashboard/provas", icon: IconClipboardList },
-  { name: "Alunos", href: "/dashboard/alunos", icon: IconUsers },
+// Mock data - Provas
+const provasMock = [
+  {
+    id: 1,
+    titulo: "Prova de Matemática - Equações",
+    disciplina: "Matemática",
+    turma: "9º Ano A",
+    turmaId: 1,
+    data: "20 Nov 2025",
+    status: "concluida",
+    totalAlunos: 32,
+    alunosResponderam: 32,
+    mediaGeral: 7.5,
+    totalQuestoes: 10,
+  },
+  {
+    id: 2,
+    titulo: "Avaliação de Português - Interpretação",
+    disciplina: "Português",
+    turma: "9º Ano A",
+    turmaId: 1,
+    data: "18 Nov 2025",
+    status: "concluida",
+    totalAlunos: 32,
+    alunosResponderam: 32,
+    mediaGeral: 8.2,
+    totalQuestoes: 8,
+  },
+  {
+    id: 3,
+    titulo: "Prova de Matemática - Geometria",
+    disciplina: "Matemática",
+    turma: "9º Ano B",
+    turmaId: 2,
+    data: "15 Nov 2025",
+    status: "em_correcao",
+    totalAlunos: 28,
+    alunosResponderam: 28,
+    mediaGeral: null,
+    totalQuestoes: 12,
+  },
+  {
+    id: 4,
+    titulo: "Prova de Português - Gramática",
+    disciplina: "Português",
+    turma: "1º Ano EM A",
+    turmaId: 3,
+    data: "12 Nov 2025",
+    status: "concluida",
+    totalAlunos: 35,
+    alunosResponderam: 35,
+    mediaGeral: 6.8,
+    totalQuestoes: 15,
+  },
+  {
+    id: 5,
+    titulo: "Avaliação Diagnóstica - Matemática",
+    disciplina: "Matemática",
+    turma: "1º Ano EM B",
+    turmaId: 4,
+    data: "10 Nov 2025",
+    status: "publicada",
+    totalAlunos: 30,
+    alunosResponderam: 18,
+    mediaGeral: null,
+    totalQuestoes: 10,
+  },
 ];
 
 export default function ProvasPage() {
-  const pathname = usePathname();
+  const [busca, setBusca] = useState("");
+  const [filtroTurma, setFiltroTurma] = useState("todas");
+  const [filtroDisciplina, setFiltroDisciplina] = useState("todas");
+  const [filtroStatus, setFiltroStatus] = useState("todos");
+
+  // Filtrar provas
+  const provasFiltradas = provasMock.filter((prova) => {
+    const matchBusca = prova.titulo.toLowerCase().includes(busca.toLowerCase());
+    const matchTurma = filtroTurma === "todas" || prova.turma === filtroTurma;
+    const matchDisciplina =
+      filtroDisciplina === "todas" || prova.disciplina === filtroDisciplina;
+    const matchStatus =
+      filtroStatus === "todos" || prova.status === filtroStatus;
+
+    return matchBusca && matchTurma && matchDisciplina && matchStatus;
+  });
+
+  const turmasUnicas = [...new Set(provasMock.map((p) => p.turma))];
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-zinc-950/95">
-        <div className="container flex h-16 items-center justify-between px-4 md:px-8">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/sabiar_icon.png"
-              alt="SabiaR Logo"
-              width={36}
-              height={36}
-              className="rounded-lg"
+    <div className="px-4 py-8 md:px-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold tracking-tight">Provas</h1>
+        <p className="text-muted-foreground">
+          Gerencie todas as suas provas e avaliações
+        </p>
+      </div>
+
+      {/* Busca e Filtros */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="text-lg">Buscar e Filtrar</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Busca */}
+          <div className="relative">
+            <IconSearch className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Buscar por título da prova..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              className="pl-10"
             />
-            <div className="flex items-center gap-0.5">
-              <span className="text-lg font-bold">Sabia</span>
-              <span className="flex size-6 items-center justify-center rounded border-2 border-border text-lg font-bold">
-                R
-              </span>
+          </div>
+
+          {/* Filtros */}
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Turma</label>
+              <Select value={filtroTurma} onValueChange={setFiltroTurma}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todas">Todas as turmas</SelectItem>
+                  {turmasUnicas.map((turma) => (
+                    <SelectItem key={turma} value={turma}>
+                      {turma}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-          </Link>
 
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <Button variant="ghost" size="sm">
-                Voltar ao Início
-              </Button>
-            </Link>
-            <Link href="/dashboard/nova-prova">
-              <Button variant="secondary" size="sm">
-                <IconPlus className="size-4" />
-                Nova Prova
-              </Button>
-            </Link>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Disciplina</label>
+              <Select
+                value={filtroDisciplina}
+                onValueChange={setFiltroDisciplina}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todas">Todas</SelectItem>
+                  <SelectItem value="Matemática">Matemática</SelectItem>
+                  <SelectItem value="Português">Português</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Status</label>
+              <Select value={filtroStatus} onValueChange={setFiltroStatus}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todos</SelectItem>
+                  <SelectItem value="concluida">Concluída</SelectItem>
+                  <SelectItem value="em_correcao">Em Correção</SelectItem>
+                  <SelectItem value="publicada">Publicada</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-        </div>
-      </header>
+        </CardContent>
+      </Card>
 
-      <div className="flex">
-        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 border-r bg-white dark:bg-zinc-950 lg:block">
-          <nav className="flex flex-col gap-1 p-4">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href;
-              const Icon = item.icon;
+      {/* Lista de Provas */}
+      <div className="mb-4 flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">
+          {provasFiltradas.length}{" "}
+          {provasFiltradas.length === 1
+            ? "prova encontrada"
+            : "provas encontradas"}
+        </p>
+      </div>
 
-              return (
-                <Link key={item.href} href={item.href}>
-                  <div
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                      isActive
-                        ? "bg-secondary text-secondary-foreground"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                    )}
-                  >
-                    <Icon className="size-5" />
-                    {item.name}
-                  </div>
-                </Link>
-              );
-            })}
-          </nav>
-        </aside>
-
-        <main className="flex-1 px-4 py-8 md:px-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight">Provas</h1>
-            <p className="text-muted-foreground">
-              Gerencie todas as suas provas e avaliações
-            </p>
-          </div>
-
-          <div className="flex min-h-[400px] items-center justify-center rounded-lg border-2 border-dashed">
-            <div className="text-center">
+      <div className="space-y-4">
+        {provasFiltradas.length === 0 ? (
+          <Card>
+            <CardContent className="py-12 text-center">
               <IconClipboardList className="mx-auto mb-4 size-12 text-muted-foreground" />
-              <h3 className="mb-2 text-lg font-semibold">Em breve</h3>
+              <h3 className="mb-2 text-lg font-semibold">
+                Nenhuma prova encontrada
+              </h3>
               <p className="text-sm text-muted-foreground">
-                Página de gerenciamento de provas
+                Tente ajustar os filtros ou criar uma nova prova
               </p>
-            </div>
-          </div>
-        </main>
+            </CardContent>
+          </Card>
+        ) : (
+          provasFiltradas.map((prova) => (
+            <Card key={prova.id}>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-4">
+                    <div className="flex size-12 items-center justify-center rounded-lg bg-secondary/10">
+                      <IconFileText className="size-6 text-secondary" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="mb-2 flex items-center gap-2">
+                        <CardTitle className="text-xl">
+                          {prova.titulo}
+                        </CardTitle>
+                        {prova.status === "concluida" && (
+                          <Badge
+                            variant="outline"
+                            className="text-green-600 dark:text-green-400"
+                          >
+                            Concluída
+                          </Badge>
+                        )}
+                        {prova.status === "em_correcao" && (
+                          <Badge
+                            variant="outline"
+                            className="text-orange-600 dark:text-orange-400"
+                          >
+                            Em Correção
+                          </Badge>
+                        )}
+                        {prova.status === "publicada" && (
+                          <Badge variant="outline" className="text-primary">
+                            Publicada
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <IconCalendar className="size-4" />
+                          {prova.data}
+                        </span>
+                        <span>•</span>
+                        <span>{prova.turma}</span>
+                        <span>•</span>
+                        <span>{prova.disciplina}</span>
+                        <span>•</span>
+                        <span>{prova.totalQuestoes} questões</span>
+                        <span>•</span>
+                        <span>
+                          {prova.alunosResponderam}/{prova.totalAlunos} alunos
+                        </span>
+                        {prova.mediaGeral && (
+                          <>
+                            <span>•</span>
+                            <span className="font-semibold text-foreground">
+                              Média: {prova.mediaGeral}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  <Link href={`/dashboard/provas/${prova.id}/gabarito`}>
+                    <Button variant="ghost" size="sm">
+                      <IconFileText className="size-4" />
+                      Ver Gabarito
+                    </Button>
+                  </Link>
+                  <Link href={`/dashboard/provas/${prova.id}/respostas`}>
+                    <Button variant="ghost" size="sm">
+                      <IconEye className="size-4" />
+                      Ver Respostas
+                    </Button>
+                  </Link>
+                  {prova.status === "concluida" && (
+                    <Link href={`/dashboard/provas/${prova.id}/insights`}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-secondary"
+                      >
+                        <IconChartBar className="size-4" />
+                        Ver Insights
+                      </Button>
+                    </Link>
+                  )}
+                  {prova.status === "em_correcao" && (
+                    <Link href={`/dashboard/provas/${prova.id}/corrigir`}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-orange-600"
+                      >
+                        Continuar Correção
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
     </div>
   );
