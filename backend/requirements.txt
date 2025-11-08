@@ -18,3 +18,10 @@ threadpoolctl==3.6.0
 typing-extensions==4.15.0
 typing-inspection==0.4.2
 uvicorn==0.38.0
+
+# Novas dependências para Supabase/PostgreSQL (Async)
+asyncpg==0.30.0
+psycopg2-binary==2.9.11
+python-dotenv==1.2.1
+email-validator==2.2.0
+greenlet==3.1.1
