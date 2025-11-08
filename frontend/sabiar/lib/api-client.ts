@@ -3,6 +3,8 @@
  * Use isso no frontend Next.js para fazer requisições ao backend
  */
 
+import type { Student, StudentExam, StudentAnswer, Exam, ExamInsight, StudentPerformance, ComparisonData } from './types/student'
+
 // ============================================
 // CONFIGURAÇÃO BASE
 // ============================================
@@ -145,72 +147,102 @@ export const postsAPI = {
 }
 
 // ============================================
-// STUDENTS API
+// STUDENTS API (Sistema de Correção de Provas)
 // ============================================
 
-export interface Student {
-  id: number
-  name: string
-  age?: number
-  grade?: number
-  course?: string
-  email: string
-  phone?: string
-  enrollment_date: string
-  is_active: boolean
-  created_at: string
-  updated_at?: string
-}
-
-export interface StudentCreate {
-  name: string
-  age?: number
-  grade?: number
-  course?: string
-  email: string
-  phone?: string
-  is_active?: boolean
-}
-
 export const studentsAPI = {
-  // Criar estudante
-  create: async (student: StudentCreate): Promise<Student> => {
-    return fetchAPI('/students/', {
-      method: 'POST',
-      body: JSON.stringify(student),
-    })
+  // Buscar estudante por ID
+  get: async (studentId: string): Promise<Student> => {
+    return fetchAPI(`/students/${studentId}`)
   },
 
-  // Listar estudantes
-  list: async (skip = 0, limit = 100, course?: string): Promise<Student[]> => {
+  // Listar estudantes por turma
+  listByClass: async (classId: string, skip = 0, limit = 100): Promise<Student[]> => {
     const params = new URLSearchParams({
       skip: skip.toString(),
       limit: limit.toString(),
+      class_id: classId,
     })
-    if (course) params.append('course', course)
-    
     return fetchAPI(`/students/?${params}`)
   },
 
-  // Buscar estudante por ID
-  get: async (id: number): Promise<Student> => {
-    return fetchAPI(`/students/${id}`)
+  // Buscar provas do estudante
+  getExams: async (studentId: string): Promise<StudentExam[]> => {
+    return fetchAPI(`/students/${studentId}/exams`)
   },
 
-  // Atualizar estudante
-  update: async (id: number, student: StudentCreate): Promise<Student> => {
-    return fetchAPI(`/students/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(student),
-    })
+  // Buscar desempenho completo do estudante
+  getPerformance: async (studentId: string): Promise<StudentPerformance> => {
+    const student = await fetchAPI(`/students/${studentId}`)
+    const exams = await fetchAPI(`/students/${studentId}/exams`)
+    
+    // Calcular estatísticas
+    const scores = exams.map((e: StudentExam) => e.percentage || 0)
+    const statistics = {
+      totalExams: exams.length,
+      averageScore: scores.reduce((a: number, b: number) => a + b, 0) / scores.length || 0,
+      bestScore: Math.max(...scores, 0),
+      worstScore: Math.min(...scores, 100),
+      improvementRate: calculateImprovementRate(scores),
+    }
+
+    return { student, exams, statistics }
   },
 
-  // Deletar estudante
-  delete: async (id: number): Promise<void> => {
-    return fetchAPI(`/students/${id}`, {
-      method: 'DELETE',
-    })
+  // Comparar aluno com a turma
+  getComparison: async (studentId: string): Promise<ComparisonData> => {
+    return fetchAPI(`/students/${studentId}/comparison`)
   },
+}
+
+// ============================================
+// EXAMS API
+// ============================================
+
+export const examsAPI = {
+  // Buscar prova por ID
+  get: async (examId: string): Promise<Exam> => {
+    return fetchAPI(`/exams/${examId}`)
+  },
+
+  // Buscar insights da prova
+  getInsights: async (examId: string): Promise<ExamInsight> => {
+    return fetchAPI(`/exams/${examId}/insights`)
+  },
+
+  // Buscar provas submetidas
+  getStudentExams: async (examId: string): Promise<StudentExam[]> => {
+    return fetchAPI(`/exams/${examId}/student-exams`)
+  },
+}
+
+// ============================================
+// STUDENT EXAMS API
+// ============================================
+
+export const studentExamsAPI = {
+  // Buscar prova do aluno
+  get: async (studentExamId: string): Promise<StudentExam> => {
+    return fetchAPI(`/student-exams/${studentExamId}`)
+  },
+
+  // Buscar respostas do aluno
+  getAnswers: async (studentExamId: string): Promise<StudentAnswer[]> => {
+    return fetchAPI(`/student-exams/${studentExamId}/answers`)
+  },
+}
+
+// Helper para calcular taxa de melhoria
+function calculateImprovementRate(scores: number[]): number {
+  if (scores.length < 2) return 0
+  
+  const firstHalf = scores.slice(0, Math.floor(scores.length / 2))
+  const secondHalf = scores.slice(Math.floor(scores.length / 2))
+  
+  const firstAvg = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length
+  const secondAvg = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length
+  
+  return ((secondAvg - firstAvg) / firstAvg) * 100
 }
 
 // ============================================
