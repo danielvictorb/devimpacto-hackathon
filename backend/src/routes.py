@@ -108,11 +108,6 @@ async def get_teacher_classes(teacher_id: str, db: AsyncSession = Depends(get_db
     """Buscar todas as turmas de um professor"""
     result = await db.execute(select(Teacher).where(Teacher.id == uuid.UUID(teacher_id)))
     teacher = result.scalar_one_or_none()
-@router.get("/teachers/{teacher_id}/classes", response_model=List[ClassResponse], tags=["Teachers"])
-async def get_teacher_classes(teacher_id: str, db: AsyncSession = Depends(get_db)):
-    """Buscar todas as turmas de um professor"""
-    result = await db.execute(select(Teacher).where(Teacher.id == uuid.UUID(teacher_id)))
-    teacher = result.scalar_one_or_none()
     if not teacher:
         raise HTTPException(status_code=404, detail="Professor não encontrado")
     

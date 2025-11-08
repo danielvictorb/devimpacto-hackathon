@@ -29,8 +29,8 @@ if not all([USER, PASSWORD, HOST, PORT, DBNAME]):
 
 # Construir a connection string para async (asyncpg)
 # Formato: postgresql+asyncpg://user:password@host:port/dbname
-# Adicionar SSL mode require para Supabase
-DATABASE_URL = f"postgresql+asyncpg://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?ssl=require"
+# Adicionar SSL mode require + prepared_statement_cache_size=0 para Supabase pgbouncer!
+DATABASE_URL = f"postgresql+asyncpg://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?prepared_statement_cache_size=0"
 
 # Debug - mostrar URL sem senha
 safe_url = f"postgresql+asyncpg://{USER}:***@{HOST}:{PORT}/{DBNAME}?ssl=require"
@@ -39,11 +39,12 @@ print()
 
 # Criar async engine do SQLAlchemy
 # pool_pre_ping=True: verifica se a conexão está ativa antes de usar
-# echo=True: mostra os SQLs gerados (útil para debug, remova em produção)
+# echo=False: desabilitar logs SQL
+# prepared_statement_cache_size=0 já está na URL!
 engine = create_async_engine(
     DATABASE_URL,
     pool_pre_ping=True,
-    echo=True,  # Mude para False em produção
+    echo=False,
     pool_size=5,
     max_overflow=10
 )

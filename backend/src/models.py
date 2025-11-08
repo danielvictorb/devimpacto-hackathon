@@ -148,6 +148,7 @@ class Exam(Base):
     teacher_id = Column(UUID(as_uuid=True), ForeignKey("teachers.id", ondelete="CASCADE"), nullable=False)
     title = Column(String(255), nullable=False)
     description = Column(Text)
+    subject = Column(String(100), nullable=False)  # Disciplina: Matemática, Português
     total_points = Column(DECIMAL(5, 2), default=10.00)
     exam_date = Column(Date)
     period_type = Column(
@@ -182,8 +183,9 @@ class Question(Base):
         nullable=False
     )
     points = Column(DECIMAL(5, 2), default=1.00)
+    options = Column(JSONB)  
     expected_answer = Column(Text, nullable=False)
-    grading_criteria = Column(Text)
+    grading_criteria = Column(Text)  
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relacionamentos
@@ -284,10 +286,11 @@ class ExamInsight(Base):
 # ============================================
 # Schemas Pydantic (para validação no FastAPI)
 # ============================================
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, validator, field_serializer
 from typing import Optional, List, Dict, Any
 from datetime import datetime, date
 from decimal import Decimal
+import uuid as uuid_lib
 
 
 # ============== TEACHER SCHEMAS ==============
@@ -302,12 +305,15 @@ class TeacherCreate(TeacherBase):
 
 
 class TeacherResponse(TeacherBase):
-    id: str  # UUID como string
+    id: uuid_lib.UUID
     access_code: str
     created_at: datetime
 
     class Config:
         from_attributes = True
+        json_encoders = {
+            uuid_lib.UUID: str
+        }
 
 
 # ============== CLASS SCHEMAS ==============
@@ -322,12 +328,15 @@ class ClassCreate(ClassBase):
 
 
 class ClassResponse(ClassBase):
-    id: str
-    teacher_id: str
+    id: uuid_lib.UUID  # Mudar para UUID
+    teacher_id: uuid_lib.UUID  # Mudar para UUID
     created_at: datetime
 
     class Config:
         from_attributes = True
+        json_encoders = {
+            uuid_lib.UUID: str
+        }
 
 
 # ============== STUDENT SCHEMAS ==============
@@ -388,14 +397,17 @@ class StudentCreate(StudentBase):
 
 
 class StudentResponse(StudentBase):
-    id: str
-    class_id: str
+    id: uuid_lib.UUID
+    class_id: uuid_lib.UUID
     access_code: str
     created_at: datetime
     updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
+        json_encoders = {
+            uuid_lib.UUID: str
+        }
 
 
 # ============== EXAM SCHEMAS ==============
@@ -403,6 +415,7 @@ class StudentResponse(StudentBase):
 class ExamBase(BaseModel):
     title: str = Field(..., max_length=255)
     description: Optional[str] = None
+    subject: str = Field(..., max_length=100) 
     total_points: Decimal = Field(default=10.00)
     exam_date: Optional[date] = None
     period_type: Optional[str] = None
@@ -416,13 +429,16 @@ class ExamCreate(ExamBase):
 
 
 class ExamResponse(ExamBase):
-    id: str
-    class_id: str
-    teacher_id: str
+    id: uuid_lib.UUID
+    class_id: uuid_lib.UUID
+    teacher_id: uuid_lib.UUID
     created_at: datetime
 
     class Config:
         from_attributes = True
+        json_encoders = {
+            uuid_lib.UUID: str
+        }
 
 
 # ============== QUESTION SCHEMAS ==============
@@ -431,6 +447,7 @@ class QuestionBase(BaseModel):
     question_number: int
     question_type: str  # 'multiple_choice' ou 'essay'
     points: Decimal = Field(default=1.00)
+    options: Optional[Dict[str, str]] = None  
     expected_answer: str
     grading_criteria: Optional[str] = None
 
@@ -440,12 +457,15 @@ class QuestionCreate(QuestionBase):
 
 
 class QuestionResponse(QuestionBase):
-    id: str
-    exam_id: str
+    id: uuid_lib.UUID
+    exam_id: uuid_lib.UUID
     created_at: datetime
 
     class Config:
         from_attributes = True
+        json_encoders = {
+            uuid_lib.UUID: str
+        }
 
 
 # ============== STUDENT EXAM SCHEMAS ==============
