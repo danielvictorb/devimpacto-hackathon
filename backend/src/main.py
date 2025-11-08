@@ -106,7 +106,10 @@ async def health_check(db: AsyncSession = Depends(get_db)):
 
 # Incluir rotas
 from .routes import router
+from .clustering_routes import router as clustering_router
+
 app.include_router(router)
+app.include_router(clustering_router)
 
 
 if __name__ == "__main__":
