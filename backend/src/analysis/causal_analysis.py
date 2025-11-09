@@ -655,7 +655,7 @@ def analyze_causal_factors(
         if not turmas_nomes:
             raise ValueError("Nenhuma turma válida encontrada")
         
-        print(f"📊 Processando {len(turmas_nomes)} turma(s) individualmente para relatório...")
+        print(f" Processando {len(turmas_nomes)} turma(s) individualmente para relatório...")
         
         # Analisar cada turma separadamente
         analyses = []
@@ -664,9 +664,9 @@ def analyze_causal_factors(
             try:
                 analise = _analyze_single_turma_relatorio(dashboard_data, turma_name)
                 analyses.append(analise)
-                print(f"  ✅ Turma {turma_name} analisada com sucesso")
+                print(f"   Turma {turma_name} analisada com sucesso")
             except Exception as e:
-                print(f"  ⚠️  Erro ao analisar turma {turma_name}: {str(e)}")
+                print(f"    Erro ao analisar turma {turma_name}: {str(e)}")
                 analyses.append({
                     "erro": str(e),
                     "turma": turma_name,
@@ -687,10 +687,10 @@ def analyze_causal_factors(
                 })
         
         # Consolidar todas as análises
-        print(f"\n🔄 Consolidando relatório de {len(analyses)} turma(s)...")
+        print(f"\n Consolidando relatório de {len(analyses)} turma(s)...")
         relatorio_consolidado = _consolidate_relatorio(analyses, dashboard_data)
         
-        print(f"✅ Relatório consolidado concluído!")
+        print(f" Relatório consolidado concluído!")
         
         return relatorio_consolidado
     
@@ -805,14 +805,14 @@ if __name__ == "__main__":
     dashboard_path = Path(__file__).parent.parent.parent.parent / "utils" / "dados_dashboard.json"
     
     try:
-        print("📊 Carregando dados do dashboard...")
+        print(" Carregando dados do dashboard...")
         dashboard_data = load_dashboard_from_file(str(dashboard_path))
         
-        print("🔍 Realizando análise causal...")
+        print(" Realizando análise causal...")
         resultado = analyze_causal_factors(dashboard_data, turma="1A")
         
-        print("✅ Análise concluída!")
-        print(f"\n📋 Resumo Executivo:")
+        print(" Análise concluída!")
+        print(f"\n Resumo Executivo:")
         print(resultado.get("analise_geral_turma", {}).get("resumo_executivo", "N/A"))
         
         # Salvar resultado
@@ -820,8 +820,8 @@ if __name__ == "__main__":
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(resultado, f, ensure_ascii=False, indent=2)
         
-        print(f"\n💾 Resultado salvo em: {output_path}")
+        print(f"\n Resultado salvo em: {output_path}")
         
     except Exception as e:
-        print(f"❌ Erro: {e}")
+        print(f" Erro: {e}")
 

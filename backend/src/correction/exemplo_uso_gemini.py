@@ -87,33 +87,33 @@ def executar_pipeline_completo():
     print("=" * 70)
     
     # ETAPA 1: Limpeza do OCR
-    print("\n📄 ETAPA 1: Limpeza do texto OCR")
+    print("\n ETAPA 1: Limpeza do texto OCR")
     print("-" * 70)
     print("Texto original (com ruídos):")
     print(texto_ocr_bruto[:200] + "...")
     
     texto_limpo = parse_ocr_text(texto_ocr_bruto)
-    print(f"\n✅ Texto limpo gerado ({len(texto_limpo)} caracteres)")
+    print(f"\n Texto limpo gerado ({len(texto_limpo)} caracteres)")
     print("Amostra:", texto_limpo[:200] + "...")
     
     # ETAPA 2: Estruturação
-    print("\n🏗️  ETAPA 2: Estruturação em JSON")
+    print("\n  ETAPA 2: Estruturação em JSON")
     print("-" * 70)
     
     prova_estruturada = structure_exam_json(texto_limpo, questoes_registradas)
-    print(f"✅ {len(prova_estruturada['questoes'])} questões discursivas estruturadas")
+    print(f" {len(prova_estruturada['questoes'])} questões discursivas estruturadas")
     
     for q in prova_estruturada['questoes']:
         print(f"\nQuestão {q['numero']}: {q['pergunta'][:50]}...")
         print(f"Resposta do aluno: {q['resposta_aluno'][:100]}...")
     
     # ETAPA 3: Correção
-    print("\n🧮 ETAPA 3: Correção automática")
+    print("\n ETAPA 3: Correção automática")
     print("-" * 70)
     
     resultado_correcao = evaluate_exam(prova_estruturada, gabarito, step=0.5)
     
-    print(f"\n📊 RESULTADO FINAL")
+    print(f"\n RESULTADO FINAL")
     print("=" * 70)
     
     for qc in resultado_correcao['questoes_corrigidas']:
@@ -134,14 +134,14 @@ def executar_pipeline_completo():
 
 def testar_parse_ocr():
     """Testa apenas a função de limpeza do OCR."""
-    print("\n🧪 Testando parse_ocr_text...")
+    print("\n Testando parse_ocr_text...")
     texto_limpo = parse_ocr_text(texto_ocr_bruto)
     print(f"Texto limpo:\n{texto_limpo}\n")
 
 
 def testar_structure():
     """Testa apenas a estruturação."""
-    print("\n🧪 Testando structure_exam_json...")
+    print("\n Testando structure_exam_json...")
     # Primeiro limpa
     texto_limpo = parse_ocr_text(texto_ocr_bruto)
     # Depois estrutura
