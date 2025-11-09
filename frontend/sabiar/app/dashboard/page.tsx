@@ -1,16 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  IconFileText,
   IconUsers,
-  IconChartBar,
-  IconTrendingUp,
-  IconPlus,
-  IconLoader2,
+  IconSchool,
+  IconAlertTriangle,
+  IconTrendingDown,
+  IconChartPie,
+  IconAlertCircle,
+  IconHome,
+  IconShoppingCart,
+  IconClock,
+  IconWifi,
 } from "@tabler/icons-react";
-import { listarProvas, listarTurmas } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,214 +22,276 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { obterEstatisticasGerais } from "@/lib/dados";
 
 export default function DashboardPage() {
-  const [provas, setProvas] = useState<any[]>([]);
-  const [turmas, setTurmas] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function carregar() {
-      try {
-        const [provasData, turmasData] = await Promise.all([
-          listarProvas(),
-          listarTurmas(),
-        ]);
-        setProvas(provasData);
-        setTurmas(turmasData);
-      } catch (error) {
-        console.error("Erro ao carregar dados:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    carregar();
-  }, []);
-
-  // Calcular estatísticas a partir dos dados reais
-  const totalTurmas = turmas.length;
-  const totalAlunos = turmas.reduce(
-    (sum, t) => sum + (t.student_count || 0),
-    0
-  );
-  const provasRecentes = provas.slice(0, 3); // Primeiras 3 provas
+  // Carregar dados do JSON
+  const stats = obterEstatisticasGerais();
 
   return (
     <div className="px-4 py-8 md:px-8">
       {/* Welcome Section */}
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Visão Geral da Escola
-          </h1>
-          <p className="text-muted-foreground">
-            Bem-vindo de volta, Diretor(a)!
-          </p>
-        </div>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold tracking-tight">
+          Visão Geral da Escola
+        </h1>
+        <p className="text-muted-foreground">
+          Bem-vindo de volta, Diretor(a)! ECIT João Goulart
+        </p>
       </div>
 
-      {/* Loading */}
-      {loading ? (
-        <div className="py-12 text-center">
-          <IconLoader2 className="mx-auto mb-4 size-12 animate-spin text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">Carregando dados...</p>
-        </div>
-      ) : (
-        <>
-          {/* Stats Cards */}
-          <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {/* Total de Alunos */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total de Alunos
-                </CardTitle>
-                <div className="flex size-10 items-center justify-center rounded-lg bg-secondary/10">
-                  <IconUsers className="size-5 text-secondary" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{totalAlunos}</div>
-                <p className="text-xs text-muted-foreground">
-                  Matriculados na escola
-                </p>
-              </CardContent>
-            </Card>
+      {/* Stats Cards Principais */}
+      <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {/* Total de Alunos */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total de Alunos
+            </CardTitle>
+            <div className="flex size-10 items-center justify-center rounded-lg bg-blue-500/10">
+              <IconUsers className="size-5 text-blue-500" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalAlunos}</div>
+            <p className="text-xs text-muted-foreground">
+              Matriculados na escola
+            </p>
+          </CardContent>
+        </Card>
 
-            {/* Turmas Ativas */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Turmas Ativas
-                </CardTitle>
-                <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                  <IconUsers className="size-5 text-primary" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{totalTurmas}</div>
-                <p className="text-xs text-muted-foreground">
-                  Em funcionamento
-                </p>
-              </CardContent>
-            </Card>
+        {/* Turmas Ativas */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Turmas Ativas</CardTitle>
+            <div className="flex size-10 items-center justify-center rounded-lg bg-purple-500/10">
+              <IconSchool className="size-5 text-purple-500" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalTurmas}</div>
+            <p className="text-xs text-muted-foreground">
+              1º Ano do Ensino Médio
+            </p>
+          </CardContent>
+        </Card>
 
-            {/* Nota Média Geral (IDEB) */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Nota Média Geral
-                </CardTitle>
-                <div className="flex size-10 items-center justify-center rounded-lg bg-secondary/10">
-                  <IconChartBar className="size-5 text-secondary" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">7.2</div>
-                <p className="text-xs text-muted-foreground">
-                  Matemática e Português
-                </p>
-              </CardContent>
-            </Card>
+        {/* Média Geral */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Nota Média Geral
+            </CardTitle>
+            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-500/10">
+              <IconTrendingDown className="size-5 text-orange-500" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.mediaGeral}</div>
+            <p className="text-xs text-muted-foreground">
+              Desempenho preocupante
+            </p>
+          </CardContent>
+        </Card>
 
-            {/* Taxa de Frequência */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Taxa de Frequência
-                </CardTitle>
-                <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                  <IconTrendingUp className="size-4 text-primary" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">87%</div>
-                <div className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
-                  <IconTrendingUp className="size-3" />
-                  +2% vs mês anterior
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        {/* Alunos em Risco Alto */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Alunos em Risco Alto
+            </CardTitle>
+            <div className="flex size-10 items-center justify-center rounded-lg bg-red-500/10">
+              <IconAlertTriangle className="size-5 text-red-500" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-red-600">
+              {stats.alunosRiscoAlto}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {((stats.alunosRiscoAlto / stats.totalAlunos) * 100).toFixed(1)}%
+              do total - atenção urgente
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
-          {/* Provas Recentes */}
-          <Card>
-            <CardHeader>
+      {/* Distribuição por Desempenho */}
+      <div className="mb-8 grid gap-4 md:grid-cols-3">
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        {stats.distribuicaoPorFaixa.map((faixa: any) => (
+          <Card key={faixa.faixa}>
+            <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Provas Recentes</CardTitle>
-                  <CardDescription>
-                    Suas últimas avaliações e seu status
-                  </CardDescription>
-                </div>
-                <Link href="/dashboard/provas">
-                  <Button variant="outline" size="sm">
-                    Ver Todas
-                  </Button>
-                </Link>
+                <CardTitle className="text-base">{faixa.faixa}</CardTitle>
+                <Badge
+                  variant={
+                    faixa.faixa.includes("Baixo")
+                      ? "destructive"
+                      : faixa.faixa.includes("Alto")
+                      ? "default"
+                      : "secondary"
+                  }
+                >
+                  {faixa.percentual}%
+                </Badge>
               </div>
+              <CardDescription>
+                {faixa.total_alunos} alunos • Média:{" "}
+                {faixa.intervalo_notas.media.toFixed(2)}
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              {provasRecentes.length === 0 ? (
-                <div className="py-12 text-center">
-                  <IconFileText className="mx-auto mb-4 size-12 text-muted-foreground" />
-                  <h3 className="mb-2 text-lg font-semibold">
-                    Nenhuma prova ainda
-                  </h3>
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    Comece criando sua primeira prova com IA
-                  </p>
-                  <Link href="/dashboard/nova-prova">
-                    <Button variant="secondary">
-                      <IconPlus className="size-4" />
-                      Criar Primeira Prova
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {provasRecentes.map((prova) => (
-                    <Link
-                      key={prova.id}
-                      href={`/dashboard/provas/${prova.id}`}
-                      className="block"
-                    >
-                      <div className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50">
-                        <div className="flex size-12 items-center justify-center rounded-lg bg-secondary/10">
-                          <IconFileText className="size-6 text-secondary" />
-                        </div>
-
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-semibold">{prova.title}</h3>
-                            <Badge variant="outline" className="text-green-600">
-                              Criada
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(prova.exam_date).toLocaleDateString(
-                              "pt-BR"
-                            )}{" "}
-                            • {prova.subject}
-                          </p>
-                        </div>
-
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-secondary"
-                        >
-                          Ver Detalhes
-                        </Button>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
+            <CardContent className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Trabalham</span>
+                <span className="font-medium">
+                  {faixa.pct_trabalha.toFixed(1)}%
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Renda média</span>
+                <span className="font-medium">
+                  R$ {faixa.renda_media.toFixed(0)}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Pretos/Pardos</span>
+                <span className="font-medium">
+                  {faixa.pct_pretos_pardos.toFixed(1)}%
+                </span>
+              </div>
             </CardContent>
           </Card>
-        </>
-      )}
+        ))}
+      </div>
+
+      {/* Fatores Críticos */}
+      <Card className="mb-8">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <IconAlertCircle className="size-5 text-orange-500" />
+            <div>
+              <CardTitle>Fatores Críticos de Atenção</CardTitle>
+              <CardDescription>
+                Condições socioeconômicas que impactam o desempenho
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex items-center gap-3 rounded-lg border p-4">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-orange-500/10">
+                <IconShoppingCart className="size-5 text-orange-500" />
+              </div>
+              <div>
+                <div className="font-semibold">
+                  {stats.fatoresCriticos.trabalho} alunos
+                </div>
+                <p className="text-sm text-muted-foreground">Trabalham</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 rounded-lg border p-4">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-red-500/10">
+                <IconHome className="size-5 text-red-500" />
+              </div>
+              <div>
+                <div className="font-semibold">
+                  {stats.fatoresCriticos.inseg_alimentar} alunos
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Insegurança Alimentar
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 rounded-lg border p-4">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-yellow-500/10">
+                <IconClock className="size-5 text-yellow-500" />
+              </div>
+              <div>
+                <div className="font-semibold">
+                  {stats.fatoresCriticos.deslocamento_longo} alunos
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Deslocamento Longo
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 rounded-lg border p-4">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-purple-500/10">
+                <IconUsers className="size-5 text-purple-500" />
+              </div>
+              <div>
+                <div className="font-semibold">
+                  {stats.fatoresCriticos.baixa_renda} alunos
+                </div>
+                <p className="text-sm text-muted-foreground">Baixa Renda</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 rounded-lg border p-4">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
+                <IconWifi className="size-5 text-blue-500" />
+              </div>
+              <div>
+                <div className="font-semibold">
+                  {stats.fatoresCriticos.sem_internet} alunos
+                </div>
+                <p className="text-sm text-muted-foreground">Sem Internet</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 rounded-lg border p-4">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-green-500/10">
+                <IconChartPie className="size-5 text-green-500" />
+              </div>
+              <div>
+                <div className="font-semibold">
+                  {stats.fatoresCriticos.pretos_pardos_indigenas} alunos
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Pretos, Pardos, Indígenas
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Ações Rápidas */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Ações Recomendadas</CardTitle>
+          <CardDescription>
+            Próximos passos para melhorar o desempenho da escola
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <Link href="/dashboard/turmas">
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              size="lg"
+            >
+              <IconSchool className="mr-2 size-5" />
+              Ver Análise Detalhada por Turma
+            </Button>
+          </Link>
+          <Link href="/dashboard/alunos">
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              size="lg"
+            >
+              <IconUsers className="mr-2 size-5" />
+              Visualizar Lista Completa de Alunos
+            </Button>
+          </Link>
+        </CardContent>
+      </Card>
     </div>
   );
 }

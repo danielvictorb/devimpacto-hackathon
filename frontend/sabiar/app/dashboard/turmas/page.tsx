@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   IconSchool,
@@ -8,10 +7,10 @@ import {
   IconTrendingUp,
   IconTrendingDown,
   IconAlertTriangle,
-  IconLoader2,
+  IconUsers,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
-import { listarTurmas } from "@/lib/api";
+import { listarTurmas } from "@/lib/dados";
 import {
   Card,
   CardContent,
@@ -21,126 +20,102 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-// Tipo para turmas do backend
-type TurmaBackend = {
-  id: string; // UUID
-  name: string;
-  grade_level?: string;
-  section?: string;
-  student_count?: number;
-  teacher_id: string;
-  school_year?: number;
-  created_at: string;
-};
-
 export default function TurmasPage() {
-  const [turmas, setTurmas] = useState<TurmaBackend[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function carregar() {
-      try {
-        const data = await listarTurmas();
-        setTurmas(data);
-      } catch (error) {
-        console.error("Erro ao carregar turmas:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    carregar();
-  }, []);
+  // Carregar turmas do JSON
+  const turmas = listarTurmas();
 
   return (
     <div className="px-4 py-8 md:px-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Turmas</h1>
         <p className="text-muted-foreground">
-          Gerencie suas turmas e acompanhe o desempenho
+          Visão detalhada de cada turma do 1º Ano - ECIT João Goulart
         </p>
       </div>
 
-      {/* Loading */}
-      {loading ? (
-        <div className="py-12 text-center">
-          <IconLoader2 className="mx-auto mb-4 size-12 animate-spin text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">Carregando turmas...</p>
-        </div>
-      ) : turmas.length === 0 ? (
+      {turmas.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center">
             <IconSchool className="mx-auto mb-4 size-12 text-muted-foreground" />
             <h3 className="mb-2 text-lg font-semibold">
               Nenhuma turma cadastrada
             </h3>
-            <p className="mb-4 text-sm text-muted-foreground">
-              Crie sua primeira turma para começar
+            <p className="text-sm text-muted-foreground">
+              Os dados das turmas serão carregados automaticamente
             </p>
-            <Link href="/dashboard/nova-turma">
-              <Button variant="secondary">Nova Turma</Button>
-            </Link>
           </CardContent>
         </Card>
-        ) : (
-          /* Grid de Turmas */
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Card para Adicionar Nova Turma */}
-            <Link href="/dashboard/nova-turma">
-              <Card className="flex h-full cursor-pointer items-center justify-center border-2 border-dashed transition-all hover:border-secondary hover:bg-secondary/5">
-                <CardContent className="flex flex-col items-center gap-4 py-16">
-                  <div className="flex size-16 items-center justify-center rounded-full bg-secondary/10">
-                    <span className="text-4xl text-secondary">+</span>
-                  </div>
-                  <div className="text-center">
-                    <h3 className="font-semibold">Adicionar Turma</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Criar uma nova turma
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-
-            {turmas.map((turma) => {
-            // Mock de estatísticas (até o backend implementar)
-            const estatisticasMock = {
-              mediaGeral: 7.0,
-              taxaAcerto: 70,
-              alunosRisco: Math.floor((turma.student_count || 0) * 0.12),
-              provasRealizadas: 5,
-              tendencia: Math.random() > 0.5 ? "up" : "down",
-            };
+      ) : (
+        /* Grid de Turmas */
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {turmas.map((turma) => {
+            // Determinar status da turma baseado na média
+            const mediaNotas = turma.estatisticas.media_notas;
+            const status =
+              mediaNotas < 4 ? "critical" : mediaNotas < 7 ? "warning" : "good";
+            const alunosRisco = turma.alunos.filter(
+              (a) => a.risco === "Alto"
+            ).length;
 
             return (
-              <Card key={turma.id} className="overflow-hidden">
+              <Card key={turma.turma_id} className="overflow-hidden">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="flex size-12 items-center justify-center rounded-lg bg-secondary/10">
-                        <IconSchool className="size-6 text-secondary" />
+                      <div
+                        className={`flex size-12 items-center justify-center rounded-lg ${
+                          status === "critical"
+                            ? "bg-red-500/10"
+                            : status === "warning"
+                            ? "bg-orange-500/10"
+                            : "bg-green-500/10"
+                        }`}
+                      >
+                        <IconSchool
+                          className={`size-6 ${
+                            status === "critical"
+                              ? "text-red-500"
+                              : status === "warning"
+                              ? "text-orange-500"
+                              : "text-green-500"
+                          }`}
+                        />
                       </div>
                       <div>
-                        <CardTitle className="text-xl">{turma.name}</CardTitle>
+                        <CardTitle className="text-xl">{turma.nome}</CardTitle>
                         <CardDescription>
-                          {turma.student_count || 0} alunos
+                          <div className="flex items-center gap-1">
+                            <IconUsers className="size-3" />
+                            {turma.total_alunos} alunos
+                          </div>
                         </CardDescription>
                       </div>
                     </div>
                     <Badge
                       variant={
-                        estatisticasMock.tendencia === "down"
+                        status === "critical"
+                          ? "destructive"
+                          : status === "warning"
                           ? "secondary"
-                          : "outline"
+                          : "default"
                       }
                     >
-                      {estatisticasMock.tendencia === "up" ? (
-                        <IconTrendingUp className="size-3" />
+                      {status === "critical" ? (
+                        <>
+                          <IconTrendingDown className="mr-1 size-3" />
+                          Crítico
+                        </>
+                      ) : status === "warning" ? (
+                        <>
+                          <IconAlertTriangle className="mr-1 size-3" />
+                          Atenção
+                        </>
                       ) : (
-                        <IconTrendingDown className="size-3" />
+                        <>
+                          <IconTrendingUp className="mr-1 size-3" />
+                          Bom
+                        </>
                       )}
-                      {estatisticasMock.tendencia === "up"
-                        ? "Melhorando"
-                        : "Precisa atenção"}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -149,18 +124,26 @@ export default function TurmasPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-muted-foreground">
-                        Média Geral
+                        Média de Notas
                       </p>
-                      <p className="text-2xl font-bold">
-                        {estatisticasMock.mediaGeral.toFixed(1)}
+                      <p
+                        className={`text-2xl font-bold ${
+                          status === "critical"
+                            ? "text-red-600"
+                            : status === "warning"
+                            ? "text-orange-600"
+                            : "text-green-600"
+                        }`}
+                      >
+                        {mediaNotas.toFixed(2)}
                       </p>
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground">
-                        Taxa de Acerto
+                        Frequência Média
                       </p>
                       <p className="text-2xl font-bold">
-                        {estatisticasMock.taxaAcerto}%
+                        {turma.estatisticas.frequencia_media.toFixed(0)}%
                       </p>
                     </div>
                   </div>
@@ -168,10 +151,10 @@ export default function TurmasPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-muted-foreground">
-                        Provas Realizadas
+                        Aprovação Est.
                       </p>
                       <p className="text-lg font-semibold">
-                        {estatisticasMock.provasRealizadas}
+                        {turma.estatisticas.aprovacao_estimada.toFixed(0)}%
                       </p>
                     </div>
                     <div>
@@ -179,33 +162,48 @@ export default function TurmasPage() {
                         Alunos em Risco
                       </p>
                       <div className="flex items-center gap-1">
-                        <p className="text-lg font-semibold">
-                          {estatisticasMock.alunosRisco}
+                        <p
+                          className={`text-lg font-semibold ${
+                            alunosRisco > 5 ? "text-red-600" : ""
+                          }`}
+                        >
+                          {alunosRisco}
                         </p>
-                        {estatisticasMock.alunosRisco > 5 && (
-                          <IconAlertTriangle className="size-4 text-orange-500" />
+                        {alunosRisco > 5 && (
+                          <IconAlertTriangle className="size-4 text-red-500" />
                         )}
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Clusters */}
+                  <div className="rounded-lg border bg-muted/30 p-3">
+                    <p className="mb-2 text-xs font-medium text-muted-foreground">
+                      Clusters identificados
+                    </p>
+                    <div className="flex gap-2">
+                      {turma.clusters.map((cluster) => (
+                        <Badge
+                          key={cluster.cluster_id}
+                          variant="outline"
+                          className="text-xs"
+                        >
+                          Cluster {cluster.cluster_id}:{" "}
+                          {cluster.percentual.toFixed(0)}%
+                        </Badge>
+                      ))}
                     </div>
                   </div>
 
                   {/* Ações */}
                   <div className="flex gap-2 pt-2">
                     <Link
-                      href={`/dashboard/turmas/${turma.id}/insights`}
+                      href={`/dashboard/turmas/${turma.turma_id}/insights`}
                       className="flex-1"
                     >
                       <Button variant="secondary" className="w-full">
-                        <IconChartBar className="size-4" />
+                        <IconChartBar className="mr-2 size-4" />
                         Ver Insights
-                      </Button>
-                    </Link>
-                    <Link
-                      href={`/dashboard/turmas/${turma.id}`}
-                      className="flex-1"
-                    >
-                      <Button variant="outline" className="w-full">
-                        Gerenciar
                       </Button>
                     </Link>
                   </div>
