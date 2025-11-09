@@ -29,7 +29,7 @@ export default function TurmasPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Turmas</h1>
         <p className="text-muted-foreground">
-          Visão detalhada de cada turma do 1º Ano - ECIT João Goulart
+          Visão detalhada de cada turma do ECIT João Goulart
         </p>
       </div>
 
@@ -173,25 +173,6 @@ export default function TurmasPage() {
                           <IconAlertTriangle className="size-4 text-red-500" />
                         )}
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Clusters */}
-                  <div className="rounded-lg border bg-muted/30 p-3">
-                    <p className="mb-2 text-xs font-medium text-muted-foreground">
-                      Clusters identificados
-                    </p>
-                    <div className="flex gap-2">
-                      {turma.clusters.map((cluster) => (
-                        <Badge
-                          key={cluster.cluster_id}
-                          variant="outline"
-                          className="text-xs"
-                        >
-                          Cluster {cluster.cluster_id}:{" "}
-                          {cluster.percentual.toFixed(0)}%
-                        </Badge>
-                      ))}
                     </div>
                   </div>
 

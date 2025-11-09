@@ -12,6 +12,7 @@ import shutil
 from pathlib import Path
 import os
 import json
+from datetime import datetime
 
 from .database import get_db
 from .models import (
@@ -112,6 +113,41 @@ async def get_class(class_id: str, db: AsyncSession = Depends(get_db)):
     return class_
 
 
+@router.put("/classes/{class_id}", response_model=ClassResponse, tags=["Classes"])
+async def update_class(class_id: str, class_update: ClassCreate, db: AsyncSession = Depends(get_db)):
+    """Atualizar dados da turma"""
+    result = await db.execute(select(Class).where(Class.id == uuid.UUID(class_id)))
+    class_ = result.scalar_one_or_none()
+    if not class_:
+        raise HTTPException(status_code=404, detail="Turma não encontrada")
+    
+    # Verificar se novo professor existe
+    if class_update.teacher_id:
+        result = await db.execute(select(Teacher).where(Teacher.id == uuid.UUID(class_update.teacher_id)))
+        if not result.scalar_one_or_none():
+            raise HTTPException(status_code=404, detail="Professor não encontrado")
+    
+    for key, value in class_update.model_dump(exclude_unset=True).items():
+        setattr(class_, key, value)
+    
+    await db.commit()
+    await db.refresh(class_)
+    return class_
+
+
+@router.delete("/classes/{class_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Classes"])
+async def delete_class(class_id: str, db: AsyncSession = Depends(get_db)):
+    """Deletar turma"""
+    result = await db.execute(select(Class).where(Class.id == uuid.UUID(class_id)))
+    class_ = result.scalar_one_or_none()
+    if not class_:
+        raise HTTPException(status_code=404, detail="Turma não encontrada")
+    
+    await db.delete(class_)
+    await db.commit()
+    return None
+
+
 @router.get("/teachers/{teacher_id}/classes", response_model=List[ClassResponse], tags=["Teachers"])
 async def get_teacher_classes(teacher_id: str, db: AsyncSession = Depends(get_db)):
     """Buscar todas as turmas de um professor"""
@@ -123,6 +159,41 @@ async def get_teacher_classes(teacher_id: str, db: AsyncSession = Depends(get_db
     # Buscar as turmas do professor
     result = await db.execute(select(Class).where(Class.teacher_id == uuid.UUID(teacher_id)))
     return result.scalars().all()
+
+
+@router.put("/teachers/{teacher_id}", response_model=TeacherResponse, tags=["Teachers"])
+async def update_teacher(teacher_id: str, teacher_update: TeacherCreate, db: AsyncSession = Depends(get_db)):
+    """Atualizar dados do professor"""
+    result = await db.execute(select(Teacher).where(Teacher.id == uuid.UUID(teacher_id)))
+    teacher = result.scalar_one_or_none()
+    if not teacher:
+        raise HTTPException(status_code=404, detail="Professor não encontrado")
+    
+    # Verificar email duplicado se estiver sendo alterado
+    if teacher_update.email != teacher.email:
+        result = await db.execute(select(Teacher).where(Teacher.email == teacher_update.email))
+        if result.scalar_one_or_none():
+            raise HTTPException(status_code=400, detail="Email já cadastrado")
+    
+    for key, value in teacher_update.model_dump(exclude_unset=True).items():
+        setattr(teacher, key, value)
+    
+    await db.commit()
+    await db.refresh(teacher)
+    return teacher
+
+
+@router.delete("/teachers/{teacher_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Teachers"])
+async def delete_teacher(teacher_id: str, db: AsyncSession = Depends(get_db)):
+    """Deletar professor"""
+    result = await db.execute(select(Teacher).where(Teacher.id == uuid.UUID(teacher_id)))
+    teacher = result.scalar_one_or_none()
+    if not teacher:
+        raise HTTPException(status_code=404, detail="Professor não encontrado")
+    
+    await db.delete(teacher)
+    await db.commit()
+    return None
 
 
 # ============================================
@@ -190,6 +261,31 @@ async def update_student(student_id: str, student_update: StudentCreate, db: Asy
     await db.commit()
     await db.refresh(student)
     return student
+
+
+@router.delete("/students/{student_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Students"])
+async def delete_student(student_id: str, db: AsyncSession = Depends(get_db)):
+    """Deletar aluno"""
+    result = await db.execute(select(Student).where(Student.id == uuid.UUID(student_id)))
+    student = result.scalar_one_or_none()
+    if not student:
+        raise HTTPException(status_code=404, detail="Aluno não encontrado")
+    
+    await db.delete(student)
+    await db.commit()
+    return None
+
+
+@router.get("/classes/{class_id}/students", response_model=List[StudentResponse], tags=["Classes"])
+async def get_class_students(class_id: str, db: AsyncSession = Depends(get_db)):
+    """Buscar todos os alunos de uma turma"""
+    result = await db.execute(select(Class).where(Class.id == uuid.UUID(class_id)))
+    class_ = result.scalar_one_or_none()
+    if not class_:
+        raise HTTPException(status_code=404, detail="Turma não encontrada")
+    
+    result = await db.execute(select(Student).where(Student.class_id == uuid.UUID(class_id)))
+    return result.scalars().all()
 
 
 # ============================================
@@ -387,6 +483,292 @@ async def update_student(student_id: str, student_update: StudentCreate, db: Asy
 #     if not insight:
 #         raise HTTPException(status_code=404, detail="Análise não encontrada")
 #     return insight
+
+
+# ============================================
+# STATISTICS & REPORTS (Estatísticas e Relatórios)
+# ============================================
+
+@router.get("/statistics/overview", tags=["Statistics"])
+async def get_overview_statistics(db: AsyncSession = Depends(get_db)):
+    """Obter estatísticas gerais do sistema"""
+    from sqlalchemy import func as sql_func
+    
+    # Total de professores
+    result = await db.execute(select(sql_func.count(Teacher.id)))
+    total_teachers = result.scalar()
+    
+    # Total de turmas
+    result = await db.execute(select(sql_func.count(Class.id)))
+    total_classes = result.scalar()
+    
+    # Total de alunos
+    result = await db.execute(select(sql_func.count(Student.id)))
+    total_students = result.scalar()
+    
+    # Total de provas
+    result = await db.execute(select(sql_func.count(Exam.id)))
+    total_exams = result.scalar()
+    
+    return {
+        "total_teachers": total_teachers,
+        "total_classes": total_classes,
+        "total_students": total_students,
+        "total_exams": total_exams,
+        "timestamp": datetime.now()
+    }
+
+
+@router.get("/statistics/classes/{class_id}", tags=["Statistics"])
+async def get_class_statistics(class_id: str, db: AsyncSession = Depends(get_db)):
+    """Obter estatísticas detalhadas de uma turma"""
+    from sqlalchemy import func as sql_func
+    
+    # Verificar se turma existe
+    result = await db.execute(select(Class).where(Class.id == uuid.UUID(class_id)))
+    class_ = result.scalar_one_or_none()
+    if not class_:
+        raise HTTPException(status_code=404, detail="Turma não encontrada")
+    
+    # Contar alunos
+    result = await db.execute(
+        select(sql_func.count(Student.id)).where(Student.class_id == uuid.UUID(class_id))
+    )
+    student_count = result.scalar()
+    
+    # Estatísticas de gênero
+    result = await db.execute(
+        select(Student.gender, sql_func.count(Student.id))
+        .where(Student.class_id == uuid.UUID(class_id))
+        .group_by(Student.gender)
+    )
+    gender_stats = {row[0] or "Não informado": row[1] for row in result.all()}
+    
+    # Média geral da turma
+    result = await db.execute(
+        select(sql_func.avg(Student.overall_average))
+        .where(Student.class_id == uuid.UUID(class_id))
+    )
+    class_average = result.scalar()
+    
+    # Média de frequência
+    result = await db.execute(
+        select(sql_func.avg(Student.attendance_percentage))
+        .where(Student.class_id == uuid.UUID(class_id))
+    )
+    attendance_avg = result.scalar()
+    
+    return {
+        "class_id": class_id,
+        "class_name": class_.name,
+        "student_count": student_count,
+        "gender_distribution": gender_stats,
+        "class_average": float(class_average) if class_average else None,
+        "attendance_average": float(attendance_avg) if attendance_avg else None,
+        "timestamp": datetime.now()
+    }
+
+
+@router.get("/statistics/students/{student_id}", tags=["Statistics"])
+async def get_student_statistics(student_id: str, db: AsyncSession = Depends(get_db)):
+    """Obter estatísticas detalhadas de um aluno"""
+    from sqlalchemy import func as sql_func
+    
+    # Buscar aluno
+    result = await db.execute(select(Student).where(Student.id == uuid.UUID(student_id)))
+    student = result.scalar_one_or_none()
+    if not student:
+        raise HTTPException(status_code=404, detail="Aluno não encontrado")
+    
+    # Contar provas realizadas
+    result = await db.execute(
+        select(sql_func.count(StudentExam.id))
+        .where(StudentExam.student_id == uuid.UUID(student_id))
+    )
+    exams_taken = result.scalar()
+    
+    # Média das provas
+    result = await db.execute(
+        select(sql_func.avg(StudentExam.total_score))
+        .where(StudentExam.student_id == uuid.UUID(student_id))
+    )
+    exam_average = result.scalar()
+    
+    return {
+        "student_id": student_id,
+        "student_name": student.name,
+        "class_id": str(student.class_id),
+        "exams_taken": exams_taken,
+        "exam_average": float(exam_average) if exam_average else None,
+        "overall_average": float(student.overall_average) if student.overall_average else None,
+        "math_grade": float(student.math_grade) if student.math_grade else None,
+        "portuguese_grade": float(student.portuguese_grade) if student.portuguese_grade else None,
+        "attendance_percentage": float(student.attendance_percentage) if student.attendance_percentage else None,
+        "has_disability": student.has_disability,
+        "works_outside": student.works_outside,
+        "timestamp": datetime.now()
+    }
+
+
+@router.get("/teachers/{teacher_id}/statistics", tags=["Statistics"])
+async def get_teacher_statistics(teacher_id: str, db: AsyncSession = Depends(get_db)):
+    """Obter estatísticas de um professor"""
+    from sqlalchemy import func as sql_func
+    
+    # Verificar se professor existe
+    result = await db.execute(select(Teacher).where(Teacher.id == uuid.UUID(teacher_id)))
+    teacher = result.scalar_one_or_none()
+    if not teacher:
+        raise HTTPException(status_code=404, detail="Professor não encontrado")
+    
+    # Contar turmas
+    result = await db.execute(
+        select(sql_func.count(Class.id)).where(Class.teacher_id == uuid.UUID(teacher_id))
+    )
+    total_classes = result.scalar()
+    
+    # Contar alunos (através das turmas)
+    result = await db.execute(
+        select(sql_func.count(Student.id))
+        .join(Class, Student.class_id == Class.id)
+        .where(Class.teacher_id == uuid.UUID(teacher_id))
+    )
+    total_students = result.scalar()
+    
+    # Contar provas
+    result = await db.execute(
+        select(sql_func.count(Exam.id)).where(Exam.teacher_id == uuid.UUID(teacher_id))
+    )
+    total_exams = result.scalar()
+    
+    return {
+        "teacher_id": teacher_id,
+        "teacher_name": teacher.name,
+        "total_classes": total_classes,
+        "total_students": total_students,
+        "total_exams": total_exams,
+        "timestamp": datetime.now()
+    }
+
+
+# ============================================
+# SEARCH & FILTERS (Busca e Filtros)
+# ============================================
+
+@router.get("/search/students", response_model=List[StudentResponse], tags=["Search"])
+async def search_students(
+    name: str = None,
+    class_id: str = None,
+    has_disability: bool = None,
+    works_outside: bool = None,
+    min_average: float = None,
+    max_average: float = None,
+    skip: int = 0,
+    limit: int = 100,
+    db: AsyncSession = Depends(get_db)
+):
+    """Buscar alunos com filtros avançados"""
+    query = select(Student)
+    
+    if name:
+        query = query.where(Student.name.ilike(f"%{name}%"))
+    
+    if class_id:
+        query = query.where(Student.class_id == uuid.UUID(class_id))
+    
+    if has_disability is not None:
+        query = query.where(Student.has_disability == has_disability)
+    
+    if works_outside is not None:
+        query = query.where(Student.works_outside == works_outside)
+    
+    if min_average is not None:
+        query = query.where(Student.overall_average >= min_average)
+    
+    if max_average is not None:
+        query = query.where(Student.overall_average <= max_average)
+    
+    result = await db.execute(query.offset(skip).limit(limit))
+    return result.scalars().all()
+
+
+@router.get("/search/classes", response_model=List[ClassResponse], tags=["Search"])
+async def search_classes(
+    name: str = None,
+    teacher_id: str = None,
+    grade_level: str = None,
+    shift: str = None,
+    is_active: bool = None,
+    skip: int = 0,
+    limit: int = 100,
+    db: AsyncSession = Depends(get_db)
+):
+    """Buscar turmas com filtros"""
+    query = select(Class)
+    
+    if name:
+        query = query.where(Class.name.ilike(f"%{name}%"))
+    
+    if teacher_id:
+        query = query.where(Class.teacher_id == uuid.UUID(teacher_id))
+    
+    if grade_level:
+        query = query.where(Class.grade_level == grade_level)
+    
+    if shift:
+        query = query.where(Class.shift == shift)
+    
+    if is_active is not None:
+        query = query.where(Class.is_active == is_active)
+    
+    result = await db.execute(query.offset(skip).limit(limit))
+    return result.scalars().all()
+
+
+# ============================================
+# BULK OPERATIONS (Operações em Lote)
+# ============================================
+
+@router.post("/bulk/students", response_model=List[StudentResponse], tags=["Bulk Operations"])
+async def create_students_bulk(students: List[StudentCreate], db: AsyncSession = Depends(get_db)):
+    """Criar múltiplos alunos de uma vez"""
+    created_students = []
+    
+    for student_data in students:
+        # Verificar se turma existe
+        result = await db.execute(select(Class).where(Class.id == uuid.UUID(student_data.class_id)))
+        if not result.scalar_one_or_none():
+            raise HTTPException(status_code=404, detail=f"Turma {student_data.class_id} não encontrada")
+        
+        # Verificar access_code único
+        result = await db.execute(select(Student).where(Student.access_code == student_data.access_code))
+        if result.scalar_one_or_none():
+            raise HTTPException(status_code=400, detail=f"Código de acesso {student_data.access_code} já existe")
+        
+        new_student = Student(**student_data.model_dump())
+        db.add(new_student)
+        created_students.append(new_student)
+    
+    await db.commit()
+    
+    # Refresh todos os alunos criados
+    for student in created_students:
+        await db.refresh(student)
+    
+    return created_students
+
+
+@router.delete("/bulk/students", status_code=status.HTTP_204_NO_CONTENT, tags=["Bulk Operations"])
+async def delete_students_bulk(student_ids: List[str], db: AsyncSession = Depends(get_db)):
+    """Deletar múltiplos alunos de uma vez"""
+    for student_id in student_ids:
+        result = await db.execute(select(Student).where(Student.id == uuid.UUID(student_id)))
+        student = result.scalar_one_or_none()
+        if student:
+            await db.delete(student)
+    
+    await db.commit()
+    return None
 
 
 # ============================================

@@ -450,7 +450,7 @@ def evaluate_exam(structured_exam: Dict[str, Any], answer_key: List[Dict[str, An
 # Exemplo de uso manual
 # =========================
 if __name__ == "__main__":
-    print("✅ Módulo gemini.py carregado com sucesso!")
-    print(f"🔑 API Key configurada: {'Sim' if GEMINI_API_KEY else 'Não'}")
-    print(f"📦 Modelos: {MODEL_STRUCT} (estruturação), {MODEL_EVAL} (avaliação)")
-    print("\n💡 Para exemplos de uso, execute: python exemplo_uso_gemini.py")
+    print(" Módulo gemini.py carregado com sucesso!")
+    print(f" API Key configurada: {'Sim' if GEMINI_API_KEY else 'Não'}")
+    print(f" Modelos: {MODEL_STRUCT} (estruturação), {MODEL_EVAL} (avaliação)")
+    print("\n Para exemplos de uso, execute: python exemplo_uso_gemini.py")

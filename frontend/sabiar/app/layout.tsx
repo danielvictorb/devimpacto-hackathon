@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { FloatingChatButton } from "@/components/floating-chat-button";
+import { ChatProvider } from "@/components/chat-context";
 
 export const metadata: Metadata = {
   title: "SabiaR - IA de Reconhecimento para Educação",
@@ -16,8 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        {children}
-        <FloatingChatButton />
+        <ChatProvider>
+          {children}
+          <FloatingChatButton />
+        </ChatProvider>
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   IconUsers,
@@ -32,6 +33,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export default function AlunosPage() {
+  const searchParams = useSearchParams();
   const alunos = listarTodosAlunos();
   const turmas = listarTurmas();
 
@@ -39,6 +41,19 @@ export default function AlunosPage() {
   const [filtroTurma, setFiltroTurma] = useState<string>("todas");
   const [filtroRisco, setFiltroRisco] = useState<string>("todos");
   const [filtroDesempenho, setFiltroDesempenho] = useState<string>("todos");
+
+  // Ler parâmetros da URL e aplicar filtros
+  useEffect(() => {
+    const desempenhoParam = searchParams.get("desempenho");
+    const riscoParam = searchParams.get("risco");
+
+    if (desempenhoParam) {
+      setFiltroDesempenho(desempenhoParam);
+    }
+    if (riscoParam) {
+      setFiltroRisco(riscoParam);
+    }
+  }, [searchParams]);
 
   // Filtrar alunos
   const alunosFiltrados = useMemo(() => {
@@ -79,7 +94,7 @@ export default function AlunosPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Alunos</h1>
         <p className="text-muted-foreground">
-          Acompanhe o desempenho individual dos 180 alunos da escola
+          Acompanhe o desempenho individual de todos os alunos da escola
         </p>
       </div>
 
@@ -325,9 +340,14 @@ export default function AlunosPage() {
                           aluno.nota_media >= 7
                             ? "text-green-600"
                             : aluno.nota_media >= 4
-                            ? "text-orange-600"
+                            ? "text-teal-600"
                             : "text-red-600"
                         }`}
+                        style={
+                          aluno.nota_media >= 4 && aluno.nota_media < 7
+                            ? { color: "#294f5c" }
+                            : undefined
+                        }
                       >
                         {aluno.nota_media.toFixed(1)}
                       </p>

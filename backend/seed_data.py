@@ -32,22 +32,22 @@ async def seed():
             await db.commit()
             
             print("=" * 60)
-            print("✅ Professor criado com sucesso!")
+            print(" Professor criado com sucesso!")
             print("=" * 60)
-            print(f"📝 ID: {TEACHER_ID_MOCK}")
-            print(f"📧 Email: professor@sabiar.com")
-            print(f"🔑 Código de Acesso: DEMO2025")
-            print(f"👤 Nome: Professor(a) Demo")
+            print(f" ID: {TEACHER_ID_MOCK}")
+            print(f" Email: professor@sabiar.com")
+            print(f" Código de Acesso: DEMO2025")
+            print(f" Nome: Professor(a) Demo")
             print("=" * 60)
-            print("\n💡 Use este ID no frontend para testar!")
+            print("\n Use este ID no frontend para testar!")
             print(f"   TEACHER_ID_MOCK = \"{TEACHER_ID_MOCK}\"\n")
             
         except Exception as e:
             print("=" * 60)
-            print(f"ℹ️  Professor já existe no banco ou erro:")
+            print(f"ℹ  Professor já existe no banco ou erro:")
             print(f"   {e}")
             print("=" * 60)
-            print("\n✅ Isso é normal se você já rodou este script antes!")
+            print("\n Isso é normal se você já rodou este script antes!")
             print("   O professor demo já está cadastrado.\n")
 
 

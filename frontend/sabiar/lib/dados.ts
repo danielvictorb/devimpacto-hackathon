@@ -2,6 +2,7 @@
  * Serviço de Dados - SabiaR
  * Dados mockados para visão do diretor (sem backend)
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import dadosDashboard from "./dados_dashboard.json";
 import { Turma, Aluno } from "./types/dashboard";
@@ -31,6 +32,7 @@ export function listarTodosAlunos(): Aluno[] {
     // Mapear campos do JSON para o formato esperado
     const alunosMapeados = cluster.alunos.map((aluno: any) => ({
       ...aluno,
+      cluster_global: cluster.cluster_id, // Adicionar o cluster_id
       nota_media: aluno.media_geral || 0,
       frequencia_pct: aluno.frequencia_percentual || 0,
       nivel_desempenho:
@@ -63,6 +65,7 @@ export function listarAlunosPorCluster(clusterId: number): Aluno[] {
 
   return cluster.alunos.map((aluno: any) => ({
     ...aluno,
+    cluster_global: cluster.cluster_id, // Adicionar o cluster_id
     nota_media: aluno.media_geral || 0,
     frequencia_pct: aluno.frequencia_percentual || 0,
     nivel_desempenho:
@@ -116,14 +119,17 @@ function construirTurmas(): Turma[] {
     // Agrupar alunos em clusters para esta turma
     const clustersMap = new Map<number, Aluno[]>();
     alunos.forEach((aluno) => {
-      if (!clustersMap.has(aluno.cluster_global)) {
-        clustersMap.set(aluno.cluster_global, []);
+      if (aluno.cluster_global != null) {
+        if (!clustersMap.has(aluno.cluster_global)) {
+          clustersMap.set(aluno.cluster_global, []);
+        }
+        clustersMap.get(aluno.cluster_global)!.push(aluno);
       }
-      clustersMap.get(aluno.cluster_global)!.push(aluno);
     });
 
-    const clusters = Array.from(clustersMap.entries()).map(
-      ([clusterId, alunosCluster]) => {
+    const clusters = Array.from(clustersMap.entries())
+      .filter(([clusterId]) => clusterId != null)
+      .map(([clusterId, alunosCluster]) => {
         const clusterGlobal = dados.clusters_globais.find(
           (c: any) => c.cluster_id === clusterId
         );
@@ -141,8 +147,7 @@ function construirTurmas(): Turma[] {
           },
           features_relevantes: clusterGlobal?.features_relevantes || [],
         };
-      }
-    );
+      });
 
     return {
       turma_id: turmaId,

@@ -70,31 +70,31 @@ def transcrever_diretorio(directory_path: str) -> str:
             image_files.append(file)
     
     if not image_files:
-        print(f"⚠️  Nenhuma imagem encontrada em: {directory_path}")
+        print(f"  Nenhuma imagem encontrada em: {directory_path}")
         return ""
     
-    print(f"📁 Encontradas {len(image_files)} imagem(ns) para processar")
+    print(f" Encontradas {len(image_files)} imagem(ns) para processar")
     
     # Processa cada imagem e concatena diretamente
     textos = []
     
     for idx, image_file in enumerate(image_files, 1):
         try:
-            print(f"📄 Processando [{idx}/{len(image_files)}]: {image_file.name}")
+            print(f" Processando [{idx}/{len(image_files)}]: {image_file.name}")
             texto = transcrever_imagem(str(image_file))
             
             if texto:
                 textos.append(texto)
-                print(f"   ✅ Extraídos {len(texto)} caracteres")
+                print(f"    Extraídos {len(texto)} caracteres")
             else:
-                print(f"   ⚠️  Nenhum texto encontrado")
+                print(f"     Nenhum texto encontrado")
                 
         except Exception as e:
-            print(f"   ❌ Erro ao processar {image_file.name}: {e}")
+            print(f"    Erro ao processar {image_file.name}: {e}")
             continue
     
     resultado = "\n".join(textos)
-    print(f"\n✅ OCR completo: {len(resultado)} caracteres totais")
+    print(f"\n OCR completo: {len(resultado)} caracteres totais")
     
     return resultado
 
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         # Modo diretório
         directory = sys.argv[1]
-        print(f"🔍 Processando diretório: {directory}")
+        print(f" Processando diretório: {directory}")
         try:
             texto_completo = transcrever_diretorio(directory)
             print("\n" + "="*60)
@@ -112,16 +112,16 @@ if __name__ == "__main__":
             print("="*60)
             print(texto_completo)
         except Exception as e:
-            print(f"❌ Erro: {e}")
+            print(f" Erro: {e}")
     else:
         # Modo padrão - teste com uma imagem
         imagem = "redacao.jpg"
-        print(f"🔍 Processando imagem única: {imagem}")
+        print(f" Processando imagem única: {imagem}")
         try:
             texto = transcrever_imagem(imagem)
             print(texto)
         except Exception as e:
-            print(f"❌ Erro: {e}")
+            print(f" Erro: {e}")
         
-        print("\n💡 Dica: Para processar um diretório, use:")
+        print("\n Dica: Para processar um diretório, use:")
         print(f"   python {__file__} backend/src/temp")

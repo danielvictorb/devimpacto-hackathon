@@ -51,9 +51,9 @@ print("=" * 60)
 print("Testando conexão síncrona com Supabase (psycopg2)...")
 try:
     with engine_sync.connect() as connection:
-        print("✅ Connection successful!")
+        print(" Connection successful!")
 except Exception as e:
-    print(f"❌ Failed to connect: {e}")
+    print(f" Failed to connect: {e}")
 print("=" * 60)
 print()
 
@@ -87,7 +87,7 @@ app.add_middleware(
 def read_root():
     """Rota raiz"""
     return {
-        "message": "Sistema de Correção de Provas - API 🚀",
+        "message": "Sistema de Correção de Provas - API ",
         "docs": "/docs",
         "version": "1.0.0"
     }
