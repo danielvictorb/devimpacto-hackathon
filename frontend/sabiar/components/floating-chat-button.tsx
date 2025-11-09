@@ -1,12 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { ChatBot } from "./chatbot";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 import Image from "next/image";
 
 export function FloatingChatButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Não mostrar o chat na página inicial
+  if (pathname === "/") {
+    return null;
+  }
 
   return (
     <>
@@ -27,7 +34,10 @@ export function FloatingChatButton() {
 
       {/* Chat drawer */}
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetContent side="right" className="w-full sm:w-[540px] p-0 flex flex-col">
+        <SheetContent
+          side="right"
+          className="w-full sm:w-[540px] p-0 flex flex-col"
+        >
           <SheetHeader className="px-6 py-4 border-b">
             <SheetTitle className="flex items-center gap-2">
               <Image
