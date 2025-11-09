@@ -3,23 +3,16 @@
 import { useState } from "react";
 import {
   IconTarget,
-  IconAlertTriangle,
-  IconTrendingUp,
   IconUsers,
-  IconBulb,
-  IconChecklist,
   IconClock,
   IconShoppingCart,
-  IconHome,
   IconWifi,
   IconApple,
   IconBus,
-  IconChartPie,
   IconSparkles,
-  IconBook,
-  IconHeartHandshake,
-  IconSchool,
   IconCoin,
+  IconHeartHandshake,
+  IconBook,
 } from "@tabler/icons-react";
 import {
   Card,
@@ -264,42 +257,22 @@ export default function PlanosAcoesPage() {
   return (
     <div className="px-4 py-8 md:px-8">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           <div className="flex size-12 items-center justify-center rounded-lg bg-primary/10">
             <IconTarget className="size-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Planos de Ações</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Planos de Ação</h1>
             <p className="text-muted-foreground">
-              Recomendações estratégicas baseadas na análise de vulnerabilidades dos alunos
+              Ações prioritárias para intervenção pedagógica
             </p>
           </div>
         </div>
       </div>
 
-      {/* Alert de Urgência */}
-      <Card className="mb-6 border-orange-500/50 bg-orange-50 dark:bg-orange-950/20">
-        <CardContent className="pt-6">
-          <div className="flex items-start gap-4">
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-orange-500/10">
-              <IconAlertTriangle className="size-5 text-orange-600" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-orange-900 dark:text-orange-100">
-                Atenção: {stats.alunosRiscoAlto} alunos em situação de risco alto
-              </h3>
-              <p className="mt-1 text-sm text-orange-800 dark:text-orange-200">
-                {((stats.alunosRiscoAlto / stats.totalAlunos) * 100).toFixed(1)}% dos estudantes necessitam de intervenção imediata. 
-                Os planos de ação abaixo foram priorizados com base na análise de dados socioeconômicos e desempenho acadêmico.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Tabs de Análise */}
-      <Tabs defaultValue="vulnerabilidades" className="mb-8">
+      <Tabs defaultValue="planos" className="mb-8">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="vulnerabilidades">Vulnerabilidades</TabsTrigger>
           <TabsTrigger value="planos">Planos de Ação</TabsTrigger>
@@ -308,146 +281,111 @@ export default function PlanosAcoesPage() {
 
         {/* Tab: Vulnerabilidades */}
         <TabsContent value="vulnerabilidades" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <IconChartPie className="size-5" />
-                Panorama de Vulnerabilidades
-              </CardTitle>
-              <CardDescription>
-                Principais fatores de risco identificados na população estudantil
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {vulnerabilidades.map((vuln) => {
-                  const Icon = vuln.icon;
-                  return (
-                    <Card key={vuln.id} className="border-2">
-                      <CardContent className="pt-6">
-                        <div className="mb-4 flex items-center justify-between">
-                          <div className={`flex size-12 items-center justify-center rounded-lg ${vuln.corBg}`}>
-                            <Icon className={`size-6 ${vuln.cor}`} />
-                          </div>
-                          {getPrioridadeBadge(vuln.prioridade)}
-                        </div>
-                        <h3 className="mb-2 font-semibold">{vuln.titulo}</h3>
-                        <div className="mb-3 flex items-baseline gap-2">
-                          <span className="text-3xl font-bold">{vuln.total}</span>
-                          <span className="text-sm text-muted-foreground">
-                            alunos ({vuln.percentual}%)
-                          </span>
-                        </div>
-                        <Progress value={parseFloat(vuln.percentual)} className="mb-2" />
-                        <p className="text-xs text-muted-foreground">{vuln.impacto}</p>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {vulnerabilidades.slice(0, 3).map((vuln) => {
+              const Icon = vuln.icon;
+              return (
+                <Card key={vuln.id}>
+                  <CardContent className="pt-6">
+                    <div className="mb-3 flex items-center justify-between">
+                      <div className={`flex size-10 items-center justify-center rounded-lg ${vuln.corBg}`}>
+                        <Icon className={`size-5 ${vuln.cor}`} />
+                      </div>
+                      {getPrioridadeBadge(vuln.prioridade)}
+                    </div>
+                    <h3 className="mb-2 text-sm font-semibold">{vuln.titulo}</h3>
+                    <div className="mb-2 flex items-baseline gap-2">
+                      <span className="text-2xl font-bold">{vuln.total}</span>
+                      <span className="text-xs text-muted-foreground">
+                        alunos
+                      </span>
+                    </div>
+                    <Progress value={parseFloat(vuln.percentual)} className="h-1.5" />
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </TabsContent>
 
         {/* Tab: Planos de Ação */}
         <TabsContent value="planos" className="space-y-6">
           {/* Filtros */}
-          <div className="flex items-center gap-4">
-            <span className="text-sm font-medium">Filtrar por prioridade:</span>
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                variant={selectedPriority === "all" ? "default" : "outline"}
-                onClick={() => setSelectedPriority("all")}
-              >
-                Todos
-              </Button>
-              <Button
-                size="sm"
-                variant={selectedPriority === "alta" ? "destructive" : "outline"}
-                onClick={() => setSelectedPriority("alta")}
-              >
-                Alta Prioridade
-              </Button>
-              <Button
-                size="sm"
-                variant={selectedPriority === "media" ? "secondary" : "outline"}
-                onClick={() => setSelectedPriority("media")}
-              >
-                Média Prioridade
-              </Button>
-            </div>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant={selectedPriority === "all" ? "default" : "outline"}
+              onClick={() => setSelectedPriority("all")}
+            >
+              Todos
+            </Button>
+            <Button
+              size="sm"
+              variant={selectedPriority === "alta" ? "destructive" : "outline"}
+              onClick={() => setSelectedPriority("alta")}
+            >
+              Alta Prioridade
+            </Button>
+            <Button
+              size="sm"
+              variant={selectedPriority === "media" ? "secondary" : "outline"}
+              onClick={() => setSelectedPriority("media")}
+            >
+              Média Prioridade
+            </Button>
           </div>
 
           {/* Lista de Planos */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             {filteredPlanos.map((plano) => {
               const Icon = plano.icon;
               return (
-                <Card key={plano.id} className="border-l-4 border-l-primary">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-4">
-                        <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                          <Icon className="size-6 text-primary" />
+                <Card key={plano.id}>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-start gap-3 flex-1">
+                        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                          <Icon className="size-5 text-primary" />
                         </div>
-                        <div className="flex-1">
-                          <div className="mb-2 flex items-center gap-2">
-                            <CardTitle>{plano.titulo}</CardTitle>
+                        <div className="flex-1 min-w-0">
+                          <div className="mb-1.5 flex items-center gap-2 flex-wrap">
+                            <CardTitle className="text-lg">{plano.titulo}</CardTitle>
                             {getStatusBadge(plano.status)}
                           </div>
-                          <CardDescription className="mb-3">{plano.descricao}</CardDescription>
-                          <div className="flex flex-wrap gap-2">
+                          <div className="flex flex-wrap gap-2 items-center">
                             {getPrioridadeBadge(plano.prioridade)}
-                            <Badge variant="outline">{plano.categoria}</Badge>
-                            <Badge variant="secondary">
+                            <Badge variant="outline" className="text-xs">
+                              {plano.categoria}
+                            </Badge>
+                            <Badge variant="secondary" className="text-xs">
                               <IconUsers className="mr-1 size-3" />
-                              {plano.alunosImpactados} alunos impactados
+                              {plano.alunosImpactados} alunos
                             </Badge>
                           </div>
                         </div>
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    {/* Detalhes */}
-                    <div className="grid gap-4 md:grid-cols-3">
-                      <div className="rounded-lg border p-3">
-                        <div className="mb-1 text-xs text-muted-foreground">Recursos Necessários</div>
-                        <div className="font-semibold">{plano.recursos}</div>
+                  <CardContent className="pt-0 space-y-3">
+                    {/* Detalhes compactos em uma linha */}
+                    <div className="flex flex-wrap gap-3 text-sm">
+                      <div className="flex items-center gap-1.5">
+                        <IconCoin className="size-4 text-muted-foreground" />
+                        <span className="font-medium">{plano.recursos}</span>
                       </div>
-                      <div className="rounded-lg border p-3">
-                        <div className="mb-1 text-xs text-muted-foreground">Prazo de Implementação</div>
-                        <div className="font-semibold">{plano.prazo}</div>
-                      </div>
-                      <div className="rounded-lg border p-3">
-                        <div className="mb-1 text-xs text-muted-foreground">Responsável</div>
-                        <div className="font-semibold">{plano.responsavel}</div>
-                      </div>
-                    </div>
-
-                    {/* Indicadores */}
-                    <div>
-                      <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold">
-                        <IconTrendingUp className="size-4" />
-                        Indicadores de Sucesso
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {plano.indicadores.map((indicador, idx) => (
-                          <Badge key={idx} variant="outline">
-                            {indicador}
-                          </Badge>
-                        ))}
+                      <div className="flex items-center gap-1.5">
+                        <IconClock className="size-4 text-muted-foreground" />
+                        <span>{plano.prazo}</span>
                       </div>
                     </div>
 
                     {/* Botões de Ação */}
-                    <div className="flex gap-2 pt-2">
+                    <div className="flex gap-2">
                       <Button 
                         size="sm" 
                         className="flex items-center gap-2"
                         onClick={() => {
-                          openChat(`Quero implementar o plano de ação: ${plano.titulo}. Preciso de ajuda para estruturar a implementação na escola. Pode me orientar sobre os passos iniciais, recursos necessários e cronograma?`);
+                          openChat(`Quero implementar o plano de ação: ${plano.titulo}. Me ajude com os próximos passos.`);
                         }}
                       >
                         <IconSparkles className="size-4" />
@@ -457,7 +395,7 @@ export default function PlanosAcoesPage() {
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button size="sm" variant="outline">
-                            Ver Detalhes Completos
+                            Ver Detalhes
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
@@ -471,70 +409,45 @@ export default function PlanosAcoesPage() {
                             </DialogDescription>
                           </DialogHeader>
                           
-                          <div className="space-y-6">
+                          <div className="space-y-4">
                             {/* Badges */}
                             <div className="flex flex-wrap gap-2">
                               {getPrioridadeBadge(plano.prioridade)}
                               <Badge variant="outline">{plano.categoria}</Badge>
                               {getStatusBadge(plano.status)}
-                              <Badge variant="secondary">
-                                <IconUsers className="mr-1 size-3" />
-                                {plano.alunosImpactados} alunos impactados
-                              </Badge>
                             </div>
 
                             {/* Ações Propostas */}
                             <div>
-                              <h4 className="mb-3 flex items-center gap-2 text-base font-semibold">
-                                <IconChecklist className="size-5" />
-                                Ações Propostas
-                              </h4>
-                              <ul className="space-y-2">
+                              <h4 className="mb-2 text-sm font-semibold">Ações Propostas</h4>
+                              <ul className="space-y-1.5">
                                 {plano.acoes.map((acao, idx) => (
-                                  <li key={idx} className="flex items-start gap-3 rounded-lg border p-3">
-                                    <span className="mt-1.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
-                                      {idx + 1}
-                                    </span>
-                                    <span className="text-sm">{acao}</span>
+                                  <li key={idx} className="flex items-start gap-2 text-sm">
+                                    <span className="mt-1.5 size-1 shrink-0 rounded-full bg-primary" />
+                                    {acao}
                                   </li>
                                 ))}
                               </ul>
                             </div>
 
-                            {/* Detalhes Expandidos */}
-                            <div className="grid gap-4">
-                              <div className="rounded-lg border-2 p-4">
-                                <div className="mb-2 flex items-center gap-2 text-sm font-semibold">
-                                  <IconCoin className="size-4" />
-                                  Recursos Necessários
-                                </div>
-                                <div className="text-lg font-bold">{plano.recursos}</div>
+                            {/* Detalhes */}
+                            <div className="grid gap-3 md:grid-cols-2">
+                              <div className="rounded-lg border p-3">
+                                <div className="mb-1 text-xs text-muted-foreground">Recursos</div>
+                                <div className="font-semibold">{plano.recursos}</div>
                               </div>
-                              <div className="rounded-lg border-2 p-4">
-                                <div className="mb-2 flex items-center gap-2 text-sm font-semibold">
-                                  <IconClock className="size-4" />
-                                  Prazo de Implementação
-                                </div>
-                                <div className="text-lg font-bold">{plano.prazo}</div>
-                              </div>
-                              <div className="rounded-lg border-2 p-4">
-                                <div className="mb-2 flex items-center gap-2 text-sm font-semibold">
-                                  <IconUsers className="size-4" />
-                                  Responsável
-                                </div>
-                                <div className="text-lg font-bold">{plano.responsavel}</div>
+                              <div className="rounded-lg border p-3">
+                                <div className="mb-1 text-xs text-muted-foreground">Prazo</div>
+                                <div className="font-semibold">{plano.prazo}</div>
                               </div>
                             </div>
 
                             {/* Indicadores */}
                             <div>
-                              <h4 className="mb-3 flex items-center gap-2 text-base font-semibold">
-                                <IconTrendingUp className="size-5" />
-                                Indicadores de Sucesso
-                              </h4>
-                              <div className="flex flex-wrap gap-2">
+                              <h4 className="mb-2 text-sm font-semibold">Indicadores de Sucesso</h4>
+                              <div className="flex flex-wrap gap-1.5">
                                 {plano.indicadores.map((indicador, idx) => (
-                                  <Badge key={idx} variant="outline" className="text-sm">
+                                  <Badge key={idx} variant="outline" className="text-xs">
                                     {indicador}
                                   </Badge>
                                 ))}
@@ -542,11 +455,11 @@ export default function PlanosAcoesPage() {
                             </div>
 
                             {/* Botão de Ação */}
-                            <div className="flex justify-end gap-2 pt-4 border-t">
+                            <div className="flex justify-end pt-3 border-t">
                               <Button 
                                 className="flex items-center gap-2"
                                 onClick={() => {
-                                  openChat(`Quero implementar o plano de ação: ${plano.titulo}. Preciso de ajuda para estruturar a implementação na escola. Pode me orientar sobre os passos iniciais, recursos necessários e cronograma?`);
+                                  openChat(`Quero implementar o plano de ação: ${plano.titulo}. Me ajude com os próximos passos.`);
                                 }}
                               >
                                 <IconSparkles className="size-4" />
@@ -565,138 +478,61 @@ export default function PlanosAcoesPage() {
         </TabsContent>
 
         {/* Tab: Clusters */}
-        <TabsContent value="clusters" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <IconUsers className="size-5" />
-                Análise por Perfil de Aluno
-              </CardTitle>
-              <CardDescription>
-                Estratégias diferenciadas baseadas nos 3 grupos identificados pela análise de clustering
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {clusters.map((cluster: any, idx: number) => (
-                  <Card key={cluster.cluster_id} className="border-2">
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <CardTitle className="text-xl">
-                            Perfil {cluster.cluster_id + 1} ({cluster.percentual}% dos alunos)
-                          </CardTitle>
-                          <CardDescription className="mt-1">
-                            {cluster.total_alunos} alunos • Média de notas: {cluster.caracteristicas.media_notas}
-                          </CardDescription>
-                        </div>
-                        <Badge variant={idx === 0 ? "destructive" : idx === 1 ? "secondary" : "default"}>
-                          {cluster.caracteristicas.media_notas < 3 ? "Crítico" : 
-                           cluster.caracteristicas.media_notas < 6 ? "Atenção" : "Bom Desempenho"}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {/* Características */}
-                      <div>
-                        <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold">
-                          <IconBulb className="size-4" />
-                          Características Principais
-                        </h4>
-                        <ul className="space-y-1">
-                          {cluster.features_relevantes.map((feature: string, fidx: number) => (
-                            <li key={fidx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                              <span className="mt-1 size-1.5 shrink-0 rounded-full bg-primary" />
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+        <TabsContent value="clusters" className="space-y-4">
+          <div className="space-y-3">
+            {clusters.map((cluster: any, idx: number) => (
+              <Card key={cluster.cluster_id}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle className="text-lg">
+                        Perfil {cluster.cluster_id + 1} - {cluster.percentual}%
+                      </CardTitle>
+                      <CardDescription className="mt-1">
+                        {cluster.total_alunos} alunos • Média: {cluster.caracteristicas.media_notas}
+                      </CardDescription>
+                    </div>
+                    <Badge variant={idx === 0 ? "destructive" : idx === 1 ? "secondary" : "default"}>
+                      {cluster.caracteristicas.media_notas < 3 ? "Crítico" : 
+                       cluster.caracteristicas.media_notas < 6 ? "Atenção" : "Bom"}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {/* Dados compactos */}
+                  <div className="grid gap-2 grid-cols-2 md:grid-cols-4 text-sm">
+                    <div>
+                      <div className="text-xs text-muted-foreground">Renda</div>
+                      <div className="font-medium">R$ {cluster.caracteristicas.renda_media}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground">Trabalham</div>
+                      <div className="font-medium">{cluster.caracteristicas.pct_trabalha}%</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground">Deslocamento</div>
+                      <div className="font-medium">{cluster.caracteristicas.tempo_desl_medio}min</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground">Inseg. Alim.</div>
+                      <div className="font-medium">{cluster.caracteristicas.pct_inseg_alimentar}%</div>
+                    </div>
+                  </div>
 
-                      {/* Dados Socioeconômicos */}
-                      <div className="grid gap-3 md:grid-cols-4">
-                        <div className="rounded-lg border p-3">
-                          <div className="mb-1 text-xs text-muted-foreground">Renda Média</div>
-                          <div className="font-semibold">R$ {cluster.caracteristicas.renda_media}</div>
-                        </div>
-                        <div className="rounded-lg border p-3">
-                          <div className="mb-1 text-xs text-muted-foreground">% Trabalham</div>
-                          <div className="font-semibold">{cluster.caracteristicas.pct_trabalha}%</div>
-                        </div>
-                        <div className="rounded-lg border p-3">
-                          <div className="mb-1 text-xs text-muted-foreground">Deslocamento</div>
-                          <div className="font-semibold">{cluster.caracteristicas.tempo_desl_medio}min</div>
-                        </div>
-                        <div className="rounded-lg border p-3">
-                          <div className="mb-1 text-xs text-muted-foreground">Inseg. Alimentar</div>
-                          <div className="font-semibold">{cluster.caracteristicas.pct_inseg_alimentar}%</div>
-                        </div>
-                      </div>
-
-                      {/* Recomendações */}
-                      <div className="rounded-lg bg-primary/5 p-4">
-                        <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold">
-                          <IconTarget className="size-4" />
-                          Recomendações para este Perfil
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {idx === 0 && "Priorizar apoio alimentar e socioemocional. Implementar reforço escolar intensivo com foco em matemática e português. Aproximação das famílias é fundamental."}
-                          {idx === 1 && "Oferecer reforço pontual em disciplinas específicas. Criar grupos de estudo e monitoria entre pares. Incentivar participação em atividades extracurriculares."}
-                          {idx === 2 && "Estimular liderança estudantil e protagonismo. Oferecer desafios acadêmicos avançados e preparação para olimpíadas. Apoiar projetos de iniciação científica."}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  {/* Recomendação resumida */}
+                  <div className="rounded-lg bg-primary/5 p-3">
+                    <p className="text-sm">
+                      {idx === 0 && "Priorizar apoio alimentar e socioemocional. Reforço escolar intensivo."}
+                      {idx === 1 && "Reforço pontual em disciplinas específicas. Grupos de estudo."}
+                      {idx === 2 && "Estimular liderança e desafios acadêmicos avançados."}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </TabsContent>
       </Tabs>
-
-      {/* Resumo de Investimento */}
-      <Card className="border-primary/50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <IconCoin className="size-5" />
-            Resumo de Investimento Necessário
-          </CardTitle>
-          <CardDescription>
-            Estimativa de recursos para implementação dos planos de ação prioritários
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
-              <div className="mb-2 text-sm font-medium text-muted-foreground">
-                Investimento Inicial
-              </div>
-              <div className="text-2xl font-bold">R$ 25.000</div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Para estruturação dos programas
-              </p>
-            </div>
-            <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
-              <div className="mb-2 text-sm font-medium text-muted-foreground">
-                Custo Mensal
-              </div>
-              <div className="text-2xl font-bold">R$ 136.000</div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Para manutenção dos programas
-              </p>
-            </div>
-            <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
-              <div className="mb-2 text-sm font-medium text-muted-foreground">
-                Alunos Beneficiados
-              </div>
-              <div className="text-2xl font-bold">{stats.totalAlunos}</div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                100% dos estudantes impactados
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

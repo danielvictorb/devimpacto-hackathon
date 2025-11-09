@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { ChatBot } from "./chatbot";
+import { ChatBotMocked } from "./chatbot-mocked";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 import Image from "next/image";
+import { useChat } from "./chat-context";
 
 export function FloatingChatButton() {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, initialMessage, openChat, closeChat } = useChat();
   const pathname = usePathname();
 
   // Não mostrar o chat na página inicial
@@ -19,7 +20,7 @@ export function FloatingChatButton() {
     <>
       {/* Floating button */}
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => openChat()}
         className="fixed bottom-6 right-6 z-50 rounded-full shadow-lg hover:scale-110 transition-transform duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
         aria-label="Abrir chat"
       >
@@ -33,7 +34,7 @@ export function FloatingChatButton() {
       </button>
 
       {/* Chat drawer */}
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isOpen} onOpenChange={closeChat}>
         <SheetContent
           side="right"
           className="w-full sm:w-[540px] p-0 flex flex-col"
@@ -50,8 +51,8 @@ export function FloatingChatButton() {
               Sabiá
             </SheetTitle>
           </SheetHeader>
-          <div className="flex-1 overflow-hidden p-4">
-            <ChatBot />
+          <div className="flex-1 overflow-hidden">
+            <ChatBotMocked key={initialMessage || 'default'} initialMessage={initialMessage} />
           </div>
         </SheetContent>
       </Sheet>
