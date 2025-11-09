@@ -1,12 +1,10 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
+import { useParams, useRouter } from "next/navigation";
 import {
   IconSchool,
   IconAlertTriangle,
-  IconAward,
-  IconTarget,
-  IconUsers,
   IconArrowLeft,
 } from "@tabler/icons-react";
 import {
@@ -18,6 +16,13 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   CartesianGrid,
   ResponsiveContainer,
@@ -33,9 +38,29 @@ import Link from "next/link";
 
 export default function TurmaInsightsPage() {
   const params = useParams();
+  const router = useRouter();
   const turmaId = params.id as string;
 
   const turma = obterTurma(turmaId);
+  const [tipoVisualizacao, setTipoVisualizacao] =
+    useState<string>("desempenho");
+  const [filtroGrupo, setFiltroGrupo] = useState<string>("todos");
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Safe hydration check - standard pattern in Next.js
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  // Quando muda para "Por Perfil Socioeconômico", selecionar o primeiro cluster automaticamente
+  useEffect(() => {
+    if (tipoVisualizacao === "cluster" && filtroGrupo === "todos" && turma) {
+      if (turma.clusters.length > 0) {
+        setFiltroGrupo(turma.clusters[0].cluster_id.toString());
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tipoVisualizacao]);
 
   if (!turma) {
     return (
@@ -56,37 +81,92 @@ export default function TurmaInsightsPage() {
     );
   }
 
-  // Preparar dados para o scatter plot (cluster)
-  const alunosParaScatter = turma.alunos.map((aluno) => ({
-    id: aluno.id,
-    nome: aluno.nome_aluno,
-    nota: aluno.nota_media,
-    renda: aluno.renda_familiar,
-    status: aluno.nivel_desempenho,
-    risco: aluno.risco,
-    cluster: aluno.cluster_global,
-  }));
+  // Preparar dados para o scatter plot
+  const todosAlunosScatter = useMemo(() => {
+    const dados = turma.alunos.map((aluno) => ({
+      id: aluno.id,
+      nome: aluno.nome_aluno,
+      nota: aluno.nota_media,
+      renda: aluno.renda_familiar,
+      status: aluno.nivel_desempenho,
+      risco: aluno.risco,
+      cluster: aluno.cluster_global,
+      grupoRisco:
+        aluno.nota_media < 4
+          ? "risco_alto"
+          : aluno.nota_media < 7
+          ? "medio"
+          : "sem_risco",
+    }));
+    return dados;
+  }, [turma.alunos]);
 
-  // Agrupar alunos por nível de desempenho
-  const alunosRisco = turma.alunos.filter((a) => a.risco === "Alto");
-  const alunosIntermediario = turma.alunos.filter(
-    (a) =>
-      a.nivel_desempenho === "Médio" || a.nivel_desempenho === "Intermediário"
-  );
-  const alunosDestaque = turma.alunos.filter(
-    (a) => a.nivel_desempenho === "Alto"
-  );
+  // Filtrar alunos baseado no filtro selecionado
+  const alunosParaScatter = useMemo(() => {
+    if (tipoVisualizacao === "desempenho") {
+      return filtroGrupo === "todos"
+        ? todosAlunosScatter
+        : todosAlunosScatter.filter((a) => a.grupoRisco === filtroGrupo);
+    } else {
+      return filtroGrupo === "todos"
+        ? todosAlunosScatter
+        : todosAlunosScatter.filter(
+            (a) => a.cluster?.toString() === filtroGrupo
+          );
+    }
+  }, [tipoVisualizacao, filtroGrupo, todosAlunosScatter]);
 
+  // Agrupar alunos por nível de desempenho baseado nas notas
+  const alunosRiscoAlto = turma.alunos.filter((a) => a.nota_media < 4);
+
+  // Cores por grupo de risco (baseado nas notas)
+  const getCorPorGrupoRisco = (grupoRisco: string) => {
+    const cores = {
+      risco_alto: "#ef4444", // Vermelho
+      medio: "#f59e0b", // Laranja/Amarelo
+      sem_risco: "#22c55e", // Verde
+    };
+    return cores[grupoRisco as keyof typeof cores] || "#6b7280";
+  };
+
+  // Cores por cluster socioeconômico (modelo ML)
   const getCorPorCluster = (cluster: number) => {
     const cores = [
-      "#f97316",
-      "#3b82f6",
-      "#22c55e",
-      "#a855f7",
-      "#ec4899",
-      "#eab308",
+      "#f97316", // Laranja - Cluster 0
+      "#3b82f6", // Azul - Cluster 1
+      "#22c55e", // Verde - Cluster 2
+      "#a855f7", // Roxo - Cluster 3
+      "#ec4899", // Rosa - Cluster 4
+      "#eab308", // Amarelo - Cluster 5
     ];
     return cores[cluster] || "#6b7280";
+  };
+
+  // Nomes descritivos para os clusters baseados em características reais
+  const getNomeCluster = (clusterId: number): string => {
+    const nomes: Record<number, string> = {
+      0: "Crítico - Múltiplos fatores de risco",
+      1: "Vulnerável - Potencial de recuperação",
+      2: "Estável - Condições favoráveis",
+      3: "Resiliente - Nota boa apesar de dificuldades",
+    };
+    return nomes[clusterId] || `Cluster ${clusterId}`;
+  };
+
+  // Função que retorna a cor baseada no tipo de visualização
+  const getCorAluno = (aluno: (typeof alunosParaScatter)[0]) => {
+    if (tipoVisualizacao === "desempenho") {
+      return getCorPorGrupoRisco(aluno.grupoRisco);
+    } else {
+      return getCorPorCluster(aluno.cluster);
+    }
+  };
+
+  // Handler para clicar no aluno
+  const handleAlunoClick = (data: { id?: number }) => {
+    if (data && data.id) {
+      router.push(`/dashboard/alunos/${data.id}`);
+    }
   };
 
   return (
@@ -166,16 +246,16 @@ export default function TurmaInsightsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium">
-              Alunos em Risco
+              Alunos em Risco Alto
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
-              {alunosRisco.length}
+              {alunosRiscoAlto.length}
             </div>
             <p className="text-xs text-muted-foreground">
-              {((alunosRisco.length / turma.total_alunos) * 100).toFixed(0)}% do
-              total
+              {((alunosRiscoAlto.length / turma.total_alunos) * 100).toFixed(0)}
+              % do total (notas 0-4)
             </p>
           </CardContent>
         </Card>
@@ -186,12 +266,87 @@ export default function TurmaInsightsPage() {
         {/* Lado Esquerdo - Gráfico de Clusters (2 colunas) */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <div>
-              <CardTitle>Distribuição por Clusters</CardTitle>
-              <CardDescription>
-                Visualização de alunos agrupados por perfil socioeconômico (Nota
-                vs Renda)
-              </CardDescription>
+            <div className="flex flex-col gap-4">
+              <div>
+                <CardTitle>Distribuição dos Alunos</CardTitle>
+                <CardDescription>
+                  Visualização por notas (vertical) e renda familiar
+                  (horizontal)
+                </CardDescription>
+              </div>
+
+              {/* Filtros */}
+              {isHydrated && (
+                <div className="flex flex-wrap gap-3">
+                  <div className="flex-1 min-w-[200px]">
+                    <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+                      Tipo de Visualização
+                    </label>
+                    <Select
+                      value={tipoVisualizacao}
+                      onValueChange={(value) => {
+                        setTipoVisualizacao(value);
+                        setFiltroGrupo("todos"); // Reset filtro ao mudar tipo
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="desempenho">
+                          Por Desempenho
+                        </SelectItem>
+                        <SelectItem value="cluster">
+                          Por Perfil Socioeconômico
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex-1 min-w-[200px]">
+                    <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+                      Filtrar Grupo
+                    </label>
+                    <Select value={filtroGrupo} onValueChange={setFiltroGrupo}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {tipoVisualizacao === "desempenho" ? (
+                          <>
+                            <SelectItem value="todos">
+                              Todos os Grupos
+                            </SelectItem>
+                            <SelectItem value="risco_alto">
+                              🔴 Risco Alto (0-4)
+                            </SelectItem>
+                            <SelectItem value="medio">
+                              🟡 Médio (4-7)
+                            </SelectItem>
+                            <SelectItem value="sem_risco">
+                              🟢 Sem Risco (7-10)
+                            </SelectItem>
+                          </>
+                        ) : (
+                          <>
+                            {turma.clusters
+                              .filter((cluster) => cluster.cluster_id != null)
+                              .map((cluster) => (
+                                <SelectItem
+                                  key={cluster.cluster_id}
+                                  value={cluster.cluster_id.toString()}
+                                >
+                                  {getNomeCluster(cluster.cluster_id)} (
+                                  {cluster.total_alunos} alunos)
+                                </SelectItem>
+                              ))}
+                          </>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              )}
             </div>
           </CardHeader>
           <CardContent>
@@ -225,6 +380,27 @@ export default function TurmaInsightsPage() {
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       const aluno = payload[0].payload;
+
+                      let grupoLabel = "";
+                      if (tipoVisualizacao === "desempenho") {
+                        grupoLabel =
+                          aluno.grupoRisco === "risco_alto"
+                            ? "Risco Alto (0-4)"
+                            : aluno.grupoRisco === "medio"
+                            ? "Médio (4-7)"
+                            : "Sem Risco (7-10)";
+                      } else {
+                        const cluster = turma.clusters.find(
+                          (c) => c.cluster_id === aluno.cluster
+                        );
+                        grupoLabel = getNomeCluster(aluno.cluster);
+                        if (cluster) {
+                          grupoLabel += ` - Média: ${cluster.caracteristicas.media_notas.toFixed(
+                            1
+                          )}`;
+                        }
+                      }
+
                       return (
                         <div className="rounded-lg border bg-card p-3 shadow-lg">
                           <p className="font-semibold">{aluno.nome}</p>
@@ -234,46 +410,27 @@ export default function TurmaInsightsPage() {
                           <p className="text-xs text-muted-foreground">
                             Renda: R$ {aluno.renda.toFixed(0)}
                           </p>
-                          <p className="text-xs font-semibold">
-                            Cluster: {aluno.cluster}
+                          <p className="text-xs font-semibold">{grupoLabel}</p>
+                          <p className="mt-2 text-xs font-medium text-secondary">
+                            👆 Clique para ver o perfil completo
                           </p>
-                          <p className="text-xs">Status: {aluno.risco}</p>
                         </div>
                       );
                     }
                     return null;
                   }}
                 />
-                <Scatter data={alunosParaScatter} cursor="pointer">
-                  {alunosParaScatter.map((aluno, index) => (
-                    <Cell
-                      key={index}
-                      fill={getCorPorCluster(aluno.cluster)}
-                      r={6}
-                    />
+                <Scatter
+                  data={alunosParaScatter}
+                  onClick={handleAlunoClick}
+                  cursor="pointer"
+                >
+                  {alunosParaScatter.map((aluno) => (
+                    <Cell key={aluno.id} fill={getCorAluno(aluno)} r={6} />
                   ))}
                 </Scatter>
               </ScatterChart>
             </ResponsiveContainer>
-
-            {/* Legenda dos Clusters */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              {turma.clusters.map((cluster) => (
-                <Badge
-                  key={cluster.cluster_id}
-                  variant="outline"
-                  style={{ borderColor: getCorPorCluster(cluster.cluster_id) }}
-                >
-                  <div
-                    className="size-2 mr-1.5 rounded-full"
-                    style={{
-                      backgroundColor: getCorPorCluster(cluster.cluster_id),
-                    }}
-                  />
-                  Cluster {cluster.cluster_id} ({cluster.total_alunos} alunos)
-                </Badge>
-              ))}
-            </div>
           </CardContent>
         </Card>
 
@@ -315,7 +472,7 @@ export default function TurmaInsightsPage() {
               <div className="space-y-2">
                 {turma.clusters.map((cluster) => (
                   <div
-                    key={cluster.cluster_id}
+                    key={`resumo-${cluster.cluster_id}`}
                     className="rounded-lg border p-2"
                   >
                     <div className="flex items-center gap-2 mb-1">
@@ -326,7 +483,7 @@ export default function TurmaInsightsPage() {
                         }}
                       />
                       <span className="text-xs font-semibold">
-                        Cluster {cluster.cluster_id}
+                        {getNomeCluster(cluster.cluster_id)}
                       </span>
                       <Badge variant="secondary" className="text-xs">
                         {cluster.percentual.toFixed(0)}%
@@ -342,7 +499,7 @@ export default function TurmaInsightsPage() {
             </div>
 
             {/* Prioridade */}
-            {alunosRisco.length > 0 && (
+            {alunosRiscoAlto.length > 0 && (
               <div className="rounded-lg border-2 border-red-200 bg-red-50/50 p-3 dark:border-red-900/30 dark:bg-red-950/20">
                 <div className="mb-1 flex items-center gap-2">
                   <IconAlertTriangle className="size-4 text-red-600" />
@@ -351,230 +508,13 @@ export default function TurmaInsightsPage() {
                   </h4>
                 </div>
                 <p className="text-xs text-red-900 dark:text-red-100">
-                  <strong>{alunosRisco.length} alunos</strong> (
-                  {((alunosRisco.length / turma.total_alunos) * 100).toFixed(0)}
-                  %) estão em risco alto. Requerem intervenção imediata.
+                  <strong>{alunosRiscoAlto.length} alunos</strong> (
+                  {(
+                    (alunosRiscoAlto.length / turma.total_alunos) *
+                    100
+                  ).toFixed(0)}
+                  %) com notas 0-4. Requerem intervenção imediata.
                 </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Características dos Clusters */}
-      <Card className="mb-8">
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <IconUsers className="size-5 text-secondary" />
-            <CardTitle>Detalhes dos Clusters</CardTitle>
-          </div>
-          <CardDescription>
-            Perfil detalhado de cada grupo identificado na turma
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {turma.clusters.map((cluster) => (
-              <Card key={cluster.cluster_id} className="border-2">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="size-4 rounded-full"
-                        style={{
-                          backgroundColor: getCorPorCluster(cluster.cluster_id),
-                        }}
-                      />
-                      <CardTitle className="text-base">
-                        Cluster {cluster.cluster_id}
-                      </CardTitle>
-                    </div>
-                    <Badge variant="secondary">
-                      {cluster.total_alunos} alunos (
-                      {cluster.percentual.toFixed(0)}%)
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <p className="text-muted-foreground">Média de Notas</p>
-                      <p className="font-semibold">
-                        {cluster.caracteristicas.media_notas.toFixed(2)}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground">Renda Média</p>
-                      <p className="font-semibold">
-                        R$ {cluster.caracteristicas.renda_media.toFixed(0)}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground">Trabalham</p>
-                      <p className="font-semibold">
-                        {cluster.caracteristicas.pct_trabalha.toFixed(0)}%
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground">Inseg. Alimentar</p>
-                      <p className="font-semibold">
-                        {cluster.caracteristicas.pct_inseg_alimentar.toFixed(0)}
-                        %
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="mb-1.5 text-sm font-medium">
-                      Características Relevantes:
-                    </p>
-                    <div className="space-y-1">
-                      {cluster.features_relevantes.map((feature, idx) => (
-                        <div key={idx} className="flex items-start gap-2">
-                          <div className="mt-1.5 size-1.5 rounded-full bg-secondary" />
-                          <p className="text-xs text-muted-foreground">
-                            {feature}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Grupos de Alunos */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Grupo de Risco */}
-        <Card className="border-red-200 dark:border-red-900/30">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <IconAlertTriangle className="size-5 text-red-500" />
-              <CardTitle>Grupo de Risco Alto</CardTitle>
-            </div>
-            <CardDescription>
-              {alunosRisco.length} alunos precisam de atenção urgente
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {alunosRisco.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-4">
-                Nenhum aluno em risco alto
-              </p>
-            ) : (
-              <div className="space-y-2 max-h-96 overflow-y-auto">
-                {alunosRisco.slice(0, 10).map((aluno) => (
-                  <div
-                    key={aluno.id}
-                    className="flex items-center justify-between rounded-lg border p-2"
-                  >
-                    <div>
-                      <p className="text-sm font-medium">{aluno.nome_aluno}</p>
-                      <p className="text-xs text-muted-foreground">
-                        Freq: {aluno.frequencia_pct.toFixed(0)}% •{" "}
-                        {aluno.trabalha}
-                      </p>
-                    </div>
-                    <Badge variant="destructive" className="text-xs">
-                      {aluno.nota_media.toFixed(1)}
-                    </Badge>
-                  </div>
-                ))}
-                {alunosRisco.length > 10 && (
-                  <p className="text-xs text-center text-muted-foreground pt-2">
-                    + {alunosRisco.length - 10} alunos
-                  </p>
-                )}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Grupo Intermediário */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <IconTarget className="size-5 text-primary" />
-              <CardTitle>Desempenho Médio</CardTitle>
-            </div>
-            <CardDescription>
-              {alunosIntermediario.length} alunos com potencial de melhoria
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {alunosIntermediario.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-4">
-                Nenhum aluno nesta faixa
-              </p>
-            ) : (
-              <div className="space-y-2 max-h-96 overflow-y-auto">
-                {alunosIntermediario.slice(0, 10).map((aluno) => (
-                  <div
-                    key={aluno.id}
-                    className="flex items-center justify-between rounded-lg border p-2"
-                  >
-                    <div>
-                      <p className="text-sm font-medium">{aluno.nome_aluno}</p>
-                      <p className="text-xs text-muted-foreground">
-                        Freq: {aluno.frequencia_pct.toFixed(0)}%
-                      </p>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      {aluno.nota_media.toFixed(1)}
-                    </Badge>
-                  </div>
-                ))}
-                {alunosIntermediario.length > 10 && (
-                  <p className="text-xs text-center text-muted-foreground pt-2">
-                    + {alunosIntermediario.length - 10} alunos
-                  </p>
-                )}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Grupo Destaque */}
-        <Card className="border-green-200 dark:border-green-900/30">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <IconAward className="size-5 text-green-600 dark:text-green-400" />
-              <CardTitle>Alto Desempenho</CardTitle>
-            </div>
-            <CardDescription>
-              {alunosDestaque.length} alunos com excelente desempenho
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {alunosDestaque.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-4">
-                Nenhum aluno nesta faixa
-              </p>
-            ) : (
-              <div className="space-y-2 max-h-96 overflow-y-auto">
-                {alunosDestaque.slice(0, 10).map((aluno) => (
-                  <div
-                    key={aluno.id}
-                    className="flex items-center justify-between rounded-lg border p-2"
-                  >
-                    <div>
-                      <p className="text-sm font-medium">{aluno.nome_aluno}</p>
-                      <p className="text-xs text-muted-foreground">
-                        Freq: {aluno.frequencia_pct.toFixed(0)}%
-                      </p>
-                    </div>
-                    <Badge variant="default" className="bg-green-600 text-xs">
-                      {aluno.nota_media.toFixed(1)}
-                    </Badge>
-                  </div>
-                ))}
-                {alunosDestaque.length > 10 && (
-                  <p className="text-xs text-center text-muted-foreground pt-2">
-                    + {alunosDestaque.length - 10} alunos
-                  </p>
-                )}
               </div>
             )}
           </CardContent>
