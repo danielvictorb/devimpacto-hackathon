@@ -673,67 +673,155 @@ export default function TurmaInsightsPage() {
         </Card>
       </div>
 
-      {/* Cards de Métricas Principais */}
+      {/* Cards de Métricas Principais ou Planos de Ação */}
       <div className="grid gap-3 md:grid-cols-4">
-        <button
-          onClick={() => setMetricaSelecionada("media")}
-          className="rounded-lg border bg-card hover:bg-muted/50 hover:border-secondary transition-all text-left p-8 cursor-pointer"
-        >
-          <h3 className="text-xs font-medium text-muted-foreground mb-2">
-            Média de Notas
-          </h3>
-          <div
-            className={`text-2xl font-bold ${
-              turma.estatisticas.media_notas < 4
-                ? "text-red-600"
-                : turma.estatisticas.media_notas < 7
-                ? "text-orange-600"
-                : "text-green-600"
-            }`}
-          >
-            {turma.estatisticas.media_notas.toFixed(2)}
-          </div>
-          <p className="text-xs text-muted-foreground">Desempenho geral</p>
-        </button>
-        <button
-          onClick={() => setMetricaSelecionada("frequencia")}
-          className="rounded-lg border bg-card hover:bg-muted/50 hover:border-secondary transition-all text-left p-4 cursor-pointer"
-        >
-          <h3 className="text-xs font-medium text-muted-foreground mb-2">
-            Frequência Média
-          </h3>
-          <div className="text-2xl font-bold">
-            {turma.estatisticas.frequencia_media.toFixed(0)}%
-          </div>
-          <p className="text-xs text-muted-foreground">Presença dos alunos</p>
-        </button>
-        <button
-          onClick={() => setMetricaSelecionada("aprovacao")}
-          className="rounded-lg border bg-card hover:bg-muted/50 hover:border-secondary transition-all text-left p-4 cursor-pointer"
-        >
-          <h3 className="text-xs font-medium text-muted-foreground mb-2">
-            Aprovação Estimada
-          </h3>
-          <div className="text-2xl font-bold text-blue-600">
-            {turma.estatisticas.aprovacao_estimada.toFixed(0)}%
-          </div>
-          <p className="text-xs text-muted-foreground">Projeção de aprovação</p>
-        </button>
-        <button
-          onClick={() => setMetricaSelecionada("risco")}
-          className="rounded-lg border bg-card hover:bg-muted/50 hover:border-secondary transition-all text-left p-4 cursor-pointer"
-        >
-          <h3 className="text-xs font-medium text-muted-foreground mb-2">
-            Alunos em Risco Alto
-          </h3>
-          <div className="text-2xl font-bold text-red-600">
-            {alunosRiscoAlto.length}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {((alunosRiscoAlto.length / turma.total_alunos) * 100).toFixed(0)}%
-            do total (notas 0-4)
-          </p>
-        </button>
+        {filtroGrupo === "risco_alto" ? (
+          // Mostrar Planos de Ação quando filtrado por Risco Alto
+          <>
+            <button
+              onClick={() => router.push('/dashboard/planos-acoes')}
+              className="group rounded-lg border border-blue-200 bg-white hover:border-blue-400 hover:shadow-md transition-all text-left p-5 cursor-pointer"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 text-2xl group-hover:scale-110 transition-transform">
+                  📚
+                </div>
+                <h3 className="text-sm font-semibold text-gray-900 flex-1">
+                  Reforço Escolar
+                </h3>
+              </div>
+              <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                Tutoria personalizada
+              </p>
+              <div className="flex items-center text-xs font-medium text-blue-600 group-hover:text-blue-700">
+                Ver detalhes →
+              </div>
+            </button>
+
+            <button
+              onClick={() => router.push('/dashboard/planos-acoes')}
+              className="group rounded-lg border border-green-200 bg-white hover:border-green-400 hover:shadow-md transition-all text-left p-5 cursor-pointer"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-green-100 text-2xl group-hover:scale-110 transition-transform">
+                  🍎
+                </div>
+                <h3 className="text-sm font-semibold text-gray-900 flex-1">
+                  Alimentação
+                </h3>
+              </div>
+              <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                Programa nutricional
+              </p>
+              <div className="flex items-center text-xs font-medium text-green-600 group-hover:text-green-700">
+                Ver detalhes →
+              </div>
+            </button>
+
+            <button
+              onClick={() => router.push('/dashboard/planos-acoes')}
+              className="group rounded-lg border border-orange-200 bg-white hover:border-orange-400 hover:shadow-md transition-all text-left p-5 cursor-pointer"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-orange-100 text-2xl group-hover:scale-110 transition-transform">
+                  🚌
+                </div>
+                <h3 className="text-sm font-semibold text-gray-900 flex-1">
+                  Transporte
+                </h3>
+              </div>
+              <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                Auxílio deslocamento
+              </p>
+              <div className="flex items-center text-xs font-medium text-orange-600 group-hover:text-orange-700">
+                Ver detalhes →
+              </div>
+            </button>
+
+            <button
+              onClick={() => router.push('/dashboard/planos-acoes')}
+              className="group rounded-lg border border-pink-200 bg-white hover:border-pink-400 hover:shadow-md transition-all text-left p-5 cursor-pointer"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-pink-100 text-2xl group-hover:scale-110 transition-transform">
+                  ❤️
+                </div>
+                <h3 className="text-sm font-semibold text-gray-900 flex-1">
+                  Apoio Emocional
+                </h3>
+              </div>
+              <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                Suporte psicológico
+              </p>
+              <div className="flex items-center text-xs font-medium text-pink-600 group-hover:text-pink-700">
+                Ver detalhes →
+              </div>
+            </button>
+          </>
+        ) : (
+          // Mostrar Métricas normalmente quando não filtrado por Risco Alto
+          <>
+            <button
+              onClick={() => setMetricaSelecionada("media")}
+              className="rounded-lg border bg-card hover:bg-muted/50 hover:border-secondary transition-all text-left p-8 cursor-pointer"
+            >
+              <h3 className="text-xs font-medium text-muted-foreground mb-2">
+                Média de Notas
+              </h3>
+              <div
+                className={`text-2xl font-bold ${
+                  turma.estatisticas.media_notas < 4
+                    ? "text-red-600"
+                    : turma.estatisticas.media_notas < 7
+                    ? "text-orange-600"
+                    : "text-green-600"
+                }`}
+              >
+                {turma.estatisticas.media_notas.toFixed(2)}
+              </div>
+              <p className="text-xs text-muted-foreground">Desempenho geral</p>
+            </button>
+            <button
+              onClick={() => setMetricaSelecionada("frequencia")}
+              className="rounded-lg border bg-card hover:bg-muted/50 hover:border-secondary transition-all text-left p-4 cursor-pointer"
+            >
+              <h3 className="text-xs font-medium text-muted-foreground mb-2">
+                Frequência Média
+              </h3>
+              <div className="text-2xl font-bold">
+                {turma.estatisticas.frequencia_media.toFixed(0)}%
+              </div>
+              <p className="text-xs text-muted-foreground">Presença dos alunos</p>
+            </button>
+            <button
+              onClick={() => setMetricaSelecionada("aprovacao")}
+              className="rounded-lg border bg-card hover:bg-muted/50 hover:border-secondary transition-all text-left p-4 cursor-pointer"
+            >
+              <h3 className="text-xs font-medium text-muted-foreground mb-2">
+                Aprovação Estimada
+              </h3>
+              <div className="text-2xl font-bold text-blue-600">
+                {turma.estatisticas.aprovacao_estimada.toFixed(0)}%
+              </div>
+              <p className="text-xs text-muted-foreground">Projeção de aprovação</p>
+            </button>
+            <button
+              onClick={() => setMetricaSelecionada("risco")}
+              className="rounded-lg border bg-card hover:bg-muted/50 hover:border-secondary transition-all text-left p-4 cursor-pointer"
+            >
+              <h3 className="text-xs font-medium text-muted-foreground mb-2">
+                Alunos em Risco Alto
+              </h3>
+              <div className="text-2xl font-bold text-red-600">
+                {alunosRiscoAlto.length}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {((alunosRiscoAlto.length / turma.total_alunos) * 100).toFixed(0)}%
+                do total (notas 0-4)
+              </p>
+            </button>
+          </>
+        )}
       </div>
 
       {/* Dialog com Explicação do Cluster */}
