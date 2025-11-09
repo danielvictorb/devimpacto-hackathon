@@ -3,6 +3,7 @@ FastAPI Routes - Sistema de Correção de Provas
 Rotas principais da API (Async)
 """
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import List
@@ -10,6 +11,7 @@ import uuid
 import shutil
 from pathlib import Path
 import os
+import json
 
 from .database import get_db
 from .models import (
@@ -426,3 +428,136 @@ async def upload_prova(file: UploadFile = File(...)):
         "size": os.path.getsize(file_path),
         "message": "Arquivo salvo com sucesso! Pronto para OCR."
     }
+
+
+# ============================================
+# CHAT (Sabiá Chatbot)
+# ============================================
+
+@router.post("/chat/", tags=["Chat"])
+async def chat_endpoint(request_data: dict):
+    """
+    Endpoint de chat do Sabiá
+    Recebe mensagens e retorna resposta em streaming no formato do AI SDK
+    """
+    try:
+        # MODO DEMO: Resposta mockada para qualquer mensagem
+        MOCK_MODE = True  # Altere para False para usar a API real
+        MOCK_RESPONSE = "Atualmente, 125 alunos estão na faixa de baixo desempenho (nota geral entre 0 e 4). Isso representa 69,4% do total de alunos da escola."
+        
+        # Extrair dados da requisição
+        messages = request_data.get('messages', [])
+        model = request_data.get('model', 'gpt-4.1-2025-04-14')
+        
+        # Validar mensagens
+        if not messages or not isinstance(messages, list):
+            raise HTTPException(
+                status_code=400,
+                detail="Mensagens são obrigatórias e devem ser uma lista"
+            )
+        
+        # Função geradora para streaming no formato AI SDK
+        async def generate_stream():
+            import asyncio
+            
+            if MOCK_MODE:
+                # MODO MOCK: Simular processamento e retornar resposta mockada
+                # Esperar 2 segundos antes de começar
+                await asyncio.sleep(2)
+                
+                # Dividir a resposta em chunks para simular streaming
+                chunk_size = 3  # Caracteres por chunk para streaming suave
+                chunk_count = 0
+                
+                for i in range(0, len(MOCK_RESPONSE), chunk_size):
+                    chunk_count += 1
+                    text_chunk = MOCK_RESPONSE[i:i + chunk_size]
+                    
+                    # Formato do AI SDK data stream
+                    chunk_data = {
+                        'type': 'text-delta',
+                        'textDelta': text_chunk,
+                    }
+                    chunk_json = json.dumps(chunk_data, ensure_ascii=False)
+                    chunk_line = f"0:{chunk_json}\n"
+                    yield chunk_line
+                    
+                    # Pequeno delay entre chunks para simular streaming real
+                    await asyncio.sleep(0.05)  # 50ms entre chunks
+                
+                print(f"[Backend MOCK] Total de chunks enviados: {chunk_count}")
+                
+                # Enviar mensagem de finalização
+                finish_data = {
+                    'type': 'finish',
+                    'finishReason': 'stop',
+                }
+                finish_json = json.dumps(finish_data, ensure_ascii=False)
+                yield f"d:{finish_json}\n"
+            else:
+                # MODO REAL: Usar a API da OpenAI
+                from .chat_service import generate_chat_response
+                
+                chunk_count = 0
+                try:
+                    # Gerar resposta com streaming
+                    async for text_chunk in generate_chat_response(messages, model):
+                        chunk_count += 1
+                        # Formato do AI SDK data stream: prefixo "0:" + JSON
+                        # O prefixo "0:" indica que é um chunk de texto da primeira mensagem
+                        # IMPORTANTE: usar ensure_ascii=False para suportar caracteres especiais
+                        chunk_data = {
+                            'type': 'text-delta',
+                            'textDelta': text_chunk,
+                        }
+                        chunk_json = json.dumps(chunk_data, ensure_ascii=False)
+                        chunk_line = f"0:{chunk_json}\n"
+                        yield chunk_line
+                    
+                    print(f"[Backend] Total de chunks enviados: {chunk_count}")
+                    
+                    # Enviar mensagem de finalização
+                    finish_data = {
+                        'type': 'finish',
+                        'finishReason': 'stop',
+                    }
+                    finish_json = json.dumps(finish_data, ensure_ascii=False)
+                    yield f"d:{finish_json}\n"
+                except ValueError as e:
+                    # Erro de configuração
+                    error_data = {
+                        'type': 'error',
+                        'error': str(e)
+                    }
+                    yield f"e:{json.dumps(error_data)}\n"
+                except Exception as e:
+                    # Erro genérico
+                    error_data = {
+                        'type': 'error',
+                        'error': f'Erro ao gerar resposta: {str(e)}'
+                    }
+                    yield f"e:{json.dumps(error_data)}\n"
+        
+        return StreamingResponse(
+            generate_stream(),
+            media_type='text/plain; charset=utf-8',
+            headers={
+                'Cache-Control': 'no-cache',
+                'Connection': 'keep-alive',
+                'X-Vercel-AI-Data-Stream': 'v1',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type',
+            }
+        )
+    
+    except ImportError as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erro ao importar chat_service: {str(e)}"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erro no chat: {str(e)}"
+        )
