@@ -46,7 +46,10 @@ export default function DashboardPage() {
 
   // Calcular estatísticas a partir dos dados reais
   const totalTurmas = turmas.length;
-  const totalAlunos = turmas.reduce((sum, t) => sum + (t.student_count || 0), 0);
+  const totalAlunos = turmas.reduce(
+    (sum, t) => sum + (t.student_count || 0),
+    0
+  );
   const provasRecentes = provas.slice(0, 3); // Primeiras 3 provas
 
   return (
@@ -54,9 +57,11 @@ export default function DashboardPage() {
       {/* Welcome Section */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Visão Geral da Escola
+          </h1>
           <p className="text-muted-foreground">
-            Bem-vindo de volta, Professor(a)!
+            Bem-vindo de volta, Diretor(a)!
           </p>
         </div>
       </div>
@@ -71,20 +76,20 @@ export default function DashboardPage() {
         <>
           {/* Stats Cards */}
           <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {/* Provas Criadas */}
+            {/* Total de Alunos */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Provas Criadas
+                  Total de Alunos
                 </CardTitle>
                 <div className="flex size-10 items-center justify-center rounded-lg bg-secondary/10">
-                  <IconFileText className="size-5 text-secondary" />
+                  <IconUsers className="size-5 text-secondary" />
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{provas.length}</div>
+                <div className="text-2xl font-bold">{totalAlunos}</div>
                 <p className="text-xs text-muted-foreground">
-                  Total até o momento
+                  Matriculados na escola
                 </p>
               </CardContent>
             </Card>
@@ -102,44 +107,44 @@ export default function DashboardPage() {
               <CardContent>
                 <div className="text-2xl font-bold">{totalTurmas}</div>
                 <p className="text-xs text-muted-foreground">
-                  Cadastradas no sistema
+                  Em funcionamento
                 </p>
               </CardContent>
             </Card>
 
-            {/* Total de Alunos */}
+            {/* Nota Média Geral (IDEB) */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Total de Alunos
+                  Nota Média Geral
                 </CardTitle>
                 <div className="flex size-10 items-center justify-center rounded-lg bg-secondary/10">
-                  <IconUsers className="size-5 text-secondary" />
+                  <IconChartBar className="size-5 text-secondary" />
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{totalAlunos}</div>
+                <div className="text-2xl font-bold">7.2</div>
                 <p className="text-xs text-muted-foreground">
-                  Em todas as turmas
+                  Matemática e Português
                 </p>
               </CardContent>
             </Card>
 
-            {/* Taxa de Acerto Média */}
+            {/* Taxa de Frequência */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Taxa de Acerto Média
+                  Taxa de Frequência
                 </CardTitle>
                 <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                  <IconChartBar className="size-5 text-primary" />
+                  <IconTrendingUp className="size-4 text-primary" />
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">72%</div>
+                <div className="text-2xl font-bold">87%</div>
                 <div className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
                   <IconTrendingUp className="size-3" />
-                  +5% vs mês anterior
+                  +2% vs mês anterior
                 </div>
               </CardContent>
             </Card>
@@ -200,12 +205,18 @@ export default function DashboardPage() {
                             </Badge>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            {new Date(prova.exam_date).toLocaleDateString("pt-BR")} •{" "}
-                            {prova.subject}
+                            {new Date(prova.exam_date).toLocaleDateString(
+                              "pt-BR"
+                            )}{" "}
+                            • {prova.subject}
                           </p>
                         </div>
 
-                        <Button variant="ghost" size="sm" className="text-secondary">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-secondary"
+                        >
                           Ver Detalhes
                         </Button>
                       </div>

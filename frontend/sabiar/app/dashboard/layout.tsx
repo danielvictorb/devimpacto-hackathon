@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  IconPlus,
   IconLayoutDashboard,
   IconSchool,
   IconClipboardList,
@@ -52,18 +51,6 @@ export default function DashboardLayout({
             <Link href="/">
               <Button variant="ghost" size="sm">
                 Voltar ao Início
-              </Button>
-            </Link>
-            <Link href="/dashboard/nova-prova">
-              <Button variant="secondary" size="sm">
-                <IconPlus className="size-4" />
-                Nova Prova
-              </Button>
-            </Link>
-            <Link href="/dashboard/nova-turma">
-              <Button variant="outline" size="sm">
-                <IconPlus className="size-4" />
-                Nova Turma
               </Button>
             </Link>
           </div>

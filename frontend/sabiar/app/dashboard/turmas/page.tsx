@@ -81,10 +81,27 @@ export default function TurmasPage() {
             </Link>
           </CardContent>
         </Card>
-      ) : (
-        /* Grid de Turmas */
-        <div className="grid gap-6 md:grid-cols-2">
-          {turmas.map((turma) => {
+        ) : (
+          /* Grid de Turmas */
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Card para Adicionar Nova Turma */}
+            <Link href="/dashboard/nova-turma">
+              <Card className="flex h-full cursor-pointer items-center justify-center border-2 border-dashed transition-all hover:border-secondary hover:bg-secondary/5">
+                <CardContent className="flex flex-col items-center gap-4 py-16">
+                  <div className="flex size-16 items-center justify-center rounded-full bg-secondary/10">
+                    <span className="text-4xl text-secondary">+</span>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="font-semibold">Adicionar Turma</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Criar uma nova turma
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {turmas.map((turma) => {
             // Mock de estatísticas (até o backend implementar)
             const estatisticasMock = {
               mediaGeral: 7.0,
