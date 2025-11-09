@@ -40,14 +40,39 @@ import {
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning";
 import { Loader } from "@/components/ai-elements/loader";
+import { useEffect, useRef } from "react";
 
 // Modelo fixo: GPT-4o Mini
 const MODEL = "gpt-4o-mini";
 
-export function ChatBot() {
+interface ChatBotProps {
+  initialMessage?: string | null;
+}
+
+export function ChatBot({ initialMessage }: ChatBotProps) {
   const [input, setInput] = useState("");
   const [webSearch, setWebSearch] = useState(false);
   const { messages, sendMessage, status } = useChat();
+  const hasInitialized = useRef(false);
+
+  // Enviar mensagem inicial automaticamente
+  useEffect(() => {
+    if (initialMessage && messages.length === 0 && !hasInitialized.current) {
+      hasInitialized.current = true;
+      sendMessage(
+        {
+          text: initialMessage,
+          files: [],
+        },
+        {
+          body: {
+            model: MODEL,
+            webSearch: false,
+          },
+        }
+      );
+    }
+  }, [initialMessage, messages.length, sendMessage]);
 
   const handleSubmit = (message: PromptInputMessage) => {
     const hasText = Boolean(message.text);

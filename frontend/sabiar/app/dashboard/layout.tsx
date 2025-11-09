@@ -8,15 +8,19 @@ import {
   IconSchool,
   IconClipboardList,
   IconUsers,
+  IconTarget,
+  IconBuildingCommunity,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: IconLayoutDashboard },
+  { name: "Escola", href: "/dashboard/escola", icon: IconBuildingCommunity },
   { name: "Turmas", href: "/dashboard/turmas", icon: IconSchool },
   // { name: "Provas", href: "/dashboard/provas", icon: IconClipboardList },
   { name: "Alunos", href: "/dashboard/alunos", icon: IconUsers },
+  { name: "Planos de Ações", href: "/dashboard/planos-acoes", icon: IconTarget },
 ];
 
 export default function DashboardLayout({
