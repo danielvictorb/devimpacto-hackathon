@@ -108,6 +108,14 @@ async def health_check(db: AsyncSession = Depends(get_db)):
 from .routes import router
 from .clustering_routes import router as clustering_router
 
+# Rotas de análise causal (opcional - descomente se quiser usar)
+try:
+    from .analysis.clustering_routes import router as analysis_router
+    app.include_router(analysis_router)
+except ImportError:
+    # Rotas de análise causal não disponíveis
+    pass
+
 app.include_router(router)
 app.include_router(clustering_router)
 

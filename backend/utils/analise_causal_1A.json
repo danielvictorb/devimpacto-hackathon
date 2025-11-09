@@ -1,0 +1,427 @@
+{
+  "analise_geral_turma": {
+    "resumo_executivo": "A análise dos dados revela uma situação alarmante de desempenho acadêmico na turma, com 69.4% dos alunos na faixa de notas 'Baixo' (0-4). Este baixo desempenho está intrinsecamente ligado a fatores socioeconômicos e estruturais. Observa-se uma forte correlação entre notas baixas e condições de vulnerabilidade, como baixa renda familiar, necessidade de trabalho dos alunos, insegurança alimentar, falta de acesso a recursos digitais e longos tempos de deslocamento. A desigualdade racial também se manifesta, com uma proporção significativamente maior de alunos pretos e pardos no grupo de baixo desempenho. A intervenção deve ser multifacetada, abordando tanto as necessidades educacionais quanto as sociais e econômicas dos estudantes e suas famílias.",
+    "principais_fatores_causais": [
+      {
+        "fator": "Trabalho Infantil/Adolescente",
+        "impacto": "Reduz drasticamente o tempo disponível para estudo e descanso, aumenta a fadiga e o estresse, comprometendo a capacidade de concentração e aprendizado. Evidencia-se que 100% dos alunos do Cluster 2, com média geral de 0.76, trabalham, muitos em tempo integral.",
+        "evidencia": "53.6% dos alunos na faixa de desempenho 'Baixo' trabalham. No Cluster 2 da Turma 1A, todos os 9 alunos trabalham (100%), com cargas horárias elevadas (26-41h/semana), e apresentam uma média geral de 0.76.",
+        "magnitude": "alto"
+      },
+      {
+        "fator": "Baixa Renda Familiar e Insegurança Alimentar",
+        "impacto": "Compromete a saúde física e mental dos alunos, a capacidade de concentração e a frequência escolar. A falta de alimentação adequada afeta diretamente o desenvolvimento cognitivo e a energia para o estudo. A baixa renda limita o acesso a materiais didáticos, internet e ambientes de estudo adequados.",
+        "evidencia": "A renda média dos alunos na faixa 'Baixo' é de R$1692, significativamente menor que a das faixas 'Médio' (R$2351) e 'Alto' (R$2610). No Cluster 0 da Turma 1A, com média de 1.58, a renda média é de R$1080 e 84.6% dos alunos estão em situação de insegurança alimentar.",
+        "magnitude": "alto"
+      },
+      {
+        "fator": "Desigualdade Racial",
+        "impacto": "Reflete e perpetua desigualdades estruturais, onde alunos pretos e pardos são desproporcionalmente afetados por condições de vulnerabilidade socioeconômica, que por sua vez impactam o desempenho acadêmico.",
+        "evidencia": "84% dos alunos na faixa de desempenho 'Baixo' são pretos ou pardos, em contraste com 28.2% na faixa 'Médio' e 37.5% na faixa 'Alto'. No Cluster 0 da Turma 1A, 80% são pretos/pardos.",
+        "magnitude": "alto"
+      },
+      {
+        "fator": "Falta de Acesso Digital (Internet e Computador)",
+        "impacto": "Restringe o acesso a recursos educacionais complementares, pesquisas, plataformas de estudo online e a participação em atividades que exigem conectividade, ampliando a lacuna de aprendizado.",
+        "evidencia": "41 alunos no geral não têm internet. No Cluster 0 da Turma 1A, 69.2% dos alunos não têm acesso à internet, e a maioria não possui computador.",
+        "magnitude": "medio"
+      },
+      {
+        "fator": "Tempo de Deslocamento Longo",
+        "impacto": "Diminui o tempo disponível para estudo, lazer e descanso, além de gerar fadiga e estresse, impactando a disposição e a pontualidade na escola.",
+        "evidencia": "O fator 'deslocamento longo' é crítico para 72 alunos no geral. No Cluster 0 da Turma 1A, o tempo de deslocamento médio é de 72 minutos, e no Cluster 2 é de 85 minutos, ambos com desempenho crítico.",
+        "magnitude": "medio"
+      }
+    ],
+    "desigualdades_identificadas": [
+      {
+        "tipo": "Socioeconômica",
+        "descricao": "Alunos de famílias com menor renda e em situação de insegurança alimentar apresentam desempenho significativamente inferior. A necessidade de trabalhar para complementar a renda familiar é um fator determinante para o baixo desempenho.",
+        "grupos_afetados": "Alunos de baixa renda, famílias em insegurança alimentar, alunos que trabalham."
+      },
+      {
+        "tipo": "Racial",
+        "descricao": "Há uma sobrerrepresentação de alunos pretos e pardos nas faixas de menor desempenho, indicando que as desigualdades raciais se entrelaçam com as socioeconômicas e educacionais.",
+        "grupos_afetados": "Alunos pretos e pardos."
+      },
+      {
+        "tipo": "Acesso a Recursos",
+        "descricao": "A falta de acesso à internet e a computadores em casa cria uma barreira significativa para o aprendizado e a realização de tarefas escolares, especialmente em um contexto onde recursos digitais são cada vez mais importantes.",
+        "grupos_afetados": "Alunos sem acesso à internet ou computador em casa."
+      }
+    ]
+  },
+  "analise_por_cluster": [
+    {
+      "turma": "1A",
+      "cluster_id": 0,
+      "resumo_cluster": "Este cluster agrupa 13 alunos em situação de extrema vulnerabilidade socioeconômica, com desempenho acadêmico crítico (média 1.58). Caracteriza-se por baixíssima renda familiar, alta prevalência de insegurança alimentar e falta de acesso à internet. Nenhum aluno deste cluster trabalha, o que sugere que a pobreza extrema e a falta de recursos básicos são os principais entraves ao aprendizado.",
+      "fatores_criticos": [
+        {
+          "fator": "Insegurança Alimentar Grave",
+          "impacto_estimado": "Compromete diretamente a saúde, a energia e a capacidade de concentração dos alunos, dificultando o aprendizado e a frequência escolar. 84.6% dos alunos do cluster estão nesta situação.",
+          "prioridade": "alta"
+        },
+        {
+          "fator": "Baixa Renda Familiar",
+          "impacto_estimado": "Limita o acesso a materiais didáticos, transporte, alimentação adequada e um ambiente propício para estudos em casa. A renda média do cluster é de R$1080.",
+          "prioridade": "alta"
+        },
+        {
+          "fator": "Falta de Acesso à Internet e Computador",
+          "impacto_estimado": "Impede o acesso a recursos educacionais complementares, pesquisas e plataformas de estudo, isolando os alunos de ferramentas essenciais para o aprendizado moderno. 69.2% dos alunos não têm internet.",
+          "prioridade": "alta"
+        },
+        {
+          "fator": "Deficiências e Necessidades Educacionais Especiais",
+          "impacto_estimado": "Requerem abordagens pedagógicas diferenciadas e apoio especializado para garantir o desenvolvimento e aprendizado adequado. Alunos como Vinicius Moreira Araújo (TDAH) e José Dias Garcia (Dislexia) necessitam de atenção específica.",
+          "prioridade": "media"
+        }
+      ],
+      "acoes_recomendadas": [
+        {
+          "acao": "Encaminhamento urgente para programas de assistência social (Bolsa Família, cestas básicas, programas de segurança alimentar) e acompanhamento contínuo.",
+          "responsavel": "ambos",
+          "prazo": "curto",
+          "impacto_esperado": "Melhora imediata na segurança alimentar e condições básicas de vida, reduzindo o estresse e permitindo maior foco nos estudos.",
+          "viabilidade": "alta",
+          "custo_estimado": "medio"
+        },
+        {
+          "acao": "Reforço alimentar na escola (café da manhã, almoço e lanche), garantindo refeições nutritivas e completas.",
+          "responsavel": "escola",
+          "prazo": "curto",
+          "impacto_esperado": "Melhora da nutrição, energia e concentração dos alunos durante o período escolar.",
+          "viabilidade": "alta",
+          "custo_estimado": "medio"
+        },
+        {
+          "acao": "Acompanhamento psicopedagógico individualizado e desenvolvimento de planos de ensino adaptados para alunos com deficiências ou dificuldades de aprendizado.",
+          "responsavel": "escola",
+          "prazo": "curto",
+          "impacto_esperado": "Atendimento às necessidades específicas de aprendizado, promovendo o desenvolvimento acadêmico e a inclusão.",
+          "viabilidade": "media",
+          "custo_estimado": "medio"
+        },
+        {
+          "acao": "Implementação de um programa de inclusão digital na escola, com laboratórios de informática equipados e acesso à internet, e empréstimo de tablets/notebooks para estudo em casa.",
+          "responsavel": "estado",
+          "prazo": "medio",
+          "impacto_esperado": "Redução da exclusão digital, acesso a recursos educacionais online e desenvolvimento de habilidades digitais.",
+          "viabilidade": "media",
+          "custo_estimado": "alto"
+        },
+        {
+          "acao": "Busca ativa escolar para identificar e intervir nas causas de faltas e baixo desempenho, com visitas domiciliares e diálogo com as famílias.",
+          "responsavel": "escola",
+          "prazo": "curto",
+          "impacto_esperado": "Aumento da frequência e engajamento escolar, identificação precoce de problemas e intervenção eficaz.",
+          "viabilidade": "alta",
+          "custo_estimado": "baixo"
+        }
+      ],
+      "alunos_prioritarios": "Todos os alunos deste cluster necessitam de atenção prioritária devido à extrema vulnerabilidade. Destacam-se Vinicius Moreira Araújo (TDAH, baixa renda, insegurança alimentar), Beatriz Pereira Pereira (grave insegurança alimentar, baixa renda) e José Dias Garcia (Dislexia, grave insegurança alimentar, baixa renda)."
+    },
+    {
+      "turma": "1A",
+      "cluster_id": 1,
+      "resumo_cluster": "Este cluster, composto por 8 alunos, apresenta um desempenho médio (média 5.08) e uma situação socioeconômica mais estável, com renda familiar moderada, segurança alimentar e acesso à internet. Os desafios aqui são mais pontuais, como deficiências específicas ou a necessidade de aprimorar o apoio familiar aos estudos.",
+      "fatores_criticos": [
+        {
+          "fator": "Deficiências Específicas",
+          "impacto_estimado": "Requerem adaptações pedagógicas e suporte individualizado para garantir que o aluno alcance seu potencial máximo. Exemplos incluem Dislexia, Autismo leve e deficiência Visual leve.",
+          "prioridade": "alta"
+        },
+        {
+          "fator": "Apoio Familiar Baixo aos Estudos",
+          "impacto_estimado": "Pode limitar o engajamento do aluno com as tarefas escolares em casa e a percepção da importância da educação, mesmo em famílias com boas condições financeiras.",
+          "prioridade": "media"
+        },
+        {
+          "fator": "Deslocamento Longo",
+          "impacto_estimado": "Embora não seja o fator mais crítico, pode contribuir para a fadiga e reduzir o tempo disponível para atividades extracurriculares ou estudo. Alguns alunos têm deslocamento acima de 90 minutos.",
+          "prioridade": "baixa"
+        }
+      ],
+      "acoes_recomendadas": [
+        {
+          "acao": "Desenvolvimento de planos de atendimento educacional especializado (AEE) e acompanhamento pedagógico focado nas necessidades de alunos com deficiências (Dislexia, Autismo, Visual leve).",
+          "responsavel": "escola",
+          "prazo": "curto",
+          "impacto_esperado": "Melhora do desempenho e inclusão de alunos com deficiência, garantindo acesso a estratégias de aprendizado adequadas.",
+          "viabilidade": "alta",
+          "custo_estimado": "medio"
+        },
+        {
+          "acao": "Oficinas e palestras para pais sobre a importância do apoio aos estudos, estratégias de acompanhamento e como criar um ambiente de estudo em casa, mesmo com recursos limitados.",
+          "responsavel": "escola",
+          "prazo": "medio",
+          "impacto_esperado": "Aumento do engajamento familiar e melhoria do ambiente de estudo em casa.",
+          "viabilidade": "alta",
+          "custo_estimado": "baixo"
+        },
+        {
+          "acao": "Programas de enriquecimento curricular e atividades extracurriculares (esportes, artes, clubes de leitura) para estimular o interesse e o desenvolvimento integral dos alunos.",
+          "responsavel": "escola",
+          "prazo": "medio",
+          "impacto_esperado": "Aumento da motivação, desenvolvimento de novas habilidades e melhoria do desempenho acadêmico geral.",
+          "viabilidade": "media",
+          "custo_estimado": "medio"
+        },
+        {
+          "acao": "Acompanhamento individualizado para alunos com desempenho médio que mostram potencial para notas mais altas, identificando barreiras e oferecendo suporte direcionado.",
+          "responsavel": "escola",
+          "prazo": "curto",
+          "impacto_esperado": "Elevação do desempenho acadêmico e aproveitamento máximo do potencial dos alunos.",
+          "viabilidade": "alta",
+          "custo_estimado": "baixo"
+        }
+      ],
+      "alunos_prioritarios": "Alunos com deficiências específicas, como Letícia Almeida Rocha (Dislexia), Pedro Gonçalves Costa (Autismo leve) e Patricia Melo Garcia (Visual leve), devem receber atenção prioritária para garantir o suporte adequado."
+    },
+    {
+      "turma": "1A",
+      "cluster_id": 2,
+      "resumo_cluster": "Este cluster é composto por 9 alunos com desempenho acadêmico extremamente baixo (média 0.76), onde 100% deles trabalham, muitos com cargas horárias elevadas (26-41 horas semanais). Embora a renda média seja moderada (R$2038), a necessidade de o aluno trabalhar indica uma pressão econômica significativa sobre a família, que se reflete diretamente no desempenho escolar. A maioria tem acesso à internet (via celular), mas o tempo é o recurso mais escasso.",
+      "fatores_criticos": [
+        {
+          "fator": "Trabalho Infantil/Adolescente",
+          "impacto_estimado": "É o fator mais crítico, consumindo o tempo e a energia que deveriam ser dedicados aos estudos, resultando em fadiga crônica e baixo desempenho extremo. Todos os alunos do cluster trabalham.",
+          "prioridade": "alta"
+        },
+        {
+          "fator": "Carga Horária de Trabalho Elevada",
+          "impacto_estimado": "Agrava os efeitos negativos do trabalho, deixando os alunos exaustos e sem tempo para atividades escolares ou descanso. Vários alunos trabalham mais de 30 horas por semana.",
+          "prioridade": "alta"
+        },
+        {
+          "fator": "Baixo Desempenho Extremo",
+          "impacto_estimado": "Indica uma lacuna de aprendizado profunda que exige intervenção intensiva e urgente para evitar a evasão escolar e o abandono dos estudos.",
+          "prioridade": "alta"
+        },
+        {
+          "fator": "Ambiente Familiar (Tensão Moderada/Conflituoso)",
+          "impacto_estimado": "Pode contribuir para o estresse e a falta de um ambiente de apoio para os estudos, exacerbando os desafios já impostos pelo trabalho.",
+          "prioridade": "media"
+        }
+      ],
+      "acoes_recomendadas": [
+        {
+          "acao": "Articulação urgente com o Conselho Tutelar e programas de erradicação do trabalho infantil (PETI) para investigar e intervir nas situações de trabalho que comprometem a educação.",
+          "responsavel": "ambos",
+          "prazo": "curto",
+          "impacto_esperado": "Proteção dos direitos dos alunos, redução ou eliminação da carga de trabalho, permitindo que se dediquem aos estudos.",
+          "viabilidade": "media",
+          "custo_estimado": "baixo"
+        },
+        {
+          "acao": "Flexibilização dos horários escolares e oferta de aulas de reforço em períodos alternativos, considerando a realidade dos alunos que precisam trabalhar.",
+          "responsavel": "escola",
+          "prazo": "curto",
+          "impacto_esperado": "Maior acessibilidade à educação e suporte acadêmico para alunos trabalhadores, reduzindo a pressão e o risco de abandono.",
+          "viabilidade": "media",
+          "custo_estimado": "medio"
+        },
+        {
+          "acao": "Apoio psicossocial e psicológico para lidar com o estresse, a fadiga e os desafios emocionais decorrentes da dupla jornada (estudo e trabalho).",
+          "responsavel": "escola",
+          "prazo": "curto",
+          "impacto_esperado": "Melhora da saúde mental e bem-estar dos alunos, aumentando sua resiliência e capacidade de engajamento escolar.",
+          "viabilidade": "media",
+          "custo_estimado": "medio"
+        },
+        {
+          "acao": "Programas de transferência de renda condicionada à frequência escolar, visando compensar a perda de renda familiar caso o aluno deixe de trabalhar.",
+          "responsavel": "estado",
+          "prazo": "medio",
+          "impacto_esperado": "Incentivo à permanência escolar e redução da necessidade de trabalho infantil/adolescente, aliviando a pressão econômica sobre as famílias.",
+          "viabilidade": "media",
+          "custo_estimado": "alto"
+        },
+        {
+          "acao": "Oferta de cursos profissionalizantes e programas de Jovem Aprendiz com horários compatíveis com os estudos, para que o trabalho seja uma ferramenta de desenvolvimento e não um obstáculo.",
+          "responsavel": "estado",
+          "prazo": "longo",
+          "impacto_esperado": "Qualificação profissional e inserção digna no mercado de trabalho, sem comprometer a educação básica.",
+          "viabilidade": "media",
+          "custo_estimado": "alto"
+        }
+      ],
+      "alunos_prioritarios": "Todos os alunos deste cluster são prioritários devido à situação de trabalho infantil/adolescente e desempenho crítico. Destacam-se Gustavo Moreira Melo (41h/semana de trabalho, média 1.95), Rodrigo Nunes Correia (39h/semana, média 0.0) e Rafaela Carvalho Ferreira (33h/semana, média 0.16)."
+    }
+  ],
+  "recomendacoes_politicas_publicas": [
+    {
+      "area": "Educação",
+      "recomendacao": "Expansão e fortalecimento de programas de educação integral, com atividades de reforço escolar, esportes, artes e acompanhamento psicopedagógico, especialmente em escolas de áreas de alta vulnerabilidade.",
+      "justificativa": "Aumenta o tempo de permanência do aluno na escola em um ambiente seguro e estimulante, oferecendo suporte acadêmico e desenvolvimento integral, o que é crucial para alunos com ambientes familiares desafiadores ou que trabalham.",
+      "orgao_responsavel": "Secretarias de Educação (Municipal e Estadual), Ministério da Educação",
+      "prioridade": "alta",
+      "impacto_estimado": "Redução da evasão, melhoria do desempenho, desenvolvimento de habilidades socioemocionais."
+    },
+    {
+      "area": "Assistência Social e Combate à Pobreza",
+      "recomendacao": "Fortalecimento e ampliação dos programas de transferência de renda (ex: Bolsa Família) com condicionalidades educacionais, e implementação de programas de segurança alimentar escolar e comunitária.",
+      "justificativa": "Ataca as causas raiz do baixo desempenho, como a pobreza e a insegurança alimentar, permitindo que as famílias não dependam do trabalho infantil e que os alunos tenham condições básicas para aprender.",
+      "orgao_responsavel": "Ministério do Desenvolvimento e Assistência Social, Família e Combate à Fome, Secretarias de Assistência Social",
+      "prioridade": "alta",
+      "impacto_estimado": "Melhora da saúde e bem-estar dos alunos, redução do trabalho infantil, aumento da frequência e desempenho escolar."
+    },
+    {
+      "area": "Inclusão Digital",
+      "recomendacao": "Criação de um programa nacional de inclusão digital para estudantes da rede pública, fornecendo acesso à internet de qualidade e dispositivos (tablets/notebooks) para estudo em casa, além de laboratórios de informática bem equipados nas escolas.",
+      "justificativa": "Diminui a lacuna digital que afeta o acesso a recursos educacionais e a participação em atividades online, essencial para o aprendizado contemporâneo.",
+      "orgao_responsavel": "Ministério das Comunicações, Ministério da Educação, Secretarias de Educação",
+      "prioridade": "media",
+      "impacto_estimado": "Ampliação do acesso a conhecimento, desenvolvimento de habilidades digitais, maior engajamento com o conteúdo escolar."
+    },
+    {
+      "area": "Transporte Escolar",
+      "recomendacao": "Revisão e ampliação das rotas de transporte escolar, garantindo que alunos com longos tempos de deslocamento tenham acesso a um transporte eficiente e seguro, reduzindo o tempo de trajeto.",
+      "justificativa": "Reduz a fadiga dos alunos e aumenta o tempo disponível para estudo e descanso, além de melhorar a frequência e pontualidade.",
+      "orgao_responsavel": "Secretarias de Educação (Municipal e Estadual), Ministério da Educação",
+      "prioridade": "media",
+      "impacto_estimado": "Melhora da frequência, redução da fadiga, aumento do tempo de estudo."
+    },
+    {
+      "area": "Saúde e Apoio Psicossocial",
+      "recomendacao": "Integração de equipes multidisciplinares (psicólogos, assistentes sociais, psicopedagogos) nas escolas ou em centros de referência próximos, para atendimento e encaminhamento de alunos com necessidades de saúde mental e deficiências.",
+      "justificativa": "Aborda as necessidades de saúde mental e as deficiências que impactam o aprendizado, oferecendo suporte especializado e promovendo o bem-estar integral dos estudantes.",
+      "orgao_responsavel": "Secretarias de Saúde, Secretarias de Educação",
+      "prioridade": "alta",
+      "impacto_estimado": "Melhora da saúde mental, diagnóstico e tratamento de deficiências, maior inclusão e desempenho acadêmico."
+    }
+  ],
+  "recomendacoes_agentes_escola": [
+    {
+      "agente": "Assistente Social Escolar",
+      "acoes": [
+        {
+          "acao": "Realizar mapeamento detalhado das vulnerabilidades socioeconômicas dos alunos (renda, insegurança alimentar, trabalho infantil) e de suas famílias, com visitas domiciliares e entrevistas.",
+          "prazo": "curto",
+          "alunos_alvo": "Todos os alunos, com foco nos clusters de alto risco (Cluster 0 e Cluster 2 da Turma 1A).",
+          "recursos_necessarios": "Tempo, formulários de pesquisa, transporte, treinamento em escuta ativa e ética."
+        },
+        {
+          "acao": "Encaminhar proativamente alunos e famílias para a rede de proteção social (CRAS, CREAS, Conselho Tutelar, programas de transferência de renda, bancos de alimentos) e acompanhar a efetividade dos encaminhamentos.",
+          "prazo": "curto",
+          "alunos_alvo": "Alunos em situação de insegurança alimentar, baixa renda, trabalho infantil (Cluster 0 e Cluster 2 da Turma 1A).",
+          "recursos_necessarios": "Conhecimento da rede de apoio, contatos institucionais, sistema de registro e acompanhamento."
+        },
+        {
+          "acao": "Atuar na mediação de conflitos familiares e no fortalecimento dos vínculos, buscando engajar as famílias no processo educacional dos filhos.",
+          "prazo": "medio",
+          "alunos_alvo": "Alunos com ambiente familiar tenso ou conflituoso (ex: amostras do Cluster 0 e Cluster 2).",
+          "recursos_necessarios": "Habilidades de mediação, conhecimento de dinâmicas familiares, parcerias com psicólogos."
+        }
+      ]
+    },
+    {
+      "agente": "Coordenador Pedagógico",
+      "acoes": [
+        {
+          "acao": "Promover a formação continuada de professores para lidar com a diversidade de alunos, incluindo estratégias para alunos com deficiências, dificuldades de aprendizado e aqueles em situação de vulnerabilidade.",
+          "prazo": "medio",
+          "alunos_alvo": "Todos os alunos, indiretamente, através da capacitação dos professores.",
+          "recursos_necessarios": "Programas de formação, materiais didáticos, especialistas em educação inclusiva."
+        },
+        {
+          "acao": "Desenvolver e implementar planos de reforço escolar e recuperação de aprendizagem, com metodologias ativas e personalizadas, focando nas lacunas de conhecimento dos alunos de baixo desempenho.",
+          "prazo": "curto",
+          "alunos_alvo": "Alunos dos clusters de baixo desempenho (Cluster 0 e Cluster 2 da Turma 1A).",
+          "recursos_necessarios": "Professores de reforço, materiais didáticos adaptados, espaço adequado."
+        },
+        {
+          "acao": "Articular com a direção e o assistente social para flexibilizar o currículo e os horários de atividades para alunos que trabalham, buscando alternativas para que não percam conteúdo.",
+          "prazo": "curto",
+          "alunos_alvo": "Alunos do Cluster 2 da Turma 1A.",
+          "recursos_necessarios": "Diálogo com professores, flexibilidade administrativa, materiais de estudo autônomo."
+        }
+      ]
+    },
+    {
+      "agente": "Professores",
+      "acoes": [
+        {
+          "acao": "Adotar metodologias de ensino diferenciadas e flexíveis, que considerem o ritmo e as dificuldades individuais dos alunos, utilizando recursos visuais, práticos e tecnológicos.",
+          "prazo": "curto",
+          "alunos_alvo": "Todos os alunos, com foco nos de baixo desempenho e com deficiências.",
+          "recursos_necessarios": "Formação pedagógica, materiais didáticos diversos, acesso a tecnologias."
+        },
+        {
+          "acao": "Oferecer atenção individualizada e feedback construtivo, identificando precocemente as dificuldades e oferecendo suporte extra durante as aulas ou em horários de atendimento.",
+          "prazo": "curto",
+          "alunos_alvo": "Alunos com baixo desempenho e deficiências (Cluster 0, Cluster 1 e Cluster 2 da Turma 1A).",
+          "recursos_necessarios": "Tempo, planejamento de aula, empatia."
+        },
+        {
+          "acao": "Manter comunicação constante e transparente com as famílias sobre o desempenho e o comportamento dos alunos, buscando parcerias para o acompanhamento dos estudos em casa.",
+          "prazo": "curto",
+          "alunos_alvo": "Todos os alunos, especialmente aqueles com baixo apoio familiar (ex: amostras do Cluster 1).",
+          "recursos_necessarios": "Canais de comunicação (reuniões, bilhetes, aplicativos), registro de contatos."
+        }
+      ]
+    },
+    {
+      "agente": "Direção Escolar",
+      "acoes": [
+        {
+          "acao": "Liderar a implementação de um plano de ação integrado, envolvendo todos os agentes escolares e articulando com a rede de apoio externa (saúde, assistência social, conselho tutelar).",
+          "prazo": "curto",
+          "alunos_alvo": "Todos os alunos da escola, com foco nos de maior vulnerabilidade.",
+          "recursos_necessarios": "Capacidade de gestão, liderança, conhecimento da rede de apoio."
+        },
+        {
+          "acao": "Buscar parcerias com ONGs, empresas e universidades para obtenção de recursos (materiais didáticos, equipamentos de informática, programas de mentoria) e apoio a projetos educacionais e sociais.",
+          "prazo": "medio",
+          "alunos_alvo": "Todos os alunos, beneficiando especialmente os de baixa renda e sem acesso a recursos.",
+          "recursos_necessarios": "Habilidades de captação de recursos, rede de contatos, elaboração de projetos."
+        },
+        {
+          "acao": "Garantir a infraestrutura necessária para o bem-estar dos alunos, como refeitório adequado, banheiros limpos, salas de aula confortáveis e espaços para atividades extracurriculares.",
+          "prazo": "medio",
+          "alunos_alvo": "Todos os alunos.",
+          "recursos_necessarios": "Orçamento escolar, manutenção predial, planejamento de espaços."
+        }
+      ]
+    }
+  ],
+  "metricas_sugeridas": [
+    {
+      "metrica": "Taxa de Evasão e Abandono Escolar",
+      "objetivo": "Monitorar a retenção dos alunos na escola, especialmente aqueles em situação de risco.",
+      "como_medir": "Percentual de alunos matriculados que não concluíram o ano letivo ou que se ausentaram por longos períodos sem justificativa, segmentado por cluster e fatores de risco."
+    },
+    {
+      "metrica": "Média de Desempenho Acadêmico por Faixa de Renda/Raça/Cluster",
+      "objetivo": "Avaliar o impacto das intervenções no desempenho dos diferentes grupos de alunos e identificar a persistência de desigualdades.",
+      "como_medir": "Cálculo da média das notas gerais e por disciplina, segmentado por renda familiar, cor/raça e cluster de vulnerabilidade, comparando ao longo do tempo."
+    },
+    {
+      "metrica": "Percentual de Alunos em Insegurança Alimentar Recebendo Apoio",
+      "objetivo": "Verificar a efetividade das ações de assistência social e segurança alimentar.",
+      "como_medir": "Número de alunos identificados em insegurança alimentar que foram encaminhados e estão recebendo apoio (cestas básicas, Bolsa Família, refeições escolares extras), dividido pelo total de alunos em insegurança alimentar."
+    },
+    {
+      "metrica": "Número de Alunos Trabalhando e Carga Horária",
+      "objetivo": "Monitorar a redução do trabalho infantil/adolescente e o impacto das intervenções.",
+      "como_medir": "Registro do número de alunos que trabalham e suas respectivas cargas horárias semanais, comparando antes e depois das intervenções (ex: após encaminhamento ao Conselho Tutelar ou programas de renda)."
+    },
+    {
+      "metrica": "Acesso a Recursos Digitais (Internet e Computador)",
+      "objetivo": "Avaliar o progresso na inclusão digital dos alunos.",
+      "como_medir": "Percentual de alunos que relatam ter acesso à internet de qualidade e a um computador em casa, ou que utilizam os recursos digitais da escola regularmente, segmentado por cluster."
+    },
+    {
+      "metrica": "Frequência Escolar Média",
+      "objetivo": "Acompanhar a assiduidade dos alunos, um indicador importante de engajamento e bem-estar.",
+      "como_medir": "Cálculo da frequência percentual média dos alunos, segmentada por cluster e fatores de risco, comparando com períodos anteriores e metas estabelecidas."
+    }
+  ],
+  "metadata": {
+    "turma_analisada": "1A",
+    "total_turmas": 1,
+    "total_alunos": 180,
+    "data_analise": "2025-11-08 19:17:10"
+  }
+}

@@ -191,200 +191,200 @@ async def update_student(student_id: str, student_update: StudentCreate, db: Asy
 
 
 # ============================================
-# EXAMS (Provas)
+# EXAMS (Provas) - COMENTADO
 # ============================================
 
-@router.post("/exams/", response_model=ExamResponse, status_code=status.HTTP_201_CREATED, tags=["Exams"])
-async def create_exam(exam: ExamCreate, db: AsyncSession = Depends(get_db)):
-    """Criar nova prova"""
-    # Verificar se turma existe
-    result = await db.execute(select(Class).where(Class.id == uuid.UUID(exam.class_id)))
-    if not result.scalar_one_or_none():
-        raise HTTPException(status_code=404, detail="Turma não encontrada")
-    
-    # Verificar se professor existe
-    result = await db.execute(select(Teacher).where(Teacher.id == uuid.UUID(exam.teacher_id)))
-    if not result.scalar_one_or_none():
-        raise HTTPException(status_code=404, detail="Professor não encontrado")
-    
-    new_exam = Exam(**exam.model_dump())
-    db.add(new_exam)
-    await db.commit()
-    await db.refresh(new_exam)
-    return new_exam
+# @router.post("/exams/", response_model=ExamResponse, status_code=status.HTTP_201_CREATED, tags=["Exams"])
+# async def create_exam(exam: ExamCreate, db: AsyncSession = Depends(get_db)):
+#     """Criar nova prova"""
+#     # Verificar se turma existe
+#     result = await db.execute(select(Class).where(Class.id == uuid.UUID(exam.class_id)))
+#     if not result.scalar_one_or_none():
+#         raise HTTPException(status_code=404, detail="Turma não encontrada")
+#     
+#     # Verificar se professor existe
+#     result = await db.execute(select(Teacher).where(Teacher.id == uuid.UUID(exam.teacher_id)))
+#     if not result.scalar_one_or_none():
+#         raise HTTPException(status_code=404, detail="Professor não encontrado")
+#     
+#     new_exam = Exam(**exam.model_dump())
+#     db.add(new_exam)
+#     await db.commit()
+#     await db.refresh(new_exam)
+#     return new_exam
 
 
-@router.get("/exams/", response_model=List[ExamResponse], tags=["Exams"])
-async def get_exams(skip: int = 0, limit: int = 100, class_id: str = None, teacher_id: str = None, db: AsyncSession = Depends(get_db)):
-    """Listar todas as provas"""
-    query = select(Exam)
-    if class_id:
-        query = query.where(Exam.class_id == uuid.UUID(class_id))
-    if teacher_id:
-        query = query.where(Exam.teacher_id == uuid.UUID(teacher_id))
-    
-    result = await db.execute(query.offset(skip).limit(limit))
-    return result.scalars().all()
+# @router.get("/exams/", response_model=List[ExamResponse], tags=["Exams"])
+# async def get_exams(skip: int = 0, limit: int = 100, class_id: str = None, teacher_id: str = None, db: AsyncSession = Depends(get_db)):
+#     """Listar todas as provas"""
+#     query = select(Exam)
+#     if class_id:
+#         query = query.where(Exam.class_id == uuid.UUID(class_id))
+#     if teacher_id:
+#         query = query.where(Exam.teacher_id == uuid.UUID(teacher_id))
+#     
+#     result = await db.execute(query.offset(skip).limit(limit))
+#     return result.scalars().all()
 
 
-@router.get("/exams/{exam_id}", response_model=ExamResponse, tags=["Exams"])
-async def get_exam(exam_id: str, db: AsyncSession = Depends(get_db)):
-    """Buscar prova por ID"""
-    result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(exam_id)))
-    exam = result.scalar_one_or_none()
-    if not exam:
-        raise HTTPException(status_code=404, detail="Prova não encontrada")
-    return exam
-
-
-# ============================================
-# QUESTIONS (Questões)
-# ============================================
-
-@router.post("/questions/", response_model=QuestionResponse, status_code=status.HTTP_201_CREATED, tags=["Questions"])
-async def create_question(question: QuestionCreate, db: AsyncSession = Depends(get_db)):
-    """Criar nova questão"""
-    # Verificar se prova existe
-    result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(question.exam_id)))
-    if not result.scalar_one_or_none():
-        raise HTTPException(status_code=404, detail="Prova não encontrada")
-    
-    new_question = Question(**question.model_dump())
-    db.add(new_question)
-    await db.commit()
-    await db.refresh(new_question)
-    return new_question
-
-
-@router.get("/exams/{exam_id}/questions", response_model=List[QuestionResponse], tags=["Questions"])
-async def get_exam_questions(exam_id: str, db: AsyncSession = Depends(get_db)):
-    """Buscar todas as questões de uma prova"""
-    result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(exam_id)))
-    exam = result.scalar_one_or_none()
-    if not exam:
-        raise HTTPException(status_code=404, detail="Prova não encontrada")
-    
-    # Buscar questões
-    result = await db.execute(select(Question).where(Question.exam_id == uuid.UUID(exam_id)))
-    return result.scalars().all()
+# @router.get("/exams/{exam_id}", response_model=ExamResponse, tags=["Exams"])
+# async def get_exam(exam_id: str, db: AsyncSession = Depends(get_db)):
+#     """Buscar prova por ID"""
+#     result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(exam_id)))
+#     exam = result.scalar_one_or_none()
+#     if not exam:
+#         raise HTTPException(status_code=404, detail="Prova não encontrada")
+#     return exam
 
 
 # ============================================
-# STUDENT EXAMS (Provas dos Alunos)
+# QUESTIONS (Questões) - COMENTADO
 # ============================================
 
-@router.post("/student-exams/", response_model=StudentExamResponse, status_code=status.HTTP_201_CREATED, tags=["Student Exams"])
-async def create_student_exam(student_exam: StudentExamCreate, db: AsyncSession = Depends(get_db)):
-    """Submeter prova escaneada do aluno"""
-    # Verificar se prova existe
-    result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(student_exam.exam_id)))
-    if not result.scalar_one_or_none():
-        raise HTTPException(status_code=404, detail="Prova não encontrada")
-    
-    # Verificar se aluno existe
-    result = await db.execute(select(Student).where(Student.id == uuid.UUID(student_exam.student_id)))
-    if not result.scalar_one_or_none():
-        raise HTTPException(status_code=404, detail="Aluno não encontrado")
-    
-    # Verificar se já existe prova submetida
-    result = await db.execute(
-        select(StudentExam).where(
-            StudentExam.exam_id == uuid.UUID(student_exam.exam_id),
-            StudentExam.student_id == uuid.UUID(student_exam.student_id)
-        )
-    )
-    if result.scalar_one_or_none():
-        raise HTTPException(status_code=400, detail="Aluno já tem prova submetida para este exame")
-    
-    new_student_exam = StudentExam(**student_exam.model_dump())
-    db.add(new_student_exam)
-    await db.commit()
-    await db.refresh(new_student_exam)
-    return new_student_exam
+# @router.post("/questions/", response_model=QuestionResponse, status_code=status.HTTP_201_CREATED, tags=["Questions"])
+# async def create_question(question: QuestionCreate, db: AsyncSession = Depends(get_db)):
+#     """Criar nova questão"""
+#     # Verificar se prova existe
+#     result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(question.exam_id)))
+#     if not result.scalar_one_or_none():
+#         raise HTTPException(status_code=404, detail="Prova não encontrada")
+#     
+#     new_question = Question(**question.model_dump())
+#     db.add(new_question)
+#     await db.commit()
+#     await db.refresh(new_question)
+#     return new_question
 
 
-@router.get("/student-exams/{student_exam_id}", response_model=StudentExamResponse, tags=["Student Exams"])
-async def get_student_exam(student_exam_id: str, db: AsyncSession = Depends(get_db)):
-    """Buscar prova do aluno por ID"""
-    result = await db.execute(select(StudentExam).where(StudentExam.id == uuid.UUID(student_exam_id)))
-    student_exam = result.scalar_one_or_none()
-    if not student_exam:
-        raise HTTPException(status_code=404, detail="Prova do aluno não encontrada")
-    return student_exam
-
-
-@router.get("/exams/{exam_id}/student-exams", response_model=List[StudentExamResponse], tags=["Student Exams"])
-async def get_exam_student_exams(exam_id: str, db: AsyncSession = Depends(get_db)):
-    """Buscar todas as provas submetidas para um exame"""
-    result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(exam_id)))
-    exam = result.scalar_one_or_none()
-    if not exam:
-        raise HTTPException(status_code=404, detail="Prova não encontrada")
-    
-    # Buscar provas dos alunos
-    result = await db.execute(select(StudentExam).where(StudentExam.exam_id == uuid.UUID(exam_id)))
-    return result.scalars().all()
+# @router.get("/exams/{exam_id}/questions", response_model=List[QuestionResponse], tags=["Questions"])
+# async def get_exam_questions(exam_id: str, db: AsyncSession = Depends(get_db)):
+#     """Buscar todas as questões de uma prova"""
+#     result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(exam_id)))
+#     exam = result.scalar_one_or_none()
+#     if not exam:
+#         raise HTTPException(status_code=404, detail="Prova não encontrada")
+#     
+#     # Buscar questões
+#     result = await db.execute(select(Question).where(Question.exam_id == uuid.UUID(exam_id)))
+#     return result.scalars().all()
 
 
 # ============================================
-# STUDENT ANSWERS (Respostas dos Alunos)
+# STUDENT EXAMS (Provas dos Alunos) - COMENTADO
 # ============================================
 
-@router.post("/student-answers/", response_model=StudentAnswerResponse, status_code=status.HTTP_201_CREATED, tags=["Student Answers"])
-async def create_student_answer(answer: StudentAnswerCreate, db: AsyncSession = Depends(get_db)):
-    """Criar resposta do aluno para uma questão"""
-    new_answer = StudentAnswer(**answer.model_dump())
-    db.add(new_answer)
-    await db.commit()
-    await db.refresh(new_answer)
-    return new_answer
+# @router.post("/student-exams/", response_model=StudentExamResponse, status_code=status.HTTP_201_CREATED, tags=["Student Exams"])
+# async def create_student_exam(student_exam: StudentExamCreate, db: AsyncSession = Depends(get_db)):
+#     """Submeter prova escaneada do aluno"""
+#     # Verificar se prova existe
+#     result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(student_exam.exam_id)))
+#     if not result.scalar_one_or_none():
+#         raise HTTPException(status_code=404, detail="Prova não encontrada")
+#     
+#     # Verificar se aluno existe
+#     result = await db.execute(select(Student).where(Student.id == uuid.UUID(student_exam.student_id)))
+#     if not result.scalar_one_or_none():
+#         raise HTTPException(status_code=404, detail="Aluno não encontrado")
+#     
+#     # Verificar se já existe prova submetida
+#     result = await db.execute(
+#         select(StudentExam).where(
+#             StudentExam.exam_id == uuid.UUID(student_exam.exam_id),
+#             StudentExam.student_id == uuid.UUID(student_exam.student_id)
+#         )
+#     )
+#     if result.scalar_one_or_none():
+#         raise HTTPException(status_code=400, detail="Aluno já tem prova submetida para este exame")
+#     
+#     new_student_exam = StudentExam(**student_exam.model_dump())
+#     db.add(new_student_exam)
+#     await db.commit()
+#     await db.refresh(new_student_exam)
+#     return new_student_exam
 
 
-@router.get("/student-exams/{student_exam_id}/answers", response_model=List[StudentAnswerResponse], tags=["Student Answers"])
-async def get_student_exam_answers(student_exam_id: str, db: AsyncSession = Depends(get_db)):
-    """Buscar todas as respostas de uma prova do aluno"""
-    result = await db.execute(select(StudentExam).where(StudentExam.id == uuid.UUID(student_exam_id)))
-    student_exam = result.scalar_one_or_none()
-    if not student_exam:
-        raise HTTPException(status_code=404, detail="Prova do aluno não encontrada")
-    
-    # Buscar respostas
-    result = await db.execute(select(StudentAnswer).where(StudentAnswer.student_exam_id == uuid.UUID(student_exam_id)))
-    return result.scalars().all()
+# @router.get("/student-exams/{student_exam_id}", response_model=StudentExamResponse, tags=["Student Exams"])
+# async def get_student_exam(student_exam_id: str, db: AsyncSession = Depends(get_db)):
+#     """Buscar prova do aluno por ID"""
+#     result = await db.execute(select(StudentExam).where(StudentExam.id == uuid.UUID(student_exam_id)))
+#     student_exam = result.scalar_one_or_none()
+#     if not student_exam:
+#         raise HTTPException(status_code=404, detail="Prova do aluno não encontrada")
+#     return student_exam
+
+
+# @router.get("/exams/{exam_id}/student-exams", response_model=List[StudentExamResponse], tags=["Student Exams"])
+# async def get_exam_student_exams(exam_id: str, db: AsyncSession = Depends(get_db)):
+#     """Buscar todas as provas submetidas para um exame"""
+#     result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(exam_id)))
+#     exam = result.scalar_one_or_none()
+#     if not exam:
+#         raise HTTPException(status_code=404, detail="Prova não encontrada")
+#     
+#     # Buscar provas dos alunos
+#     result = await db.execute(select(StudentExam).where(StudentExam.exam_id == uuid.UUID(exam_id)))
+#     return result.scalars().all()
 
 
 # ============================================
-# EXAM INSIGHTS (Análises das Provas)
+# STUDENT ANSWERS (Respostas dos Alunos) - COMENTADO
 # ============================================
 
-@router.post("/exam-insights/", response_model=ExamInsightResponse, status_code=status.HTTP_201_CREATED, tags=["Exam Insights"])
-async def create_exam_insight(insight: ExamInsightCreate, db: AsyncSession = Depends(get_db)):
-    """Criar análise/insights da prova"""
-    # Verificar se prova existe
-    result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(insight.exam_id)))
-    if not result.scalar_one_or_none():
-        raise HTTPException(status_code=404, detail="Prova não encontrada")
-    
-    # Verificar se já existe análise
-    result = await db.execute(select(ExamInsight).where(ExamInsight.exam_id == uuid.UUID(insight.exam_id)))
-    if result.scalar_one_or_none():
-        raise HTTPException(status_code=400, detail="Já existe análise para esta prova")
-    
-    new_insight = ExamInsight(**insight.model_dump())
-    db.add(new_insight)
-    await db.commit()
-    await db.refresh(new_insight)
-    return new_insight
+# @router.post("/student-answers/", response_model=StudentAnswerResponse, status_code=status.HTTP_201_CREATED, tags=["Student Answers"])
+# async def create_student_answer(answer: StudentAnswerCreate, db: AsyncSession = Depends(get_db)):
+#     """Criar resposta do aluno para uma questão"""
+#     new_answer = StudentAnswer(**answer.model_dump())
+#     db.add(new_answer)
+#     await db.commit()
+#     await db.refresh(new_answer)
+#     return new_answer
 
 
-@router.get("/exams/{exam_id}/insights", response_model=ExamInsightResponse, tags=["Exam Insights"])
-async def get_exam_insights(exam_id: str, db: AsyncSession = Depends(get_db)):
-    """Buscar análise/insights de uma prova"""
-    result = await db.execute(select(ExamInsight).where(ExamInsight.exam_id == uuid.UUID(exam_id)))
-    insight = result.scalar_one_or_none()
-    if not insight:
-        raise HTTPException(status_code=404, detail="Análise não encontrada")
-    return insight
+# @router.get("/student-exams/{student_exam_id}/answers", response_model=List[StudentAnswerResponse], tags=["Student Answers"])
+# async def get_student_exam_answers(student_exam_id: str, db: AsyncSession = Depends(get_db)):
+#     """Buscar todas as respostas de uma prova do aluno"""
+#     result = await db.execute(select(StudentExam).where(StudentExam.id == uuid.UUID(student_exam_id)))
+#     student_exam = result.scalar_one_or_none()
+#     if not student_exam:
+#         raise HTTPException(status_code=404, detail="Prova do aluno não encontrada")
+#     
+#     # Buscar respostas
+#     result = await db.execute(select(StudentAnswer).where(StudentAnswer.student_exam_id == uuid.UUID(student_exam_id)))
+#     return result.scalars().all()
+
+
+# ============================================
+# EXAM INSIGHTS (Análises das Provas) - COMENTADO
+# ============================================
+
+# @router.post("/exam-insights/", response_model=ExamInsightResponse, status_code=status.HTTP_201_CREATED, tags=["Exam Insights"])
+# async def create_exam_insight(insight: ExamInsightCreate, db: AsyncSession = Depends(get_db)):
+#     """Criar análise/insights da prova"""
+#     # Verificar se prova existe
+#     result = await db.execute(select(Exam).where(Exam.id == uuid.UUID(insight.exam_id)))
+#     if not result.scalar_one_or_none():
+#         raise HTTPException(status_code=404, detail="Prova não encontrada")
+#     
+#     # Verificar se já existe análise
+#     result = await db.execute(select(ExamInsight).where(ExamInsight.exam_id == uuid.UUID(insight.exam_id)))
+#     if result.scalar_one_or_none():
+#         raise HTTPException(status_code=400, detail="Já existe análise para esta prova")
+#     
+#     new_insight = ExamInsight(**insight.model_dump())
+#     db.add(new_insight)
+#     await db.commit()
+#     await db.refresh(new_insight)
+#     return new_insight
+
+
+# @router.get("/exams/{exam_id}/insights", response_model=ExamInsightResponse, tags=["Exam Insights"])
+# async def get_exam_insights(exam_id: str, db: AsyncSession = Depends(get_db)):
+#     """Buscar análise/insights de uma prova"""
+#     result = await db.execute(select(ExamInsight).where(ExamInsight.exam_id == uuid.UUID(exam_id)))
+#     insight = result.scalar_one_or_none()
+#     if not insight:
+#         raise HTTPException(status_code=404, detail="Análise não encontrada")
+#     return insight
 
 
 # ============================================

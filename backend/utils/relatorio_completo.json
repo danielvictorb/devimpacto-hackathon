@@ -1,0 +1,348 @@
+{
+  "parte_1_analise_geral": {
+    "analise_geral_alunos": {
+      "resumo_estatistico": "A análise consolidada dos dados de todas as 6 turmas, totalizando 180 alunos, revela um cenário desafiador no desempenho acadêmico. A vasta maioria dos estudantes, 69.4% (125 alunos), encontra-se na faixa de desempenho 'Baixo' (notas entre 0 e 4), com uma média crítica de 1.09. Uma parcela intermediária, 21.7% (39 alunos), está na faixa 'Médio' (notas entre 4 e 7), com média de 5.43. Apenas 8.9% (16 alunos) atingem a faixa 'Alto' (notas entre 7 e 10), com uma média de 7.49. Este panorama estatístico sublinha a urgência de intervenções para elevar o nível de aprendizado e reduzir a defasagem.",
+      "padroes_gerais": "Observa-se um padrão geral de baixo desempenho que se correlaciona fortemente com fatores socioeconômicos. Os alunos na faixa de desempenho 'Baixo' apresentam um percentual significativamente maior de trabalho (53.6%), uma renda familiar média mais baixa (R$ 1.692,00) e uma alta concentração de alunos pretos e pardos (84.0%). Em contraste, os alunos na faixa 'Alto' têm um percentual muito menor de trabalho (12.5%) e uma renda média mais elevada (R$ 2.610,00). Fatores críticos como a necessidade de trabalhar (84 alunos), baixa renda (72 alunos), deslocamento longo (72 alunos), insegurança alimentar (74 alunos) e falta de acesso à internet (41 alunos) afetam uma parcela considerável do corpo discente, com 55 alunos classificados como de alto risco. A alta representatividade de 122 alunos pretos, pardos ou indígenas no total de 180 estudantes também é um dado relevante que se alinha com as disparidades de desempenho.",
+      "interpretacao_ia": "A inteligência artificial identifica uma intrínseca e preocupante relação causal entre as condições socioeconômicas e o desempenho acadêmico. A predominância de alunos em situação de vulnerabilidade (baixa renda, necessidade de trabalho, insegurança alimentar, deslocamento prolongado e ausência de acesso digital) na faixa de baixo desempenho não é meramente uma correlação, mas um indicativo de que essas condições atuam como barreiras estruturais ao aprendizado. A desproporcionalidade de alunos pretos e pardos na faixa de desempenho 'Baixo' (84%) sugere que desigualdades históricas e sistêmicas continuam a impactar o acesso e a permanência com sucesso na educação. A IA interpreta que a superação do baixo desempenho exige uma abordagem holística que transcenda o pedagógico, abordando as raízes sociais e econômicas que limitam o potencial dos estudantes."
+    },
+    "plano_acao_geral": [
+      {
+        "acao_numero": 1,
+        "titulo": "Programa de Reforço e Tutoria Acadêmica",
+        "descricao": "Implementar um programa intensivo de reforço escolar, com foco nas disciplinas que apresentam maiores dificuldades, por meio de aulas extras e tutoria individualizada ou em pequenos grupos. Incentivar a monitoria por parte de alunos com alto desempenho, sob a supervisão de professores, para promover a colaboração e o aprendizado entre pares. O programa deve ser flexível para atender às necessidades de alunos que trabalham.",
+        "tipo": "pedagogico",
+        "prazo": "curto",
+        "responsavel": "Coordenação Pedagógica e Corpo Docente",
+        "impacto_esperado": "Melhoria direta e mensurável nas notas dos alunos nas faixas de baixo e médio desempenho, aumento do engajamento com o conteúdo e redução da defasagem de aprendizado."
+      },
+      {
+        "acao_numero": 2,
+        "titulo": "Rede de Apoio Socioeconômico e Psicológico",
+        "descricao": "Fortalecer a equipe de assistência social e orientação educacional para identificar proativamente e encaminhar alunos em situação de vulnerabilidade (baixa renda, insegurança alimentar, trabalho infantil/adolescente) para programas de assistência social governamentais, bolsas de estudo e apoio psicológico. Estabelecer um canal de comunicação direto e empático com as famílias para entender suas necessidades e oferecer suporte adequado.",
+        "tipo": "psicossocial",
+        "prazo": "curto",
+        "responsavel": "Orientação Educacional, Assistência Social e Direção Escolar",
+        "impacto_esperado": "Redução das barreiras não-acadêmicas ao aprendizado, melhoria do bem-estar geral dos alunos, aumento da frequência e da capacidade de concentração nos estudos."
+      },
+      {
+        "acao_numero": 3,
+        "titulo": "Parceria para Otimização de Transporte e Acesso Digital",
+        "descricao": "Estabelecer contato formal com a prefeitura e órgãos de transporte para otimizar as rotas e horários do transporte escolar, visando reduzir significativamente o tempo de deslocamento dos alunos. Buscar parcerias com empresas de tecnologia, ONGs ou programas governamentais para fornecer acesso à internet e/ou dispositivos (computadores/tablets) para alunos sem recursos, além de criar ou aprimorar um laboratório de informática acessível na escola.",
+        "tipo": "externo",
+        "prazo": "medio",
+        "responsavel": "Direção Escolar e Grêmio Estudantil",
+        "impacto_esperado": "Aumento do tempo disponível para estudo e descanso dos alunos, maior acesso a recursos educacionais digitais e redução da exclusão digital, promovendo equidade de oportunidades."
+      },
+      {
+        "acao_numero": 4,
+        "titulo": "Revisão Curricular e Metodologias Engajadoras",
+        "descricao": "Avaliar a possibilidade de implementar flexibilizações curriculares para alunos que comprovadamente trabalham, oferecendo horários alternativos, módulos adaptados ou atividades complementares. Adotar e capacitar o corpo docente em metodologias ativas de ensino que promovam maior participação, engajamento e relevância do conteúdo para a realidade dos alunos, tornando o processo de aprendizado mais dinâmico e menos passivo.",
+        "tipo": "pedagogico",
+        "prazo": "medio",
+        "responsavel": "Coordenação Pedagógica e Corpo Docente",
+        "impacto_esperado": "Maior retenção e engajamento dos alunos que conciliam estudo e trabalho, e melhoria geral na motivação e no desempenho acadêmico de toda a comunidade escolar."
+      },
+      {
+        "acao_numero": 5,
+        "titulo": "Programa de Equidade e Valorização da Diversidade",
+        "descricao": "Desenvolver um programa contínuo de conscientização e valorização da diversidade, com foco explícito na equidade racial. Oferecer suporte específico para alunos pretos, pardos e indígenas, incluindo mentoria, grupos de apoio e atividades que celebrem suas culturas e identidades. O objetivo é combater o racismo estrutural, promover um ambiente escolar mais inclusivo e garantir que todos os alunos se sintam valorizados e representados.",
+        "tipo": "psicossocial",
+        "prazo": "longo",
+        "responsavel": "Orientação Educacional, Professores e Comunidade Escolar",
+        "impacto_esperado": "Redução das disparidades de desempenho relacionadas à raça, aumento da autoestima e do senso de pertencimento dos alunos, e promoção de um ambiente escolar mais justo, acolhedor e equitativo para todos."
+      }
+    ],
+    "insights_correlacoes": {
+      "observacoes": "A análise dos dados revela que o desempenho acadêmico na instituição está intrinsecamente ligado a um complexo conjunto de fatores socioeconômicos e demográficos. A maioria dos alunos enfrenta múltiplas vulnerabilidades que se manifestam diretamente em seu rendimento escolar. A alta concentração de alunos pretos e pardos na faixa de baixo desempenho é um indicador alarmante de desigualdades estruturais que persistem no ambiente educacional. A necessidade de trabalhar, a baixa renda familiar e a insegurança alimentar não são apenas 'problemas sociais', mas barreiras concretas e diárias que impedem o acesso pleno ao direito à educação de qualidade.",
+      "correlacoes_identificadas": [
+        {
+          "variavel_1": "Desempenho Acadêmico (Faixa de Notas)",
+          "variavel_2": "Percentual de Alunos que Trabalham",
+          "relacao": "Existe uma forte correlação negativa: quanto menor o desempenho acadêmico, maior o percentual de alunos que precisam trabalhar. Na faixa 'Baixo', 53.6% dos alunos trabalham, enquanto na faixa 'Alto', apenas 12.5% o fazem.",
+          "significancia": "A necessidade de trabalhar é um fator limitante direto para o tempo de estudo, descanso e engajamento escolar, impactando negativamente o desempenho acadêmico e a permanência com sucesso na escola."
+        },
+        {
+          "variavel_1": "Desempenho Acadêmico (Faixa de Notas)",
+          "variavel_2": "Renda Média Familiar",
+          "relacao": "Observa-se uma correlação positiva: a renda média familiar aumenta progressivamente conforme o desempenho acadêmico melhora. A faixa 'Baixo' tem renda média de R$1.692,00, enquanto a faixa 'Alto' alcança R$2.610,00.",
+          "significancia": "A baixa renda familiar está associada a menos recursos para estudos (materiais, internet, alimentação), piores condições de moradia e, frequentemente, à necessidade de os alunos contribuírem com a renda familiar, perpetuando o ciclo de baixo desempenho."
+        },
+        {
+          "variavel_1": "Desempenho Acadêmico (Faixa de Notas)",
+          "variavel_2": "Percentual de Alunos Pretos/Pardos",
+          "relacao": "Há uma correlação negativa acentuada: a faixa de desempenho 'Baixo' concentra 84.0% de alunos pretos/pardos, uma proporção significativamente maior do que nas faixas 'Médio' (28.2%) e 'Alto' (37.5%).",
+          "significancia": "Esta disparidade racial no desempenho acadêmico sugere que fatores socioeconômicos e estruturais, como o racismo institucional e a falta de oportunidades históricas, afetam desproporcionalmente essas populações, criando barreiras adicionais ao sucesso educacional."
+        },
+        {
+          "variavel_1": "Desempenho Acadêmico (Faixa de Notas)",
+          "variavel_2": "Insegurança Alimentar",
+          "relacao": "Embora não haja percentuais diretos por faixa, o dado geral de 74 alunos em situação de insegurança alimentar, combinado com a concentração de baixa renda na faixa 'Baixo', indica uma forte correlação negativa.",
+          "significancia": "A nutrição inadequada impacta diretamente a saúde física e mental dos alunos, afetando a capacidade de concentração, a energia para o estudo e a frequência escolar, sendo um obstáculo fundamental para o aprendizado efetivo."
+        },
+        {
+          "variavel_1": "Desempenho Acadêmico (Faixa de Notas)",
+          "variavel_2": "Acesso à Internet e Deslocamento Longo",
+          "relacao": "A falta de acesso à internet (41 alunos) e o deslocamento longo (72 alunos) são fatores críticos que se correlacionam negativamente com o desempenho, provavelmente concentrados nas faixas de menor renda e desempenho.",
+          "significancia": "A ausência de acesso digital limita o acesso a recursos educacionais complementares e a comunicação, enquanto o deslocamento prolongado consome tempo valioso de estudo e descanso, ampliando a lacuna de aprendizado e o cansaço dos estudantes."
+        }
+      ],
+      "causas_subjacentes": "As causas subjacentes para o baixo desempenho acadêmico são multifacetadas e profundamente enraizadas em questões de desigualdade social e econômica. A pobreza e a necessidade de complementar a renda familiar forçam muitos alunos a ingressar no mercado de trabalho precocemente, subtraindo tempo e energia essenciais para os estudos. A insegurança alimentar compromete a saúde e a capacidade cognitiva, dificultando a concentração e o engajamento em sala de aula. A falta de acesso a recursos digitais e o tempo excessivo gasto em deslocamento criam barreiras adicionais ao aprendizado e à participação plena na vida escolar. A desproporcionalidade de alunos pretos, pardos e indígenas nas faixas de baixo desempenho aponta para um impacto persistente de desigualdades históricas e racismo estrutural, que se manifestam em menor acesso a recursos, oportunidades e um ambiente de aprendizado que nem sempre é plenamente acolhedor e equitativo. Esses fatores combinados criam um ciclo de desvantagem que impede o pleno desenvolvimento acadêmico e pessoal dos alunos, exigindo intervenções sistêmicas e direcionadas."
+    }
+  },
+  "parte_2_analise_por_turma": [
+    {
+      "turma": "1A",
+      "analise_plano_acao": {
+        "sintese_desempenho": "A Turma 1A, composta por 30 alunos, apresenta um desempenho geral preocupante, com uma média de 2.27, significativamente abaixo da média esperada. A grande maioria dos alunos (70%) está na faixa de desempenho 'Baixo', e apenas 6.7% na faixa 'Alto'. A turma também reflete as vulnerabilidades gerais da escola, com 33.3% dos alunos trabalhando, uma renda média de R$1862 e 76.7% de alunos autodeclarados pretos/pardos, indicando a necessidade de intervenções focadas.",
+        "principais_desafios": "Os principais desafios da Turma 1A incluem o baixo rendimento generalizado, a alta proporção de alunos que precisam trabalhar, e a presença de múltiplas vulnerabilidades socioeconômicas que impactam diretamente a capacidade de aprendizado e engajamento. A heterogeneidade de desempenho, indicada pelo desvio padrão de 2.67, também exige abordagens pedagógicas diferenciadas e personalizadas para atender às necessidades de cada estudante.",
+        "recomendacoes_especificas": [
+          {
+            "recomendacao": "Implementar um programa intensivo de recuperação de aprendizagem para a Turma 1A, com foco em habilidades básicas de leitura, escrita e raciocínio lógico-matemático, utilizando metodologias ativas e lúdicas.",
+            "justificativa": "A média da turma (2.27) e a alta concentração na faixa 'Baixo' indicam defasagens fundamentais que precisam ser endereçadas de forma sistemática e com urgência para evitar a progressão da defasagem.",
+            "prazo": "curto"
+          },
+          {
+            "recomendacao": "Designar um professor tutor para a Turma 1A, responsável por acompanhar de perto o progresso de cada aluno, identificar dificuldades individuais, e servir como ponto de contato para as famílias, promovendo uma comunicação constante e eficaz.",
+            "justificativa": "O acompanhamento individualizado é crucial para turmas com alto índice de vulnerabilidade e baixo desempenho, permitindo intervenções mais rápidas e personalizadas, além de fortalecer o vínculo aluno-escola.",
+            "prazo": "curto"
+          },
+          {
+            "recomendacao": "Promover rodas de conversa e atividades que abordem a importância da educação, gestão do tempo para estudantes trabalhadores, e ofereçam suporte psicossocial, em parceria com a Orientação Educacional e psicólogos escolares.",
+            "justificativa": "Muitos alunos enfrentam desafios externos à escola que afetam seu desempenho. Criar um espaço de escuta, apoio e orientação pode mitigar esses impactos, promovendo o bem-estar e a resiliência dos estudantes.",
+            "prazo": "médio"
+          }
+        ]
+      },
+      "correlacao_clusterizacao": {
+        "descricao_clusters": "A análise de clusterização da Turma 1A revelou três grupos distintos, cada um com características e desafios específicos que demandam intervenções direcionadas:\n\n*   **Cluster 0 (13 alunos):** Caracterizado por um desempenho extremamente baixo (média de 1.58), renda familiar crítica (R$1080.76), alta insegurança alimentar (84.6%) e significativa falta de acesso à internet (69.2%). O tempo de deslocamento médio é de 72 minutos, e 80% são pretos/pardos. Este grupo representa a maior vulnerabilidade social e acadêmica.\n*   **Cluster 1 (8 alunos):** Apresenta um desempenho médio (média de 5.08), renda familiar moderada (R$2931.12), e baixo percentual de alunos trabalhando (12.5%). Este grupo não apresenta insegurança alimentar ou falta de internet. No entanto, o tempo de deslocamento médio é muito longo (120 minutos), e 77.8% são pretos/pardos. O 'nível de risco: Alto' atribuído a este cluster, apesar de seu desempenho médio, sugere que outros fatores (como o deslocamento e apoio familiar) contribuem para a vulnerabilidade.\n*   **Cluster 2 (9 alunos):** Este cluster se destaca por ter 100% dos alunos trabalhando, com um desempenho acadêmico muito baixo (média de 0.76). A renda média é de R$2038.55, e o tempo de deslocamento médio é de 85 minutos. 22.2% enfrentam insegurança alimentar. 72.7% são pretos/pardos. Este grupo é fortemente impactado pela dupla jornada de trabalho e estudo.",
+        "correlacoes_internas": "No **Cluster 0**, a combinação de baixíssimo desempenho, renda crítica, alta insegurança alimentar e falta de internet cria um ciclo vicioso de privação que impede o aprendizado e o desenvolvimento pleno do aluno. No **Cluster 1**, apesar de um desempenho razoável e melhores condições socioeconômicas em alguns aspectos, o tempo de deslocamento extremamente longo pode ser um fator de estresse e fadiga, impactando a consistência do aprendizado e a participação em atividades extracurriculares. No **Cluster 2**, a necessidade de trabalhar em tempo integral (100% dos alunos) é a principal correlação com o desempenho acadêmico extremamente baixo. O tempo de deslocamento longo agrava ainda mais essa situação, limitando o tempo para estudo, descanso e participação plena na vida escolar.",
+        "padroes_comportamentais": "Os alunos do **Cluster 0** provavelmente apresentam dificuldades de concentração, fadiga e problemas de saúde devido à insegurança alimentar, além de limitações no acesso a recursos educacionais digitais. O **Cluster 1** pode incluir alunos que, apesar de um desempenho razoável, demonstram sinais de cansaço ou desmotivação devido à rotina exaustiva de deslocamento, e possivelmente falta de apoio familiar aos estudos. Já o **Cluster 2** é composto por alunos sobrecarregados pela dupla jornada de trabalho e estudo, com pouco tempo e energia para se dedicar às atividades escolares, o que se reflete diretamente em seu baixo rendimento e potencial desengajamento.",
+        "oportunidades_intervencao": [
+          {
+            "oportunidade": "Suporte emergencial e integral para alunos com múltiplas privações socioeconômicas.",
+            "grupo_alvo": "Turma 1A - Cluster 0 (13 alunos)",
+            "acao_sugerida": "Priorizar o encaminhamento desses alunos para programas de assistência social, garantir acesso a refeições nutritivas na escola (reforço do programa de merenda escolar) e buscar doações de dispositivos e acesso à internet para uso doméstico ou em espaços escolares."
+          },
+          {
+            "oportunidade": "Otimização do tempo e recursos para estudantes com longos deslocamentos.",
+            "grupo_alvo": "Turma 1A - Cluster 1 (8 alunos)",
+            "acao_sugerida": "Investigar opções de transporte escolar mais eficientes, oferecer materiais de estudo online ou impressos para otimizar o tempo de deslocamento, e flexibilizar horários de entrega de trabalhos ou participação em atividades complementares."
+          },
+          {
+            "oportunidade": "Apoio pedagógico e flexibilização para estudantes trabalhadores.",
+            "grupo_alvo": "Turma 1A - Cluster 2 (9 alunos)",
+            "acao_sugerida": "Criar um plano de estudo individualizado para cada um dos alunos trabalhadores, com horários flexíveis para atividades e avaliações, e oferecer aulas de reforço em horários compatíveis com suas jornadas de trabalho, além de apoio psicossocial para lidar com o estresse da dupla jornada."
+          },
+          {
+            "oportunidade": "Acompanhamento psicopedagógico e adaptações para alunos com necessidades educacionais especiais ou ambientes familiares desafiadores.",
+            "grupo_alvo": "Alunos específicos da Turma 1A (e.g., Vinicius Moreira Araújo - TDAH, José Dias Garcia - Dislexia, Pedro Gonçalves Costa - Autismo leve, Claudia Moreira Moreira - ambiente familiar conflituoso, Ricardo Souza Araújo - baixo apoio familiar).",
+            "acao_sugerida": "Encaminhamento para atendimento psicopedagógico e psicológico, adaptação de materiais e avaliações conforme as deficiências, e comunicação próxima com as famílias para suporte e orientação sobre o ambiente de estudo em casa."
+          }
+        ]
+      }
+    },
+    {
+      "turma": "1B",
+      "analise_plano_acao": {
+        "sintese_desempenho": "Análise disponível mas formato não padronizado.",
+        "principais_desafios": "Verificar análise individual da turma.",
+        "recomendacoes_especificas": []
+      },
+      "correlacao_clusterizacao": {
+        "descricao_clusters": "",
+        "correlacoes_internas": "",
+        "padroes_comportamentais": "",
+        "oportunidades_intervencao": []
+      }
+    },
+    {
+      "turma": "2A",
+      "analise_plano_acao": {
+        "sintese_desempenho": "Análise disponível mas formato não padronizado.",
+        "principais_desafios": "Verificar análise individual da turma.",
+        "recomendacoes_especificas": []
+      },
+      "correlacao_clusterizacao": {
+        "descricao_clusters": "",
+        "correlacoes_internas": "",
+        "padroes_comportamentais": "",
+        "oportunidades_intervencao": []
+      }
+    },
+    {
+      "turma": "2B",
+      "analise_plano_acao": {
+        "sintese_desempenho": "A Turma 2B, composta por 30 alunos, apresenta um desempenho geral alarmante, com uma média de 2.54, significativamente abaixo do esperado. A maioria esmagadora, 73.3% dos alunos (22 indivíduos), encontra-se na faixa de desempenho 'Baixo', com notas que indicam defasagem severa. Apenas 6.7% (2 alunos) atingem a faixa 'Alto', e 20% (6 alunos) estão na faixa 'Médio'. A alta dispersão das notas (desvio padrão de 2.42) indica grande heterogeneidade no aprendizado, com alguns alunos em situação crítica e outros com desempenho mais regular.",
+        "principais_desafios": "Os desafios da Turma 2B são complexos e multifatoriais. 60% dos alunos trabalham, o que provavelmente impacta o tempo de estudo, a frequência e a capacidade de concentração. A renda média da turma (R$1.925,00) é relativamente baixa, e 70% dos alunos são Pretos/Pardos, refletindo as desigualdades observadas no cenário geral. A turma possui alunos com deficiências (Dislexia, Visual leve, Auditiva leve, TDAH) e em situações de grave insegurança alimentar, além de ambientes familiares conflituosos ou com baixo apoio aos estudos, conforme amostras de alunos. O tempo de deslocamento também é um fator relevante para alguns estudantes.",
+        "recomendacoes_especificas": [
+          {
+            "recomendacao": "Implementar um plano de recuperação intensivo e individualizado para os 22 alunos na faixa 'Baixo', com foco em habilidades básicas de leitura, escrita e raciocínio lógico-matemático, utilizando metodologias ativas e acompanhamento próximo.",
+            "justificativa": "A média da turma é crítica, e a maioria dos alunos está com defasagem severa. A intervenção deve ser direcionada e intensiva para reverter o quadro de baixo desempenho.",
+            "prazo": "curto"
+          },
+          {
+            "recomendacao": "Estabelecer um canal de comunicação direto e frequente com as famílias dos alunos da Turma 2B, especialmente aquelas com baixo apoio aos estudos ou em ambientes conflituosos, buscando parcerias para o acompanhamento pedagógico e psicossocial.",
+            "justificativa": "O engajamento familiar é crucial para o sucesso escolar, e a identificação de ambientes conflituosos ou falta de apoio exige intervenção e suporte para criar um ambiente propício ao estudo.",
+            "prazo": "medio"
+          },
+          {
+            "recomendacao": "Oferecer horários flexíveis para atividades complementares e acesso ao laboratório de informática para os alunos que trabalham ou não possuem acesso adequado à internet, garantindo que não sejam prejudicados em seu processo de aprendizagem.",
+            "justificativa": "60% dos alunos trabalham, e muitos não têm acesso à internet. A flexibilidade é essencial para a permanência e o sucesso desses estudantes, permitindo que conciliem suas responsabilidades.",
+            "prazo": "curto"
+          },
+          {
+            "recomendacao": "Realizar triagem e encaminhamento para serviços de saúde e assistência social para alunos com deficiências não diagnosticadas ou com necessidades específicas (ex: Dislexia, TDAH, deficiências sensoriais), e para aqueles em situação de insegurança alimentar grave.",
+            "justificativa": "Alunos com deficiências e insegurança alimentar precisam de suporte especializado para garantir seu direito à educação e bem-estar, que são pré-requisitos para o aprendizado efetivo.",
+            "prazo": "medio"
+          }
+        ]
+      },
+      "correlacao_clusterizacao": {
+        "descricao_clusters": "A análise da Turma 2B revelou a existência de três clusters distintos, cada um com características e necessidades específicas, que demandam intervenções direcionadas:\n*   **Cluster 0 (14 alunos, Nível de Risco: Alto):** Este é o maior grupo de risco, com uma média de notas extremamente baixa (1.12). Caracteriza-se por uma alta proporção de alunos que trabalham (85.7%), 100% de alunos Pretos/Pardos, e uma significativa parcela em insegurança alimentar (42.9%). Muitos enfrentam ambientes familiares conflituosos e/ou têm baixo apoio aos estudos, conforme a amostra de alunos.\n*   **Cluster 1 (10 alunos, Nível de Risco: Médio):** Este grupo apresenta um desempenho moderado (média de 5.23). Cerca de metade dos alunos trabalha (50%), e a renda média é de R$2.371,00. Embora com desempenho melhor que o Cluster 0, ainda há desafios, como a necessidade de conciliar trabalho e estudo, e uma parcela de alunos Pretos/Pardos (30%).\n*   **Cluster 2 (6 alunos, Nível de Risco: Alto):** Este grupo, embora menor, também apresenta um nível de risco alto, com média de notas crítica (1.33). Destaca-se pela renda média muito baixa (R$938,00), longo tempo de deslocamento (70min), alta insegurança alimentar (88.5%) e falta de acesso à internet (66.7%).",
+        "correlacoes_internas": "No **Cluster 0**, observa-se uma forte correlação entre o baixo desempenho (média 1.12), a necessidade de trabalhar (85.7% trabalham), a identidade racial (100% Pretos/Pardos) e a insegurança alimentar (42.9%). O ambiente familiar conflituoso e o baixo apoio aos estudos também são fatores recorrentes que agravam a situação. No **Cluster 1**, a média de notas moderada (5.23) está correlacionada com uma renda familiar um pouco mais elevada e um percentual menor de alunos Pretos/Pardos em comparação com o Cluster 0. O trabalho ainda é um fator presente para metade do grupo, indicando a necessidade de suporte para conciliar as responsabilidades. No **Cluster 2**, o desempenho crítico (média 1.33) está fortemente correlacionado com a extrema vulnerabilidade socioeconômica: renda familiar muito baixa, insegurança alimentar quase universal e falta de acesso à internet. O longo tempo de deslocamento agrava a situação, limitando o tempo disponível para estudo e descanso.",
+        "padroes_comportamentais": "Nos Clusters 0 e 2, os padrões acadêmicos são de defasagem severa em múltiplas disciplinas, com notas próximas a zero em Matemática e Português para muitos alunos. Comportamentalmente, pode haver desengajamento, baixa participação e dificuldades de concentração devido a fatores externos como cansaço do trabalho, fome e preocupações familiares. No Cluster 1, o padrão é de um desempenho mais inconsistente, com alguns alunos alcançando notas razoáveis, mas outros ainda lutando, possivelmente devido à carga de trabalho ou outras dificuldades pontuais, como deficiências ou ambientes familiares desafiadores.",
+        "oportunidades_intervencao": [
+          {
+            "oportunidade": "Suporte pedagógico intensivo e psicossocial para alunos em extrema vulnerabilidade.",
+            "grupo_alvo": "Cluster 0 e Cluster 2 da Turma 2B.",
+            "acao_sugerida": "Implementar aulas de reforço diárias ou em contraturno, com foco em alfabetização e letramento matemático. Realizar visitas domiciliares por assistentes sociais para entender a realidade familiar e encaminhar para programas de assistência social e segurança alimentar."
+          },
+          {
+            "oportunidade": "Acompanhamento individualizado para conciliação trabalho-estudo e apoio a necessidades específicas.",
+            "grupo_alvo": "Cluster 1 da Turma 2B e alunos trabalhadores dos Clusters 0 e 2.",
+            "acao_sugerida": "Criar um 'cantinho do estudante trabalhador' na escola com acesso a internet e materiais, e oferecer mentoria para gestão de tempo e técnicas de estudo. Para alunos com deficiência, garantir o Plano de Atendimento Educacional Especializado (PAEE) e recursos de acessibilidade."
+          },
+          {
+            "oportunidade": "Intervenção para mitigar o impacto da insegurança alimentar e do deslocamento.",
+            "grupo_alvo": "Cluster 2 da Turma 2B e alunos em insegurança alimentar dos Clusters 0 e 1.",
+            "acao_sugerida": "Fortalecer o programa de alimentação escolar, garantindo refeições nutritivas e suficientes. Avaliar a possibilidade de oferecer lanches extras ou cestas básicas em parceria com a comunidade. Para deslocamento, buscar diálogo com a prefeitura para otimização de rotas de transporte escolar."
+          },
+          {
+            "oportunidade": "Promoção de um ambiente escolar mais acolhedor e equitativo.",
+            "grupo_alvo": "Todos os alunos da Turma 2B, com foco nos Pretos/Pardos.",
+            "acao_sugerida": "Desenvolver projetos pedagógicos que valorizem a cultura afro-brasileira e indígena, promovam o respeito à diversidade e combatam o racismo. Realizar rodas de conversa sobre saúde mental e bem-estar, envolvendo a comunidade escolar."
+          }
+        ]
+      }
+    },
+    {
+      "turma": "3A",
+      "analise_plano_acao": {
+        "sintese_desempenho": "A Turma 3A, composta por 30 alunos, apresenta um desempenho alarmante, com uma média geral de apenas 1.92 e um desvio padrão de 2.38, indicando grande heterogeneidade e uma concentração de notas muito baixas. A vasta maioria, 83.3% dos alunos (25 estudantes), está na faixa de desempenho 'Baixo' (0-4). Apenas 10.0% (3 alunos) estão na faixa 'Médio' e 6.7% (2 alunos) na faixa 'Alto'. Este cenário posiciona a Turma 3A como uma das mais críticas, exigindo intervenções imediatas e focadas.",
+        "principais_desafios": "Os principais desafios da Turma 3A são a média extremamente baixa, a alta proporção de alunos com desempenho insuficiente e a forte influência de fatores socioeconômicos. Cerca de 66.7% dos alunos trabalham fora, o que provavelmente impacta diretamente o tempo e a energia dedicados aos estudos. A renda média da turma é de R$ 1.706,00, e 70.0% dos alunos são pretos ou pardos, reforçando as correlações observadas no panorama geral. A turma enfrenta desafios significativos relacionados à conciliação entre trabalho e estudo, vulnerabilidade socioeconômica e questões de equidade racial.",
+        "recomendacoes_especificas": [
+          {
+            "recomendacao": "Implementar um programa intensivo de recuperação de aprendizagem para a Turma 3A, com foco em habilidades básicas de leitura, escrita e raciocínio lógico-matemático.",
+            "justificativa": "A média geral de 1.92 e a alta concentração na faixa 'Baixo' indicam lacunas fundamentais de aprendizado que precisam ser endereçadas com urgência. Um programa intensivo pode ajudar a nivelar o conhecimento.",
+            "prazo": "curto"
+          },
+          {
+            "recomendacao": "Criar um sistema de tutoria entre pares ou com voluntários para os alunos da Turma 3A, especialmente para aqueles que trabalham, oferecendo horários flexíveis e materiais de estudo adaptados.",
+            "justificativa": "Com 66.7% dos alunos trabalhando, a flexibilidade é crucial. A tutoria pode oferecer suporte individualizado e ajudar a conciliar as demandas do trabalho com as necessidades acadêmicas.",
+            "prazo": "curto"
+          },
+          {
+            "recomendacao": "Realizar um levantamento detalhado das condições de vida dos alunos da Turma 3A, com visitas domiciliares e entrevistas, para identificar necessidades específicas de apoio social e encaminhamento.",
+            "justificativa": "A alta vulnerabilidade socioeconômica e a correlação com o desempenho exigem uma compreensão aprofundada das realidades dos alunos para oferecer suporte direcionado e eficaz, como acesso a programas sociais ou auxílio transporte.",
+            "prazo": "médio"
+          }
+        ]
+      },
+      "correlacao_clusterizacao": {
+        "descricao_clusters": "A análise da Turma 3A revela três clusters distintos, cada um com características e desafios específicos. O Cluster 0, com 4 alunos, apresenta um desempenho relativamente melhor (média de 6.11), renda familiar mais alta (R$3.559,00) e menor percentual de pretos/pardos (0%). O Cluster 1, com 7 alunos, é caracterizado por uma média crítica de 1.27, renda familiar muito baixa (R$923,00), deslocamento longo (129min) e alta insegurança alimentar (88.5%). O Cluster 2, o maior, com 19 alunos, também tem uma média crítica de 1.28, mas se destaca pelo altíssimo percentual de alunos que trabalham (94.7%), renda moderada (R$1.604,00) e alta representação de pretos/pardos (94.7%).",
+        "correlacoes_internas": "Dentro da Turma 3A, as correlações observadas nos clusters reforçam o panorama geral. O Cluster 0, com melhor desempenho, possui características socioeconômicas mais favoráveis (maior renda, menor percentual de trabalho e de pretos/pardos). Em contrapartida, os Clusters 1 e 2, com desempenho crítico, estão diretamente associados a múltiplas vulnerabilidades: baixa renda, necessidade de trabalhar, longos deslocamentos, insegurança alimentar e questões raciais. A necessidade de trabalhar é um fator proeminente no Cluster 2, enquanto a insegurança alimentar e a renda extremamente baixa são marcantes no Cluster 1. Essas correlações indicam que as condições de vida dos alunos são determinantes para seu sucesso acadêmico.",
+        "padroes_comportamentais": "No Cluster 0, os alunos demonstram um desempenho mais consistente, apesar de alguns ainda trabalharem. Nos Clusters 1 e 2, os padrões comportamentais e acadêmicos são de baixo engajamento, alta dificuldade de aprendizado e, provavelmente, maior absenteísmo ou cansaço devido às demandas externas. Alunos do Cluster 1 enfrentam desafios básicos de subsistência (insegurança alimentar, renda muito baixa), o que pode levar à falta de concentração e energia. Alunos do Cluster 2, por sua vez, provavelmente têm seu tempo de estudo e descanso severamente comprometidos pelo trabalho, resultando em baixo rendimento mesmo com uma renda um pouco maior.",
+        "oportunidades_intervencao": [
+          {
+            "oportunidade": "Manter e aprimorar o suporte pedagógico para alunos com bom desempenho, incentivando-os a serem tutores de colegas.",
+            "grupo_alvo": "Turma 3A - Cluster 0 (4 alunos)",
+            "acao_sugerida": "Criar um programa de monitoria onde os alunos do Cluster 0 possam auxiliar os colegas dos Clusters 1 e 2, sob supervisão dos professores, promovendo a aprendizagem colaborativa e o desenvolvimento de liderança."
+          },
+          {
+            "oportunidade": "Intervenção social e nutricional urgente para alunos em extrema vulnerabilidade.",
+            "grupo_alvo": "Turma 3A - Cluster 1 (7 alunos)",
+            "acao_sugerida": "Acionar a rede de assistência social do município para garantir acesso a programas de segurança alimentar (cestas básicas, restaurantes populares) e auxílio financeiro. Oferecer acompanhamento psicossocial intensivo e garantir refeições escolares de qualidade."
+          },
+          {
+            "oportunidade": "Apoio pedagógico flexível e orientação profissional para alunos que trabalham.",
+            "grupo_alvo": "Turma 3A - Cluster 2 (19 alunos)",
+            "acao_sugerida": "Desenvolver um currículo adaptado ou atividades de reforço em horários alternativos. Oferecer workshops de gestão de tempo e habilidades para o mercado de trabalho, buscando parcerias com empresas para programas de jovem aprendiz que permitam conciliar estudo e trabalho de forma mais equilibrada."
+          },
+          {
+            "oportunidade": "Ações afirmativas e de valorização da identidade para alunos pretos/pardos.",
+            "grupo_alvo": "Turma 3A - Cluster 2 (19 alunos, 94.7% pretos/pardos)",
+            "acao_sugerida": "Implementar projetos pedagógicos que abordem a história e cultura afro-brasileira, promovam debates sobre racismo e valorizem a identidade dos alunos, criando um ambiente escolar mais inclusivo e de pertencimento."
+          }
+        ]
+      }
+    },
+    {
+      "turma": "3B",
+      "analise_plano_acao": {
+        "sintese_desempenho": "A Turma 3B, composta por 30 alunos, apresenta uma média geral de 3.26, significativamente abaixo da média esperada e dentro da faixa de desempenho 'Baixo'. A alta dispersão das notas (desvio padrão de 2.69) indica grande heterogeneidade no aprendizado, com notas variando de 0.0 a 7.63. A maioria dos alunos (56.7%, ou 17 estudantes) está na faixa 'Baixo', enquanto 26.7% (8 alunos) estão na faixa 'Médio' e 16.7% (5 alunos) na faixa 'Alto'.",
+        "principais_desafios": "Os principais desafios da Turma 3B residem na alta proporção de alunos em situação de vulnerabilidade. Cerca de 33.3% dos alunos trabalham, o que impacta diretamente o tempo e a dedicação aos estudos. A renda média da turma (R$ 2.103,00) é relativamente baixa, e 60.0% dos alunos se autodeclaram pretos ou pardos, indicando a presença de fatores socioeconômicos e raciais que influenciam o desempenho. A análise por clusters revela grupos com necessidades muito distintas, exigindo intervenções altamente personalizadas.",
+        "recomendacoes_especificas": [
+          {
+            "recomendacao": "Implementar um programa de tutoria individualizada e flexível para os alunos dos Clusters 0 e 2 da Turma 3B, focando nas lacunas de aprendizagem identificadas em Matemática e Português.",
+            "justificativa": "Estes clusters representam os alunos com as menores médias e maiores vulnerabilidades. A tutoria individualizada permite abordar as dificuldades específicas de cada estudante, adaptando o ritmo e a metodologia de ensino às suas necessidades e horários, especialmente para aqueles que trabalham.",
+            "prazo": "curto"
+          },
+          {
+            "recomendacao": "Estabelecer um canal de comunicação direto e empático com as famílias dos alunos dos Clusters 0 e 2, oferecendo suporte e informações sobre programas sociais e de segurança alimentar disponíveis no município.",
+            "justificativa": "A insegurança alimentar e a baixa renda são fatores críticos para o desempenho desses alunos. O apoio às famílias pode mitigar esses impactos, garantindo condições mínimas para o estudo e o bem-estar dos estudantes.",
+            "prazo": "curto"
+          },
+          {
+            "recomendacao": "Promover atividades extracurriculares e desafios acadêmicos para os alunos do Cluster 1 da Turma 3B, visando manter o engajamento e estimular o desenvolvimento de habilidades avançadas.",
+            "justificativa": "Este cluster apresenta desempenho moderado e menor vulnerabilidade socioeconômica. É crucial oferecer estímulos para que esses alunos não percam o interesse e continuem progredindo, evitando a estagnação.",
+            "prazo": "medio"
+          },
+          {
+            "recomendacao": "Realizar uma busca ativa e acompanhamento contínuo dos alunos com baixa frequência e notas extremamente baixas, especialmente aqueles identificados nos Clusters 0 e 2, para identificar e resolver as causas da desmotivação ou ausência.",
+            "justificativa": "A baixa frequência e o desempenho crítico são sinais de alerta para o risco de evasão. Uma abordagem proativa pode identificar problemas subjacentes (saúde, ambiente familiar, necessidade de trabalho) e oferecer o suporte necessário para a permanência e sucesso escolar.",
+            "prazo": "curto"
+          }
+        ]
+      },
+      "correlacao_clusterizacao": {
+        "descricao_clusters": "A análise da Turma 3B revelou três clusters distintos, cada um com características e necessidades específicas. O **Cluster 0 (Turma 3B)**, com 13 alunos, apresenta uma média geral de 1.27, renda média de R$ 1.611,07, e um alarmante 69.2% dos alunos trabalhando. Além disso, 46.2% enfrentam insegurança alimentar e 15.4% não têm internet. Este grupo é de altíssimo risco. O **Cluster 1 (Turma 3B)**, com 14 alunos, demonstra um desempenho moderado, com média de 5.71, renda média de R$ 2.821,43, e apenas 7.1% dos alunos trabalhando. A insegurança alimentar afeta 14.3% e nenhum aluno está sem internet. Este cluster está em risco médio. O **Cluster 2 (Turma 3B)**, com 3 alunos, é o mais vulnerável, com média de 0.49, renda média de R$ 881,33, 0% trabalhando, mas 100% em insegurança alimentar e 66.7% sem internet. Este grupo também é de altíssimo risco e requer atenção urgente.",
+        "correlacoes_internas": "Dentro da Turma 3B, as correlações observadas globalmente se intensificam nos clusters. No Cluster 0, a necessidade de trabalhar é um fator preponderante, correlacionando-se diretamente com as baixíssimas médias. A insegurança alimentar também é um fator crítico. No Cluster 2, a extrema baixa renda e a insegurança alimentar, combinadas com a falta de acesso à internet, são os principais impulsionadores do desempenho crítico, mesmo sem a variável 'trabalho'. O Cluster 1, por outro lado, demonstra que a ausência da necessidade de trabalhar e uma renda mais estável contribuem para um desempenho mais equilibrado, embora ainda haja espaço para melhoria.",
+        "padroes_comportamentais": "Os alunos do Cluster 0 e 2 da Turma 3B provavelmente exibem padrões de cansaço, dificuldade de concentração, faltas frequentes e desmotivação, decorrentes da necessidade de trabalhar, da insegurança alimentar e da falta de recursos. Podem apresentar lacunas significativas de aprendizagem e dificuldade em acompanhar o ritmo da turma. Os alunos do Cluster 1, por sua vez, podem demonstrar maior regularidade na frequência e participação, mas talvez necessitem de estímulos adicionais para alcançar seu potencial máximo e evitar a complacência.",
+        "oportunidades_intervencao": [
+          {
+            "oportunidade": "Intervenção pedagógica intensiva e flexível.",
+            "grupo_alvo": "Turma 3B, Cluster 0 e Cluster 2",
+            "acao_sugerida": "Oferecer aulas de reforço em contraturno ou horários adaptados, com foco em habilidades básicas de leitura, escrita e cálculo. Utilizar materiais didáticos adaptados e metodologias que considerem o contexto de vida desses alunos. Implementar um sistema de tutoria por professores ou alunos mais avançados."
+          },
+          {
+            "oportunidade": "Apoio psicossocial e nutricional direcionado.",
+            "grupo_alvo": "Turma 3B, Cluster 0 e Cluster 2",
+            "acao_sugerida": "Encaminhar as famílias para programas de assistência social e segurança alimentar. Oferecer acompanhamento psicológico para lidar com o estresse e a desmotivação. Garantir acesso a refeições nutritivas na escola e, se possível, estender o programa de alimentação para além do horário escolar."
+          },
+          {
+            "oportunidade": "Inclusão digital e acesso a recursos tecnológicos.",
+            "grupo_alvo": "Turma 3B, Cluster 2 (e alunos do Cluster 0 sem internet)",
+            "acao_sugerida": "Disponibilizar o laboratório de informática da escola com horários estendidos e monitoria. Buscar doações de equipamentos ou parcerias para acesso à internet. Oferecer oficinas de uso de ferramentas digitais para estudo e pesquisa."
+          },
+          {
+            "oportunidade": "Estímulo e enriquecimento acadêmico.",
+            "grupo_alvo": "Turma 3B, Cluster 1",
+            "acao_sugerida": "Propor projetos de pesquisa, clubes de leitura, olimpíadas de conhecimento e atividades que desafiem intelectualmente esses alunos. Incentivar a participação em programas de iniciação científica ou atividades culturais e esportivas."
+          },
+          {
+            "oportunidade": "Diálogo e apoio familiar.",
+            "grupo_alvo": "Turma 3B, todos os clusters, com foco nos Clusters 0 e 2",
+            "acao_sugerida": "Realizar reuniões periódicas com os pais/responsáveis para discutir o desempenho dos alunos, oferecer orientações sobre como apoiar os estudos em casa e fortalecer o vínculo escola-família. Para os alunos com ambiente familiar conflituoso, oferecer mediação ou encaminhamento para serviços de apoio familiar."
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "turma_analisada": "Todas as turmas",
+    "total_turmas": 6,
+    "total_alunos": 180,
+    "data_analise": "2025-11-08 19:17:10",
+    "formato": "relatorio_diretor_escolar"
+  }
+}
