@@ -81,6 +81,8 @@ export interface Aluno {
   trabalha: string;
   hrs_trab_semana: number | null;
   apoio_estudos: string;
+  media_matematica?: number;
+  media_portugues?: number;
   nota_media: number;
   frequencia_pct: number;
   nivel_desempenho: string;
