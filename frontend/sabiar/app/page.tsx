@@ -62,7 +62,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="w-full border-t py-6">
-        <div className="container px-4 text-center text-sm text-muted-foreground md:px-8">
+        <div className="flex justify-center px-4 text-center text-sm text-muted-foreground md:px-8">
           <p>
             © 2025 SabiaR - DevImpacto Hackathon. Gestão escolar baseada em
             dados.

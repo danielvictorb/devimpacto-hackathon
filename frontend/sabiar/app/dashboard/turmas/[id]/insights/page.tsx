@@ -673,17 +673,17 @@ export default function TurmaInsightsPage() {
         </Card>
       </div>
 
-      {/* Cards de Métricas Principais ou Planos de Ação */}
+      {/* Cards de Métricas Principais ou Plano de Ações */}
       <div className="grid gap-3 md:grid-cols-4">
         {filtroGrupo === "risco_alto" ? (
-          // Mostrar Planos de Ação quando filtrado por Risco Alto
+          // Mostrar Plano de Ações quando filtrado por Risco Alto
           <>
             <button
-              onClick={() => router.push('/dashboard/planos-acoes')}
-              className="group rounded-lg border border-blue-200 bg-white hover:border-blue-400 hover:shadow-md transition-all text-left p-5 cursor-pointer"
+              onClick={() => router.push("/dashboard/planos-acoes")}
+              className="group rounded-lg border bg-card hover:shadow-lg hover:-translate-y-1 transition-all text-left p-5 cursor-pointer"
             >
               <div className="flex items-center gap-3 mb-2">
-                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 text-2xl group-hover:scale-110 transition-transform">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg text-2xl">
                   📚
                 </div>
                 <h3 className="text-sm font-semibold text-gray-900 flex-1">
@@ -693,17 +693,17 @@ export default function TurmaInsightsPage() {
               <p className="text-xs text-gray-600 leading-relaxed mb-3">
                 Tutoria personalizada
               </p>
-              <div className="flex items-center text-xs font-medium text-blue-600 group-hover:text-blue-700">
+              <div className="flex items-center text-xs font-medium text-muted-foreground">
                 Ver detalhes →
               </div>
             </button>
 
             <button
-              onClick={() => router.push('/dashboard/planos-acoes')}
-              className="group rounded-lg border border-green-200 bg-white hover:border-green-400 hover:shadow-md transition-all text-left p-5 cursor-pointer"
+              onClick={() => router.push("/dashboard/planos-acoes")}
+              className="group rounded-lg border bg-card hover:shadow-lg hover:-translate-y-1 transition-all text-left p-5 cursor-pointer"
             >
               <div className="flex items-center gap-3 mb-2">
-                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-green-100 text-2xl group-hover:scale-110 transition-transform">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg text-2xl">
                   🍎
                 </div>
                 <h3 className="text-sm font-semibold text-gray-900 flex-1">
@@ -713,17 +713,17 @@ export default function TurmaInsightsPage() {
               <p className="text-xs text-gray-600 leading-relaxed mb-3">
                 Programa nutricional
               </p>
-              <div className="flex items-center text-xs font-medium text-green-600 group-hover:text-green-700">
+              <div className="flex items-center text-xs font-medium text-muted-foreground">
                 Ver detalhes →
               </div>
             </button>
 
             <button
-              onClick={() => router.push('/dashboard/planos-acoes')}
-              className="group rounded-lg border border-orange-200 bg-white hover:border-orange-400 hover:shadow-md transition-all text-left p-5 cursor-pointer"
+              onClick={() => router.push("/dashboard/planos-acoes")}
+              className="group rounded-lg border bg-card hover:shadow-lg hover:-translate-y-1 transition-all text-left p-5 cursor-pointer"
             >
               <div className="flex items-center gap-3 mb-2">
-                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-orange-100 text-2xl group-hover:scale-110 transition-transform">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg text-2xl">
                   🚌
                 </div>
                 <h3 className="text-sm font-semibold text-gray-900 flex-1">
@@ -733,17 +733,17 @@ export default function TurmaInsightsPage() {
               <p className="text-xs text-gray-600 leading-relaxed mb-3">
                 Auxílio deslocamento
               </p>
-              <div className="flex items-center text-xs font-medium text-orange-600 group-hover:text-orange-700">
+              <div className="flex items-center text-xs font-medium text-muted-foreground">
                 Ver detalhes →
               </div>
             </button>
 
             <button
-              onClick={() => router.push('/dashboard/planos-acoes')}
-              className="group rounded-lg border border-pink-200 bg-white hover:border-pink-400 hover:shadow-md transition-all text-left p-5 cursor-pointer"
+              onClick={() => router.push("/dashboard/planos-acoes")}
+              className="group rounded-lg border bg-card hover:shadow-lg hover:-translate-y-1 transition-all text-left p-5 cursor-pointer"
             >
               <div className="flex items-center gap-3 mb-2">
-                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-pink-100 text-2xl group-hover:scale-110 transition-transform">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg text-2xl">
                   ❤️
                 </div>
                 <h3 className="text-sm font-semibold text-gray-900 flex-1">
@@ -753,7 +753,7 @@ export default function TurmaInsightsPage() {
               <p className="text-xs text-gray-600 leading-relaxed mb-3">
                 Suporte psicológico
               </p>
-              <div className="flex items-center text-xs font-medium text-pink-600 group-hover:text-pink-700">
+              <div className="flex items-center text-xs font-medium text-muted-foreground">
                 Ver detalhes →
               </div>
             </button>
@@ -791,7 +791,9 @@ export default function TurmaInsightsPage() {
               <div className="text-2xl font-bold">
                 {turma.estatisticas.frequencia_media.toFixed(0)}%
               </div>
-              <p className="text-xs text-muted-foreground">Presença dos alunos</p>
+              <p className="text-xs text-muted-foreground">
+                Presença dos alunos
+              </p>
             </button>
             <button
               onClick={() => setMetricaSelecionada("aprovacao")}
@@ -803,7 +805,9 @@ export default function TurmaInsightsPage() {
               <div className="text-2xl font-bold text-blue-600">
                 {turma.estatisticas.aprovacao_estimada.toFixed(0)}%
               </div>
-              <p className="text-xs text-muted-foreground">Projeção de aprovação</p>
+              <p className="text-xs text-muted-foreground">
+                Projeção de aprovação
+              </p>
             </button>
             <button
               onClick={() => setMetricaSelecionada("risco")}
@@ -816,8 +820,10 @@ export default function TurmaInsightsPage() {
                 {alunosRiscoAlto.length}
               </div>
               <p className="text-xs text-muted-foreground">
-                {((alunosRiscoAlto.length / turma.total_alunos) * 100).toFixed(0)}%
-                do total (notas 0-4)
+                {((alunosRiscoAlto.length / turma.total_alunos) * 100).toFixed(
+                  0
+                )}
+                % do total (notas 0-4)
               </p>
             </button>
           </>

@@ -46,19 +46,19 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="px-4 py-8 md:px-8">
+    <div className="px-4 py-6 md:px-8">
       {/* Welcome Section */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">
+      <div className="mb-5">
+        <h1 className="text-2xl font-bold tracking-tight">
           Visão Geral da Escola
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           Bem-vindo de volta, Diretor(a) ECIT João Goulart!
         </p>
       </div>
 
       {/* Stats Cards Principais */}
-      <div className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-6 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         {/* Total de Alunos */}
         <Link href="/dashboard/alunos">
           <Card className="cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -162,7 +162,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Distribuição por Desempenho */}
-      <div className="mb-8 grid gap-4 md:grid-cols-3">
+      <div className="mb-6 grid gap-3 md:grid-cols-3">
         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
         {stats.distribuicaoPorFaixa.map((faixa: any) => (
           <Link
@@ -172,9 +172,9 @@ export default function DashboardPage() {
             )}`}
           >
             <Card className="cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base">{faixa.faixa}</CardTitle>
+                  <CardTitle className="text-sm">{faixa.faixa}</CardTitle>
                   <Badge
                     variant={
                       faixa.faixa.includes("Baixo")
@@ -183,29 +183,30 @@ export default function DashboardPage() {
                         ? "default"
                         : "secondary"
                     }
+                    className="text-xs"
                   >
                     {faixa.percentual}%
                   </Badge>
                 </div>
-                <CardDescription>
+                <CardDescription className="text-xs">
                   {faixa.total_alunos} alunos • Média:{" "}
                   {faixa.intervalo_notas.media.toFixed(2)}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
+              <CardContent className="space-y-1">
+                <div className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">Trabalham</span>
                   <span className="font-medium">
                     {faixa.pct_trabalha.toFixed(1)}%
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">Renda média</span>
                   <span className="font-medium">
                     R$ {faixa.renda_media.toFixed(0)}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">Pretos/Pardos</span>
                   <span className="font-medium">
                     {faixa.pct_pretos_pardos.toFixed(1)}%
@@ -218,7 +219,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Fatores Críticos */}
-      <Card className="mb-8">
+      <Card className="mb-6">
         <CardHeader>
           <div className="flex items-center gap-2">
             <IconAlertCircle className="size-5 text-orange-500" />
@@ -231,10 +232,16 @@ export default function DashboardPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="flex items-center gap-3 rounded-lg border p-4">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-orange-500/10">
-                <IconShoppingCart className="size-5 text-orange-500" />
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex items-center gap-2 rounded-lg border p-3">
+              <div
+                className="flex size-10 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: "hsl(var(--sabiar-teal) / 0.1)" }}
+              >
+                <IconShoppingCart
+                  style={{ color: "#294f5c" }}
+                  className="size-5"
+                />
               </div>
               <div>
                 <div className="font-semibold">
@@ -245,8 +252,11 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex items-center gap-3 rounded-lg border p-4">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-red-500/10">
-                <IconHome className="size-5 text-red-500" />
+              <div
+                className="flex size-10 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: "hsl(var(--sabiar-teal) / 0.1)" }}
+              >
+                <IconHome style={{ color: "#294f5c" }} className="size-5" />
               </div>
               <div>
                 <div className="font-semibold">
@@ -259,8 +269,11 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex items-center gap-3 rounded-lg border p-4">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-yellow-500/10">
-                <IconClock className="size-5 text-yellow-500" />
+              <div
+                className="flex size-10 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: "hsl(var(--sabiar-teal) / 0.1)" }}
+              >
+                <IconClock style={{ color: "#294f5c" }} className="size-5" />
               </div>
               <div>
                 <div className="font-semibold">
@@ -273,8 +286,11 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex items-center gap-3 rounded-lg border p-4">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-purple-500/10">
-                <IconUsers className="size-5 text-purple-500" />
+              <div
+                className="flex size-10 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: "hsl(var(--sabiar-teal) / 0.1)" }}
+              >
+                <IconUsers style={{ color: "#294f5c" }} className="size-5" />
               </div>
               <div>
                 <div className="font-semibold">
@@ -285,8 +301,11 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex items-center gap-3 rounded-lg border p-4">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
-                <IconWifi className="size-5 text-blue-500" />
+              <div
+                className="flex size-10 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: "hsl(var(--sabiar-teal) / 0.1)" }}
+              >
+                <IconWifi style={{ color: "#294f5c" }} className="size-5" />
               </div>
               <div>
                 <div className="font-semibold">
@@ -297,8 +316,11 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex items-center gap-3 rounded-lg border p-4">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-green-500/10">
-                <IconChartPie className="size-5 text-green-500" />
+              <div
+                className="flex size-10 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: "hsl(var(--sabiar-teal) / 0.1)" }}
+              >
+                <IconChartPie style={{ color: "#294f5c" }} className="size-5" />
               </div>
               <div>
                 <div className="font-semibold">
